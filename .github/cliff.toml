@@ -71,6 +71,8 @@ body = """
 """
 
 footer = """
+## 历史版本更新内容
+
 [已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MFABD2)
 """
 
@@ -79,6 +81,10 @@ conventional_commits = true
 filter_unconventional = false
 split_commits = false
 protect_breaking_commits = false
+all = false  # 只考虑当前分支
+include_paths = ["**"]
+sort_commits = "newest"
+merge_commits = true  # 包含合并提交
 
 commit_parsers = [
     { message = "^(?i)feat", group = "✨ 新功能" },

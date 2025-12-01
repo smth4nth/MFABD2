@@ -75,7 +75,7 @@
 		},
 		{
 			"name": "[执行]竞技场",
-			"entry": "PVP_HomePage",
+			"entry": "PVP_TaskStart",
 			"check": true,
 			"option": [
 				"竞技场战斗倍数"
@@ -126,7 +126,7 @@
 		{
 			"name": "[领取]活动页奖励",
 			"check": true,
-			"entry": "Activities_HomePage",
+			"entry": "Activities_Start",
 			"option": [
 				"进入前先领取邮件"
 			],
@@ -593,7 +593,7 @@
 								"Battle_CollectMap_SwipLeft"
 							]
 						},
-						"Battle_CollectMapHangXianDoubleCk2No": {
+						"Battle_CollectMapHangXianDoubleCk2No_ToCentral_CK": {
 							"interrupt": [
 								"Battle_CollectMap_SwipLeft"
 							]
@@ -603,10 +603,10 @@
 								"蜥蜴人祭坛"
 							],
 							"roi": [
-								255,
-								318,
-								423,
-								238
+								305,
+								367,
+								121,
+								59
 							],
 							"target_offset": [
 								5,
@@ -620,10 +620,10 @@
 								"蜥蜴人祭坛"
 							],
 							"roi": [
-								255,
-								318,
-								423,
-								238
+								305,
+								367,
+								121,
+								59
 							],
 							"target_offset": [
 								5,
@@ -639,7 +639,8 @@
 					"pipeline_override": {
 						"Battle_CollectMap": {
 							"next": [
-								"Battle_CollectMapHangXian1"
+								"Battle_CollectMapHangXian1",
+								"Battle_CollectMap"
 							]
 						},
 						"Battle_CollectMapHangXianDoubleCk1No": {}
@@ -763,7 +764,8 @@
 						},
 						"Battle_CollectMap": {
 							"next": [
-								"Battle_CollectMapHangXian1"
+								"Battle_CollectMapHangXian1",
+								"Battle_CollectMap"
 							]
 						},
 						"Battle_FastBattleMAXTouchHangxian": {
@@ -995,25 +997,23 @@
 				{
 					"name": "Max",
 					"pipeline_override": {
-						"PVP_AutoBattleMAX": {
-							"target": [
-								865,
-								435,
-								0,
-								0
-							]
-						}
+						"PVP_Multiplier_Adjust_Set": {}
 					}
 				},
 				{
 					"name": "Min",
 					"pipeline_override": {
-						"PVP_AutoBattleMAX": {
+						"PVP_Multiplier_Verify": {
+							"expected": [
+								"^1$"
+							]
+						},
+						"PVP_Multiplier_Adjust_Set": {
 							"target": [
-								425,
-								435,
-								0,
-								0
+								458,
+								355,
+								20,
+								18
 							]
 						}
 					}
@@ -1352,7 +1352,7 @@
 		}
 	},
 	"name": "MFABD2",
-	"custom_title": "MFABD2 | 棕色尘埃2自动化助手(sunyink/MFABD2)v0.0.12 | 游戏版本：20251106 (Magic for Wishes)",
+	"custom_title": "MFABD2 | 棕色尘埃2自动化助手(sunyink/MFABD2)v0.0.12 | 游戏版本：20251120 (Crossroads)",
 	"url": "https://github.com/sunyink/MFABD2",
 	"mirrorchyan_rid": "MFABD2",
 	"mirrorchyan_multiplatform": false,

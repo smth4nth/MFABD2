@@ -12,7 +12,6 @@
     "next": [
       "RewardsDaily_InIndex"
     ],
-    "post_wait_freezes": 500,
     "roi": [
       520,
       658,
@@ -22,13 +21,7 @@
     "expected": [
       "任务"
     ],
-    "target_offset": [
-      4,
-      -4,
-      0,
-      0
-    ],
-    "doc": "识别点击任务"
+    "doc": "界面确认"
   },
   "RewardsDaily_InIndex": {
     "recognition": "TemplateMatch",
@@ -58,8 +51,12 @@
   "RewardsDaily_GetDailyReward": {
     "recognition": "OCR",
     "next": [
-      "RewardsDaily_GetDailyReward_cor",
-      "RewardsDaily_TabWeeklyReward"
+      "RewardsDaily_GetDailyReward_Clr"
+    ],
+    "timeout": 3000,
+    "on_error": [
+      "RewardsDaily_TabWeeklyReward",
+      "Global_ToSandBox"
     ],
     "post_delay": 3000,
     "roi": [
@@ -73,13 +70,13 @@
     ],
     "doc": "点击领取全部"
   },
-  "RewardsDaily_GetDailyReward_cor": {
+  "RewardsDaily_GetDailyReward_Clr": {
     "recognition": "ColorMatch",
     "action": "Click",
     "next": [
       "RewardsDaily_GetDailyRewardBack",
       "RewardsDaily_TabWeeklyReward",
-      "RewardsDaily_GetDailyReward_cor"
+      "RewardsDaily_GetDailyReward_Clr"
     ],
     "timeout": 3000,
     "on_error": [],
@@ -98,7 +95,7 @@
     ],
     "upper": [
       222,
-      218,
+      220,
       210
     ]
   },
@@ -106,10 +103,10 @@
     "recognition": "OCR",
     "action": "Click",
     "next": [
-      "RewardsDaily_TabWeeklyReward",
-      "RewardsDaily_GetDailyRewardBack"
+      "RewardsDaily_GetDailyRewardBack",
+      "RewardsDaily_TabWeeklyReward"
     ],
-    "timeout": 3000,
+    "timeout": 5000,
     "on_error": [
       "Global_ToSandBox"
     ],
@@ -121,7 +118,7 @@
       34
     ],
     "expected": [
-      "点击画面即可返回"
+      "^(?=.*[点击画面])(?=.*[即可])(?=.*[返回]).{4,12}$"
     ],
     "doc": "点击领取全部返回"
   },
@@ -129,7 +126,12 @@
     "recognition": "TemplateMatch",
     "action": "Click",
     "next": [
-      "RewardsDaily_GetWeeklyReward"
+      "RewardsDaily_TabWeeklyReward_Enter",
+      "RewardsDaily_TabWeeklyReward"
+    ],
+    "timeout": 3000,
+    "on_error": [
+      "Global_ToSandBox"
     ],
     "roi": [
       189,
@@ -137,8 +139,26 @@
       169,
       73
     ],
+    "post_delay": 2000,
     "template": [
       "MailRedPr.png"
+    ]
+  },
+  "RewardsDaily_TabWeeklyReward_Enter": {
+    "doc": "确认已在每周任务",
+    "recognition": "OCR",
+    "next": [
+      "RewardsDaily_GetWeeklyReward"
+    ],
+    "post_delay": 3000,
+    "roi": [
+      218,
+      19,
+      113,
+      44
+    ],
+    "expected": [
+      "每周任务"
     ]
   },
   "RewardsDaily_GetWeeklyReward": {
@@ -146,7 +166,7 @@
     "action": "Click",
     "next": [
       "RewardsDaily_GetWeeklyRewardBack",
-      "Global_ToSandBox"
+      "RewardsDaily_GetWeeklyReward"
     ],
     "post_delay": 3000,
     "roi": [
@@ -174,7 +194,7 @@
       34
     ],
     "expected": [
-      "点击画面即可返回"
+      "^(?=.*[点击画面])(?=.*[即可])(?=.*[返回]).{4,12}$"
     ],
     "doc": "点击领取全部返回"
   }

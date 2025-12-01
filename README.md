@@ -5,7 +5,7 @@
 
 # MaaBD2-棕色尘埃2自动化助手
 [![License](https://img.shields.io/badge/License-MIT%2FApache--2.0-blue)](./LICENSE)
-[![.NET Version](https://img.shields.io/badge/.NET-≥%208-512BD4?logo=csharp)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![.NET Version](https://img.shields.io/badge/.NET-≥%2010-512BD4?logo=csharp)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![月提交](https://img.shields.io/github/commit-activity/m/sunyink/MFABD2?label=开发活跃度&color=blue)](https://github.com/sunyink/MFABD2/commits/main)
 [![给项目点赞](https://img.shields.io/github/stars/sunyink/MFABD2?style=social&label=给项目点赞)](https://github.com/sunyink/MFABD2)
 <br>

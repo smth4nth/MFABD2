@@ -1,5 +1,5 @@
 {
-  "Activities_HomePage": {
+  "Activities_Start": {
     "next": [
       "Activities_HomePageHub",
       "Activities_HomePageHub1",
@@ -94,7 +94,7 @@
       "Activities_Call_Mail_Out"
     ],
     "interrupt": [
-      "Mail_CheckMail"
+      "Mail_NewRed"
     ],
     "doc": "目的：必须在next中插入中断。进入后call中断；预测返回场景制作next的判定来离开小循环"
   },
@@ -110,7 +110,7 @@
       "pin.png"
     ],
     "next": [
-      "Activities_HomePage"
+      "Activities_Start"
     ]
   },
   "Activities_InIndex": {
@@ -232,7 +232,7 @@
       97
     ],
     "expected": [
-      "点击画面即可返回"
+      "^(?=.*[点击画面])(?=.*[即可])(?=.*[返回]).{4,12}$"
     ],
     "doc": "确认抽卡"
   },

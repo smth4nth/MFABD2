@@ -134,9 +134,9 @@
     "recognition": "ColorMatch",
     "roi": [
       180,
-      13,
-      284,
-      75
+      14,
+      149,
+      66
     ],
     "lower": [
       130,
@@ -152,7 +152,8 @@
     "count": 100,
     "next": [
       "Battle_CollectMapHangXianDoubleCk1",
-      "Battle_CollectMapHangXianDoubleCk1No"
+      "Battle_CollectMapHangXianDoubleCk1No",
+      "Battle_CollectMapHangXian1"
     ],
     "post_delay": 2000,
     "focus": "BM.航线-首选（异常！）",
@@ -216,9 +217,9 @@
     "recognition": "ColorMatch",
     "roi": [
       180,
-      13,
-      284,
-      75
+      14,
+      149,
+      66
     ],
     "lower": [
       130,
@@ -425,6 +426,25 @@
     "focus": "BB.付费米饭无AP弹窗"
   },
   "Battle_CollectMapDongXue": {
+    "recognition": "ColorMatch",
+    "roi": [
+      180,
+      14,
+      149,
+      66
+    ],
+    "lower": [
+      130,
+      130,
+      122
+    ],
+    "upper": [
+      221,
+      218,
+      209
+    ],
+    "method": 4,
+    "count": 200,
     "action": "Click",
     "next": [
       "Battle_CollectMapDongXueCK",
@@ -537,6 +557,7 @@
     "expected": [
       "快速狩猎"
     ],
+    "post_wait_freezes": 500,
     "doc": "寻找快速狩猎，点击"
   },
   "Battle_FastBattleStart": {
@@ -605,9 +626,9 @@
       51
     ],
     "expected": [
-      "点击画面即可返回"
+      "^(?=.*[点击画面])(?=.*[即可])(?=.*[返回]).{4,12}$"
     ],
-    "doc": "狩猎Reward"
+    "doc": "狩猎Reward,新思路,正则式的分组容错,每组内只要识别到1个字就算过"
   },
   "Battle_CollectMapInitialize": {
     "action": "Click",
@@ -672,9 +693,7 @@
       "野猪洞穴"
     ],
     "timeout": 3000,
-    "on_error": [
-      "Battle_CollectMapInitialize"
-    ]
+    "on_error": []
   },
   "Battle_CollectMapInitializeE": {
     "action": "Click",
@@ -873,7 +892,7 @@
       51
     ],
     "expected": [
-      "点击画面即可返回"
+      "^(?=.*[点击画面])(?=.*[即可])(?=.*[返回]).{4,12}$"
     ],
     "doc": "狩猎Reward"
   },
@@ -927,6 +946,7 @@
   "Battle_TurnCharact_End": {
     "recognition": "TemplateMatch",
     "next": [
+      "Battle_NoAP_Torch",
       "Battle_FastBattleMAXTouchDongXue"
     ],
     "interrupt": [
@@ -944,22 +964,41 @@
     ]
   },
   "Battle_CollectMap_SwipLeft": {
+    "recognition": "OCR",
+    "roi": [
+      549,
+      338,
+      171,
+      87
+    ],
+    "expected": [
+      "野猪洞穴"
+    ],
     "action": "Swipe",
     "post_delay": 3000,
     "focus": "BM.史贝伦大陆西北",
     "begin": [
       270,
-      194,
+      144,
       0,
       0
     ],
     "end": [
-      682,
-      350,
-      0,
-      0
+      [
+        570,
+        144,
+        0,
+        0
+      ],
+      [
+        570,
+        450,
+        0,
+        0
+      ]
     ],
-    "duration": 500
+    "duration": 200,
+    "end_hold": 1000
   },
   "Battle_MapLocReset_once": {
     "action": "Click",

@@ -1086,7 +1086,7 @@
       186,
       419,
       173,
-      82
+      107
     ],
     "count": 5000,
     "lower": [
@@ -1113,6 +1113,7 @@
       173,
       80
     ],
+    "timeout": 5000,
     "template": [
       "Gachalistend_ADV.png",
       "Gachalistend_ADV2.png",
@@ -1132,6 +1133,7 @@
       173,
       82
     ],
+    "timeout": 5000,
     "template": [
       "Gachalistend_ADV.png",
       "Gachalistend_ADV2.png",
@@ -1151,6 +1153,7 @@
       173,
       82
     ],
+    "timeout": 5000,
     "template": [
       "Gachalistend_ADV.png",
       "Gachalistend_ADV2.png",
@@ -1168,8 +1171,9 @@
       186,
       419,
       173,
-      82
+      107
     ],
+    "timeout": 5000,
     "template": [
       "Gachalistend_ADV.png",
       "Gachalistend_ADV2.png",
@@ -1192,7 +1196,7 @@
       462,
       297
     ],
-    "threshold": 0.8,
+    "threshold": 0.7,
     "next": [
       "GachaADV_SpecialCountButton"
     ],
@@ -1591,7 +1595,7 @@
     "recognition": "OCR",
     "action": "Click",
     "next": [
-      "GachaADV_BackMapPage",
+      "GachaADV_EndToHomePage",
       "GachaADV_FinGacha"
     ],
     "post_delay": 3000,
@@ -1613,14 +1617,8 @@
     ],
     "doc": "返回首页"
   },
-  "GachaADV_BackMapPage": {
+  "GachaADV_EndToHomePage": {
     "recognition": "OCR",
-    "action": "Click",
-    "next": [
-      "GachaADV_FinBackMapPage",
-      "GachaADV_BackMapPage"
-    ],
-    "post_delay": 1000,
     "roi": [
       98,
       656,
@@ -1630,27 +1628,6 @@
     "expected": [
       "抽抽乐"
     ],
-    "target": [
-      135,
-      40,
-      0,
-      0
-    ],
     "doc": "识别左下抽抽乐-返回地图页"
-  },
-  "GachaADV_FinBackMapPage": {
-    "recognition": "TemplateMatch",
-    "next": [],
-    "focus": "GA.退出抽卡成功",
-    "roi": [
-      1122,
-      646,
-      40,
-      38
-    ],
-    "template": [
-      "pin.png"
-    ],
-    "doc": "识别右下图钉-章节主页"
   }
 }

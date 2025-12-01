@@ -127,7 +127,9 @@ jobs:
         with:
           repository: MaaXYZ/MaaFramework
           fileName: "MAA-${{ matrix.os }}-${{ matrix.arch }}*"
-          latest: true
+          # latest: true
+          # 指定MFA旧稳定版
+          tag: "v4.5.6"
           out-file-path: "deps"
           extract: true
 
@@ -239,14 +241,10 @@ jobs:
           files: artifacts/release_assets/*.zip
           tag_name: ${{ needs.meta.outputs.tag }}
           name: "MFABD2 ${{ needs.meta.outputs.tag }}"
+          target_commitish: ${{ github.sha }}
           body: |
             ${{ contains(needs.changelog.outputs.release_body, '## ') && needs.changelog.outputs.release_body || '### 无显著变更' }}
             
-            **构建信息**:
-            - 版本: `${{ needs.meta.outputs.tag }}`
-            - 类型: ${{ needs.meta.outputs.version_type == 'release' && '正式版' || (needs.meta.outputs.version_type == 'beta' && '内测版' || '开发版') }}
-            - 分支: ${{ github.ref_name }}
-            - 构建时间: ${{ steps.get_time.outputs.time }}
           draft: false
           prerelease: ${{ contains(needs.meta.outputs.tag, '-beta') || (contains(needs.meta.outputs.tag, '-ci') && !(github.event_name == 'workflow_dispatch' && github.event.inputs.ci_as_stable == 'true')) }}
         env:  # 添加环境变量以支持高限额API调用
@@ -268,7 +266,7 @@ jobs:
 
   notify:
     needs: [meta, install]
-    if: always() && needs.install.result == 'success'
+    if: always() && needs.install.result == 'success' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Extract commit info 

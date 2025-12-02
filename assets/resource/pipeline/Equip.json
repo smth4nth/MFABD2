@@ -421,6 +421,7 @@
     "recognition": "OCR",
     "action": "Click",
     "next": [
+      "Equip_Awaiting",
       "Equip_EquipDec",
       "Equip_EquipUpResult"
     ],
@@ -1279,4 +1280,23 @@
     ],
     "doc": "技能页3，色核识别.next遍历是防止放置其他技能;次节点每轮next判定"
   },
+  "Equip_Awaiting": {
+    "doc": "如果残留过多N装备,强化时间极长超时,做一个循环等待 | 有分解中? | /5.1后删除next",
+    "recognition": "OCR",
+    "roi": [
+      530,
+      212,
+      199,
+      245
+    ],
+    "expected": [
+      "强化中",
+      "进行中"
+    ],
+    "next": [
+      "Equip_EquipUpResult"
+    ],
+    "post_delay": 10000,
+    "focus": "EB.操作件数过多,等待中"
+  }
 }

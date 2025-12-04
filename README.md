@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 MD041 -->
 <div align="center">
-  <img alt="LOGO" src="https://github.com/sunyink/MFABD2/blob/WPF/ReadMe/logo.png" width="180" height="180" />
+  <img alt="LOGO" src="https://github.com/sunyink/MFABD2/blob/main/ReadMe/logo.png" width="180" height="180" />
 
 
 # MaaBD2-棕色尘埃2自动化助手
@@ -65,8 +65,8 @@
 > 
 - 人物技能请按图中设置
 
- > <img alt="LOGO" src="https://github.com/sunyink/MFABD2/blob/WPF/ReadMe/IT-2511.jpg"  width="600px"/>
- > <img alt="LOGO" src="https://github.com/sunyink/MFABD2/blob/WPF/ReadMe/3.png"  width="400px"/>
+ > <img alt="LOGO" src="https://github.com/sunyink/MFABD2/blob/main/ReadMe/IT-2511.jpg"  width="600px"/>
+ > <img alt="LOGO" src="https://github.com/sunyink/MFABD2/blob/main/ReadMe/3.png"  width="400px"/>
 
 ## 功能一览
 

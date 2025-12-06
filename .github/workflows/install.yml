@@ -127,9 +127,7 @@ jobs:
         with:
           repository: MaaXYZ/MaaFramework
           fileName: "MAA-${{ matrix.os }}-${{ matrix.arch }}*"
-          # latest: true
-          # 指定MFA旧稳定版
-          tag: "v4.5.6"
+          latest: true
           out-file-path: "deps"
           extract: true
 

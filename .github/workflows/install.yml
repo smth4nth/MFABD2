@@ -140,9 +140,7 @@ jobs:
         with:
           repository: SweetSmellFox/MFAAvalonia
           fileName: "MFAAvalonia-*-${{ (matrix.os == 'win' && 'win') || (matrix.os == 'macos' && 'osx') || (matrix.os == 'linux' && 'linux') }}-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
-          # latest: true
-          # 指定MFA旧稳定版,2.0以后MFAAvalonia自带MFA v5.1
-          tag: "v1.8.9"
+          latest: true
           out-file-path: "MFA"
           extract: true
 

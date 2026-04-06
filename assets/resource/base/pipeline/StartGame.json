@@ -8,7 +8,12 @@
   "StartGame_Check_App_Alive": {
     "action": "Shell",
     "cmd": "pidof com.neowizgames.game.browndust2",
-    "next": [],
+    "next": [
+      "StartGame_TouchStart",
+      "Global_ToHomePage_Enter",
+      "Global_ToSandBox_Enter",
+      "Global_Null"
+  ],
     "on_error": [
       "StartGame_RunApp"
     ],

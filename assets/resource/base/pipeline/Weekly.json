@@ -705,8 +705,8 @@
       "cycle_type": "g_weekly"
     },
     "next": [
-      "Weekly_Arcade_HomePage",
-      "[JumpBack]Global_ToHomePage"
+      "[JumpBack]Global_ToHomePage",
+      "Weekly_Arcade_HomePage"
     ],
     "focus": "WAM.访问街机开始"
   },
@@ -741,7 +741,7 @@
       109
     ],
     "expected": [
-      "街机游戏"
+      "街机"
     ],
     "target_offset": [
       5,

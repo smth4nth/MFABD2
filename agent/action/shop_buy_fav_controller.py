@@ -78,7 +78,7 @@ class ShopBuyFavController(CustomAction):
         if target_items is None:
             return False
 
-        mfaalog.info(
+        mfaalog.debug(
             f"[ShopBuy] 📋 [{cart_name}] 目标商品 ({len(target_items)}项): "
             f"{', '.join(target_items)}"
         )
@@ -290,7 +290,11 @@ class ShopBuyFavController(CustomAction):
             return None
 
         # --- 配对 ---
-        return self._bind_star_to_name(all_stars, name_items)
+        entities = self._bind_star_to_name(all_stars, name_items)
+        if not entities:
+            mfaalog.warning("[ShopBuy] ⚠️ 星星与商品名完全无法配对，识别失败。")
+            return None
+        return entities
 
     # ==========================================
     # 星星颜色判定（全 box + 高饱和像素占比）

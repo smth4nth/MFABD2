@@ -168,9 +168,9 @@
         "anchor": {
             "SmartSwipOut": ""
         },
+        "timeout": 1,
         "next": [
-            "Collect_StoryPack_SetSimpleSkip",
-            "Collect_QuickCart_SelectType_StoryPack"
+            "Collect_StoryPack_SetSimpleSkip"
         ]
     },
     "Collect_FeatureSwitch_CharacterPack": {
@@ -179,9 +179,9 @@
         "anchor": {
             "SmartSwipOut": ""
         },
+        "timeout": 1,
         "next": [
-            "Collect_CharacterPack_SetSimpleSkip",
-            "Collect_QuickCart_SelectType_CharacterPack"
+            "Collect_CharacterPack_SetSimpleSkip"
         ]
     },
     "Collect_FeatureSwitch_EvenPack": {
@@ -190,14 +190,13 @@
         "anchor": {
             "SmartSwipOut": ""
         },
+        "timeout": 1,
         "next": [
-            "Collect_EventPack_SetSimpleSkip",
-            "Collect_QuickCart_SelectType_EventPack"
+            "Collect_EventPack_SetSimpleSkip"
         ]
     },
     "Collect_StoryPack_SetSimpleSkip": {
         "desc": "简单类跳过实现逻辑:发射锚点使得smart动作报err后进入特定存档节点,其他行为一致。此节点启用后读取存档，若通过，直接进入下一个节点链。",
-        "enabled": false,
         "recognition": "Custom",
         "custom_recognition": "CheckCoolDown",
         "custom_recognition_param": {
@@ -206,10 +205,10 @@
         },
         "anchor": {
             "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Story"
-        }
+        },
+        "next": ["Collect_QuickCart_SelectType_StoryPack"]
     },
     "Collect_CharacterPack_SetSimpleSkip": {
-        "enabled": false,
         "recognition": "Custom",
         "custom_recognition": "CheckCoolDown",
         "custom_recognition_param": {
@@ -218,10 +217,10 @@
         },
         "anchor": {
             "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Character"
-        }
+        },
+        "next": ["Collect_QuickCart_SelectType_CharacterPack"]
     },
     "Collect_EventPack_SetSimpleSkip": {
-        "enabled": false,
         "recognition": "Custom",
         "custom_recognition": "CheckCoolDown",
         "custom_recognition_param": {
@@ -230,7 +229,8 @@
         },
         "anchor": {
             "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Event"
-        }
+        },
+        "next": ["Collect_QuickCart_SelectType_EventPack"]
     },
     "Collect_QuickCart_SelectType_StoryPack": {
         "recognition": "OCR",
@@ -3216,5 +3216,53 @@
             "Collect_OperationsMain_Sandplay",
             "Collect_Pack_Event_4"
         ]
+    },
+    "Collect_FirstPack": {
+        "desc": "事件图可能会有新卡带",
+        "recognition": "OCR",
+        "roi": [
+            413,
+            481,
+            440,
+            132
+        ],
+        "expected": ["未插好游戏卡"],
+        "action": "Click",
+        "repeat": 10,
+        "repeat_delay": 200,
+        "post_delay": 5000,
+        "focus": "发现新卡带,快速点击'插入'"
+    },
+    "Collect_FirstPack_Talk": {
+        "desc": "初次卡带对话跳过",
+        "recognition": "TemplateMatch",
+        "roi": [
+            915,
+            9,
+            265,
+            68
+        ],
+        "template": ["UI_Skip.png"],
+        "action": "Click",
+        "post_delay": 2000,
+        "next": [
+            "Collect_FirstPack_Talk_Ck",
+            "Collect_FirstPack_Talk"
+        ],
+        "focus": "发现新卡带,快速点击'插入'"
+    },
+    "Collect_FirstPack_Talk_Ck": {
+        "desc": "初次卡带对话跳过,确认",
+        "recognition": "OCR",
+        "roi": [
+            626,
+            368,
+            186,
+            293
+        ],
+        "expected": ["确认"],
+        "action": "Click",
+        "post_delay": 2000,
+        "focus": "发现新卡带,快速点击'插入'"
     }
 }

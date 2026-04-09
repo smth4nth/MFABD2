@@ -390,7 +390,9 @@
         "next": [
             "[JumpBack]Global_WaitingForLoading",
             "[JumpBack]Global_QuickCart_MenuReset",
-            "Collect_LocatePackFrame_Loc1"
+            "Collect_LocatePackFrame_Loc1",
+            "[JumpBack]Collect_FirstPack",
+            "[JumpBack]Collect_FirstPack_Talk"
         ],
         "focus": "CM.L.卡带类型初次启动,进入1#位置"
     },

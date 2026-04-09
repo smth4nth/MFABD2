@@ -239,7 +239,8 @@ def _ensure_cache_loaded(force_refresh=False):
             _preferred_parents = ["base", "pc"]
             found = [p for p in _project_root.rglob("pipeline") if p.is_dir() and any(p.rglob("*.json"))]
             found.sort(key=lambda p: _preferred_parents.index(p.parent.name) if p.parent.name in _preferred_parents else len(_preferred_parents))
-            if found: target_path = found[0]
+            if found: 
+                target_path = found[0]
 
     if not target_path.exists():
         utils.mfaalog.error(f"[Py] ❌ 找不到 pipeline 目录，project_root={_project_root}")

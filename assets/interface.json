@@ -1272,21 +1272,21 @@
             "description": "卡带右滑动到底时，简单地认为此类型卡带已全部刷完；下次运行跳过此大类。<br>可以<b>节省时间</b>，每周重置。",
             "cases": [
                 {
-                    "name": "No"
-                },
-                {
-                    "name": "Yes",
+                    "name": "No",
                     "pipeline_override": {
                         "Collect_StoryPack_SetSimpleSkip": {
-                            "enabled": true
+                            "recognition": "DirectHit"
                         },
                         "Collect_CharacterPack_SetSimpleSkip": {
-                            "enabled": true
+                            "recognition": "DirectHit"
                         },
                         "Collect_EventPack_SetSimpleSkip": {
-                            "enabled": true
+                            "recognition": "DirectHit"
                         }
                     }
+                },
+                {
+                    "name": "Yes"
                 }
             ]
         },

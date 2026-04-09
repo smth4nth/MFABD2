@@ -10,14 +10,13 @@ on:
       - ".github/workflows/install.yml"
       - "assets/**"
       - "**.py"
-  # 防止在PR中运行两次    
-  # pull_request:
-  #   branches:
-  #     - "**"
-  #   paths:
-  #     - ".github/workflows/install.yml"
-  #     - "assets/**"
-  #     - "**.py"
+  pull_request:
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/install.yml"
+      - "assets/**"
+      - "**.py"
   workflow_dispatch:
     inputs:
       deploy_beta:
@@ -140,7 +139,7 @@ jobs:
       - name: Download MFAA for Detection
         uses: robinraju/release-downloader@v1
         with:
-          repository: SweetSmellFox/MFAAvalonia
+          repository: MaaXYZ/MFAAvalonia
           latest: false
           tag: ${{ steps.parse_config.outputs.mfaa_tag }}
           fileName: "MFAAvalonia-*-linux-x64*"
@@ -253,6 +252,8 @@ jobs:
             python ./check_resource.py ./assets/resource/
   install:
     needs: [meta, resource_check]
+    # PR 只跑资源检查，不跑完整构建
+    if: github.event_name != 'pull_request'
     # 动态选择运行环境：Win跑Win，Mac跑Mac，Linux/安卓跑Ubuntu
     runs-on: ${{ matrix.runner }}
 
@@ -386,7 +387,7 @@ jobs:
         if: matrix.is_android == false
         uses: robinraju/release-downloader@v1
         with:
-          repository: SweetSmellFox/MFAAvalonia
+          repository: MaaXYZ/MFAAvalonia
           latest: false
           tag: ${{ env.MFAA_TAG }}
           # 直接使用 Matrix 里的变量，无需复杂判断

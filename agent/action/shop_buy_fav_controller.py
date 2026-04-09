@@ -61,31 +61,36 @@ class ShopBuyFavController(CustomAction):
     # 主入口
     # ==========================================
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
-        cart_name = argv.custom_action_param
-        if isinstance(cart_name, str):
-            try:
-                cart_name = json.loads(cart_name)
-            except (json.JSONDecodeError, TypeError):
-                pass
+        try:
+            cart_name = argv.custom_action_param
+            if isinstance(cart_name, str):
+                try:
+                    cart_name = json.loads(cart_name)
+                except (json.JSONDecodeError, TypeError):
+                    pass
 
-        if not cart_name or not isinstance(cart_name, str):
-            mfaalog.warning("[ShopBuy] ⚠️ 未收到卡带名，中止。")
+            if not cart_name or not isinstance(cart_name, str):
+                mfaalog.warning("[ShopBuy] ⚠️ 未收到卡带名，中止。")
+                return False
+
+            mfaalog.info(f"[ShopBuy] 🛒 收藏对齐启动 → 卡带 [{cart_name}]")
+
+            target_items, ocr_exclude = self._load_config(context, cart_name)
+            if target_items is None:
+                return False
+
+            mfaalog.debug(
+                f"[ShopBuy] 📋 [{cart_name}] 目标商品 ({len(target_items)}项): "
+                f"{', '.join(target_items)}"
+            )
+
+            return self._align_favorites(
+                context, target_items, ocr_exclude, cart_name
+            )
+
+        except Exception as e:
+            mfaalog.error(f"[ShopBuy] ❌ 未预期异常: {e}")
             return False
-
-        mfaalog.info(f"[ShopBuy] 🛒 收藏对齐启动 → 卡带 [{cart_name}]")
-
-        target_items, ocr_exclude = self._load_config(context, cart_name)
-        if target_items is None:
-            return False
-
-        mfaalog.debug(
-            f"[ShopBuy] 📋 [{cart_name}] 目标商品 ({len(target_items)}项): "
-            f"{', '.join(target_items)}"
-        )
-
-        return self._align_favorites(
-            context, target_items, ocr_exclude, cart_name
-        )
 
     # ==========================================
     # 配置读取

@@ -344,14 +344,16 @@
         "desc": "点击进入",
         "recognition": "OCR",
         "roi": [
-            782,
-            397,
-            394,
-            179
+            827,
+            462,
+            120,
+            56
         ],
         "expected": [
             "OUCH"
         ],
+        "only_rec": true,
+        "color_filter": "Dummy_StartGame_TouchStart_Clr",
         "pre_delay": 5000,
         "action": "Click",
         "target": [

@@ -44,5 +44,20 @@
             "StartGame_Check_App_Alive"
         ],
         "focus": "[color:red][WRN] 管路逻辑失控，无法恢复。\n\n→→准备重启减少损失。[/color]"
+    },
+    "Dummy_StartGame_TouchStart_Clr": {
+        "desc": "数据1,闪乱神乐",
+        "recognition": "ColorMatch",
+        "method": 40,
+        "lower": [
+            0,
+            0,
+            120
+        ],
+        "upper": [
+            180,
+            100,
+            255
+        ]
     }
 }

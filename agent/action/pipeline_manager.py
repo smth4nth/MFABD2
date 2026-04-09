@@ -221,8 +221,10 @@ def _ensure_cache_loaded(force_refresh=False):
     global ALL_NODES_CACHE, CACHE_LOADED
     if CACHE_LOADED and not force_refresh: return
 
-    utils.mfaalog.info("[Py] 💾 正在建立节点数据库 (Deep Cache)...")
+    # 每次重建前先复位状态，避免"空缓存 + 已加载"脏状态（force_refresh 场景）
+    CACHE_LOADED = False
     ALL_NODES_CACHE = {}
+    utils.mfaalog.info("[Py] 💾 正在建立节点数据库 (Deep Cache)...")
 
     # 用 __file__ 反推项目根目录，规避 CWD 不可靠的问题
     # pipeline_manager.py: agent/action/ -> agent/ -> project_root/
@@ -264,6 +266,7 @@ def _ensure_cache_loaded(force_refresh=False):
         CACHE_LOADED = True
         utils.mfaalog.info(f"[Py] 💾 数据库构建完成！已索引 {count} 个节点的原始配置。")
     else:
+        CACHE_LOADED = False
         utils.mfaalog.error(f"[Py] ❌ 数据库构建异常：索引到 0 个节点！请检查 pipeline 目录: {target_path}")
 
 def _process_reset_tags(params: dict):

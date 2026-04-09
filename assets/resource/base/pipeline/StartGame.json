@@ -454,7 +454,7 @@
             "Setup_Entry4",
             "[JumpBack]Setup_Entry2",
             "StartGame_MainMsgBox_Remove",
-            "[JumpBack]Global_OnceHomeButton",
+            "[JumpBack]Global_HomeButton_Once",
             "[JumpBack]StartGame_BackMapPage"
         ],
         "focus": "SM.进入游戏-箱庭"

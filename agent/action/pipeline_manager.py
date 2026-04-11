@@ -778,3 +778,22 @@ class PatchByRegex(CustomAction):
         except Exception as e:
             utils.mfaalog.error(f"[Py] PatchByRegex 整体异常: {e}")
             return False
+
+# ------------------------------------------------------------------------------
+# Log (直接输出日志)
+# ------------------------------------------------------------------------------
+# 场景：在 pipeline 任意节点插入一条固定日志，方便调试流程走向。
+# "action": "Custom",
+# "custom_action": "Log",
+# "custom_action_param": {
+#     "level": "debug",   // [选填] 日志级别: debug / info / warning / error，默认 info
+#     "msg": "到达这里了" // [必填] 要输出的内容
+# }
+@AgentServer.custom_action("Log")
+class Log(CustomAction):
+    def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
+        params = parse_json_arg(argv)
+        level = params.get("level", "info").lower()
+        msg = params.get("msg", "")
+        getattr(utils.mfaalog, level, utils.mfaalog.info)(msg)
+        return True

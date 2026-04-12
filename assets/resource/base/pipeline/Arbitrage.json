@@ -400,6 +400,7 @@
         "timeout": 3000,
         "next": [
             "[JumpBack]Arbitrage_BuyItem",
+            "[JumpBack]Arbitrage_Favorit_Buy",
             "[JumpBack]Arbitrage_SellItem",
             "[JumpBack]Arbitrage_Merchant_Close_Ck",
             "[JumpBack]Global_BackPageHub_Once",
@@ -463,9 +464,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC1_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC2"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S1",
-            "Arbitrage_Buy_Select_QC2"
+            "Arbitrage_Buy_Select_QC2",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC2": {
@@ -501,9 +507,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC2_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC3"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S2",
-            "Arbitrage_Buy_Select_QC3"
+            "Arbitrage_Buy_Select_QC3",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC3": {
@@ -539,9 +550,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC3_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC4"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S3",
-            "Arbitrage_Buy_Select_QC4"
+            "Arbitrage_Buy_Select_QC4",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC4": {
@@ -577,9 +593,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC4_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC5"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S4",
-            "Arbitrage_Buy_Select_QC5"
+            "Arbitrage_Buy_Select_QC5",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC5": {
@@ -615,9 +636,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC5_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC6"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S5",
-            "Arbitrage_Buy_Select_QC6"
+            "Arbitrage_Buy_Select_QC6",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC6": {
@@ -653,9 +679,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC6_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC7"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S6",
-            "Arbitrage_Buy_Select_QC7"
+            "Arbitrage_Buy_Select_QC7",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC7": {
@@ -691,9 +722,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC7_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC8"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S7",
-            "Arbitrage_Buy_Select_QC8"
+            "Arbitrage_Buy_Select_QC8",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC8": {
@@ -772,8 +808,13 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC9_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC10"
+        },
         "next": [
-            "Arbitrage_Buy_Select_QC10"
+            "Arbitrage_Buy_Select_QC10",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC10": {
@@ -809,9 +850,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC10_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC11"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S10",
-            "Arbitrage_Buy_Select_QC11"
+            "Arbitrage_Buy_Select_QC11",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC11": {
@@ -847,9 +893,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC11_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC12"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S11",
-            "Arbitrage_Buy_Select_QC12"
+            "Arbitrage_Buy_Select_QC12",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC12": {
@@ -885,9 +936,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC12_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC13"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S12",
-            "Arbitrage_Buy_Select_QC13"
+            "Arbitrage_Buy_Select_QC13",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC13": {
@@ -923,9 +979,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC13_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC14"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S13",
-            "Arbitrage_Buy_Select_QC14"
+            "Arbitrage_Buy_Select_QC14",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC14": {
@@ -961,9 +1022,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC14_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC15"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S14",
-            "Arbitrage_Buy_Select_QC15"
+            "Arbitrage_Buy_Select_QC15",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC15": {
@@ -1085,9 +1151,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC17_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC18"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S17",
-            "Arbitrage_Buy_Select_QC18"
+            "Arbitrage_Buy_Select_QC18",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC18": {
@@ -1123,9 +1194,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC18_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC19"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S18",
-            "Arbitrage_Buy_Select_QC19"
+            "Arbitrage_Buy_Select_QC19",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC19": {
@@ -1161,9 +1237,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC19_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR1"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S19",
-            "Arbitrage_Buy_Select_QR1"
+            "Arbitrage_Buy_Select_QR1",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR1": {
@@ -1199,9 +1280,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR1_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR2"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R1",
-            "Arbitrage_Buy_Select_QR2"
+            "Arbitrage_Buy_Select_QR2",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR2": {
@@ -1323,9 +1409,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR4_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR5"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R4",
-            "Arbitrage_Buy_Select_QR5"
+            "Arbitrage_Buy_Select_QR5",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR5": {
@@ -1361,9 +1452,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR5_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR6"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R5",
-            "Arbitrage_Buy_Select_QR6"
+            "Arbitrage_Buy_Select_QR6",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR6": {
@@ -1399,9 +1495,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR6_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR7"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R6",
-            "Arbitrage_Buy_Select_QR7"
+            "Arbitrage_Buy_Select_QR7",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR7": {
@@ -1437,9 +1538,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR7_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QE1"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R7",
-            "Arbitrage_Buy_Select_QE1"
+            "Arbitrage_Buy_Select_QE1",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QE1": {
@@ -1562,8 +1668,8 @@
         ],
         "count": 100,
         "anchor": {
-            "PackSwip_Str": "Arbitrage_Buy_Select_QR3_Clr",
-            "PackSwip_End": "Arbitrage_Buy_Select_QR4"
+            "PackSwip_Str": "Arbitrage_Buy_Select_QE3_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QE4"
         },
         "timeout": 5000,
         "next": [
@@ -1605,10 +1711,15 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QE4_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QE5"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_E4",
             "Arbitrage_Buy_Select_QE5",
-            "Arbitrage_Buy_Select_End"
+            "Arbitrage_Buy_Select_End",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QE5": {
@@ -1661,6 +1772,7 @@
         "focus": "Arb.B.购买模块结束"
     },
     "Arbitrage_Favorit_Buy": {
+        "desc": "点击一键购买,maxhit配置,使得双入口也只会判定一次",
         "max_hit": 1,
         "recognition": "OCR",
         "roi": [

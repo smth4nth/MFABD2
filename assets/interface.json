@@ -3,8 +3,7 @@
         {
             "name": "安卓端",
             "label": "模拟器",
-            "type": "Adb",
-            "permission_required": true
+            "type": "Adb"
         },
         {
             "name": "PC客户端",

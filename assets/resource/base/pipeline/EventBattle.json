@@ -76,8 +76,11 @@
     "Event_Battle_Hub": {
         "max_hit": 1,
         "next": [
-            "Event_NormalBattle_Start"
-        ]
+            "SeasonEvent_Battle_Start",
+            "[JumpBack]Global_BackPageHub_Once",
+            "Event_Goin_MiniGame"
+        ],
+        "focus": "赛季活动-15战模块"
     },
     "Event_Mamono_Hub": {
         "max_hit": 1,
@@ -92,56 +95,27 @@
             "Event_Goin_MiniGame"
         ]
     },
-    "Event_Event_Main_Return": {
+    "SeasonEvent_Main_Return": {
         "desc": "确认回到赛季卡带页面",
         "recognition": "Or",
-        "any_of": [
-            {
-                "recognition": "OCR",
-                "roi": [
-                    765,
-                    5,
-                    170,
-                    70
-                ],
-                "expected": [
-                    "活动服装"
-                ]
-            },
-            {
-                "recognition": "OCR",
-                "roi": [
-                    175,
-                    574,
-                    729,
-                    134
-                ],
-                "expected": [
-                    "普通战斗",
-                    "魔兽追踪者"
-                ]
-            }
-        ],
+        "any_of": ["Event_Event_Main"],
         "focus": "EM.赛季活动进入确认."
     },
-    "Event_NormalBattle_Start": {
-        "desc": "判定在开始界面",
-        "recognition": "OCR",
-        "roi": [
-            69,
-            365,
-            1179,
-            324
-        ],
-        "expected": [
-            "普通战斗"
-        ],
+    "SeasonEvent_Battle_Start": {
+        "recognition": "And",
+        "all_of": ["Event_Event_Main"],
+        "anchor": {"Aoto_Battle": "SeasonEvent_EnterlBattle_Challenge"},
         "next": [
-            "Event_EnterNormalBattle",
-            "Event_NormalBattle_Start"
+            "Event_EnterBattle_Auto",
+            "SeasonEvent_EnterlBattle_Normal",
+            "SeasonEvent_EnterlBattle_Challenge"
         ]
     },
-    "Event_EnterNormalBattle": {
+    "Event_EnterBattle_Auto": {
+        "next": ["[Anchor]Aoto_Battle"],
+        "focus": "EM.活动.难度:自动"
+    },
+    "SeasonEvent_EnterlBattle_Normal": {
         "desc": "点击普通战斗",
         "recognition": "OCR",
         "roi": [
@@ -162,20 +136,74 @@
         ],
         "post_delay": 3000,
         "next": [
-            "Event_Battle_IsMenu",
-            "Event_EnterNormalBattle",
+            "SeasonEvent_Battle_Recon_AP_Full",
+            "SeasonEvent_Battle_Recon_AP_Empty",
             "[JumpBack]Global_WaitingForLoading"
         ],
-        "on_error": [
-            "Event_Event_Main_Return",
-            "Event_Event_Main",
-            "[JumpBack]Event_GoinEvent",
-            "[JumpBack]Global_BackPageHub_Once",
-            "Global_Null_Exception",
-            "Global_Null_Panic"
-        ],
-        "focus": "EM.活动.选难度"
+        "focus": "EM.活动.难度:普通"
     },
+    "SeasonEvent_EnterlBattle_Challenge": {
+        "desc": "点击挑战战斗",
+        "recognition": "OCR",
+        "roi": [
+            69,
+            365,
+            1179,
+            324
+        ],
+        "expected": [
+            "挑战"
+        ],
+        "action": "Click",
+        "target_offset": [
+            5,
+            -30,
+            0,
+            0
+        ],
+        "post_delay": 3000,
+        "next": [
+            "SeasonEvent_Battle_Recon_AP_Full",
+            "SeasonEvent_Battle_Recon_AP_Empty",
+            "[JumpBack]Global_WaitingForLoading"
+        ],
+        "focus": "EM.活动.难度:挑战"
+    },
+    "SeasonEvent_Battle_Recon_AP_Full": {
+        "desc": "判断AP为:满",
+        "recognition": "OCR",
+        "roi": [
+            1141,
+            31,
+            35,
+            20
+        ],
+        "expected": [
+            "(\\d+)\\s*[/:：|\\-~]\\s*\\1(?!\\d)"
+        ],
+        "only_rec": true,
+        "next": ["Event_Battle_IsMenu"]
+    },
+    "SeasonEvent_Battle_Recon_AP_Empty": {
+        "desc": "判断AP为:空",
+        "recognition": "OCR",
+        "roi": [
+            1141,
+            31,
+            35,
+            20
+        ],
+        "expected": [
+            "(?<!\\d)0\\s*[/:：|\\-~]\\s*0*[1-9]\\d*(?!\\d)"
+        ],
+        "only_rec": true,
+        "next": [
+            "SeasonEvent_Main_Return",
+            "[JumpBack]Global_BackPageHub_Once"
+        ],
+        "focus": "AP为空,复位赛季界面后,模块退出"
+    },
+
     "Event_Battle_IsMenu": {
         "desc": "判定，处于一般/挑战 战斗页面",
         "recognition": "OCR",
@@ -192,14 +220,7 @@
         "timeout": 4000,
         "next": [
             "Event_FastNormalBattle",
-            "Event_FastBattle_NoHave"
-        ],
-        "on_error": [
-            "Event_Event_Main_Return",
-            "Event_Event_Main",
-            "[JumpBack]Global_BackPageHub_Once",
-            "Global_Null_Exception",
-            "Global_Null_Panic"
+            "SeasonEvent_NormlBattle"
         ],
         "focus": "EM.活动.战斗关卡页面"
     },
@@ -209,10 +230,20 @@
         "action": "Click",
         "post_delay": 1000,
         "next": [
-            "Event_FreeAP_Verdict_Ispass",
-            "Event_FreeAP_Verdict_NOpass",
+            "SeasonEvent_FastBattle_SubMenu",
             "Event_NoHaveAP"
         ]
+    },
+    "SeasonEvent_FastBattle_SubMenu": {
+        "recognition": "OCR",
+        "roi": [
+            541,
+            97,
+            183,
+            119
+        ],
+        "expected": ["快速战斗"],
+        "next": ["SeasonEvent_FreeAP_Verdict"]
     },
     "Event_FastNormalBattle": {
         "desc": "识别并点击子菜单快速战斗",
@@ -229,26 +260,21 @@
         "anchor": "Ocr_clr",
         "timeout": 4000,
         "next": [
+            "SeasonEvent_Tab_Challenge",
             "Event_Battle_BattleStatus_Enable",
             "Event_Battle_BattleStatus_Unable"
-        ],
-        "on_error": [
-            "Event_Battle_BattleStatus_Unable_Except",
-            "[JumpBack]Event_GoinEvent",
-            "[JumpBack]Global_BackPageHub_Once",
-            "Global_Null_Exception",
-            "Global_Null_Panic"
         ],
         "focus": "EM.活动.快速战斗"
     },
     "Event_Battle_BattleStatus_Unable_Except": {
         "desc": "当前无快速战斗,需要获取手动战斗区域,然后判定颜色",
         "recognition": "Or",
-        "any_of": ["Event_FastBattle_NoHave"],
+        "any_of": ["SeasonEvent_NormlBattle"],
         "anchor": "Ocr_clr",
         "next": ["Event_Battle_BattleStatus_Unable"]
     },
-    "Event_FastBattle_NoHave": {
+    "SeasonEvent_NormlBattle": {
+        "desc": "无自动战斗时,常规战斗会出现在ROI中被识别.注意普通战斗点击无AP确认框,直接进入战斗",
         "recognition": "OCR",
         "roi": [
             952,
@@ -260,6 +286,7 @@
         "only_rec": true,
         "anchor": "Ocr_clr",
         "next": [
+            "SeasonEvent_Tab_Nomarl",
             "SeasonEvent_NormlBattle_Enable",
             "SeasonEvent_NormlBattle_Unable"
         ],
@@ -268,8 +295,6 @@
     "SeasonEvent_NormlBattle_Enable": {
         "recognition": "And",
         "all_of": ["Global_Ocr_Clr_Enable"],
-        "action": "Click",
-        "post_delay": 2000,
         "next": ["Event_Battle_TabAutoBattle"],
         "focus": "E.常规战斗-可用"
     },
@@ -282,11 +307,53 @@
         ],
         "focus": "E.常规战斗-不可用"
     },
+    "SeasonEvent_Tab_Nomarl": {
+        "desc": "先进入挑战,若自动战斗不可用.退回去检查普通的",
+        "max_hit": 1,
+        "recognition": "OCR",
+        "roi": [
+            175,
+            8,
+            296,
+            75
+        ],
+        "expected": [
+            "挑战"
+        ],
+        "anchor": {"Aoto_Battle": "SeasonEvent_EnterlBattle_Normal"},
+        "next": [
+            "SeasonEvent_Battle_Start",
+            "[JumpBack]Global_BackPageHub_Once"
+        ],
+        "focus": "挑战模式无快速战斗,前往普通模式进一步确认"
+    },
+    "SeasonEvent_Tab_Challenge": {
+        "desc": "退回检查普通难度,发现自动战斗可用,步进去挑战",
+        "max_hit": 1,
+        "recognition": "OCR",
+        "roi": [
+            175,
+            8,
+            296,
+            75
+        ],
+        "expected": [
+            "普通",
+            "修炼"
+        ],
+        "anchor": {"Aoto_Battle": "SeasonEvent_EnterlBattle_Challenge"},
+        "next": [
+            "SeasonEvent_Battle_Start",
+            "[JumpBack]Global_BackPageHub_Once"
+        ],
+        "focus": "普通模式存在快速战斗,前往挑战模式"
+    },
     "SeasonEvent_BackedToSubMain": {
         "recognition": "And",
         "all_of": ["Event_Event_Main"]
     },
-    "Event_FreeAP_Verdict_Ispass": {
+    "SeasonEvent_FreeAP_Verdict": {
+        "desc": "确保免费AP选中。现场为，如果无AP会无法点开二级确认菜单。似乎不用进一步适配滑块无法变黄情况？",
         "recognition": "ColorMatch",
         "roi": [
             857,
@@ -295,52 +362,42 @@
             10
         ],
         "lower": [
-            162,
-            122,
-            32
+            0,
+            0,
+            0
         ],
         "upper": [
-            182,
-            142,
-            52
+            255,
+            255,
+            255
         ],
-        "count": 50,
+        "next": [
+            "[JumpBack]Global_SliderSwitch_To_On",
+            "SeasonEvent_FreeAP_Verdict_Ispass",
+            "SeasonEvent_FreeAP_Verdict_NOpass"
+        ]
+    },
+    "SeasonEvent_FreeAP_Verdict_Ispass": {
+        "desc": "确保免费AP选中。现场为，如果无AP会无法点开二级确认菜单。似乎不用进一步适配滑块无法变黄情况？",
+        "recognition": "And",
+        "all_of": ["Global_SliderSwitch_StateOn"],
         "next": [
             "Event_NormalBattleMAX"
         ],
         "focus": "EM.免费AP已选中"
     },
-    "Event_FreeAP_Verdict_NOpass": {
+    "SeasonEvent_FreeAP_Verdict_NOpass": {
         "max_hit": 3,
-        "recognition": "ColorMatch",
-        "roi": [
-            872,
-            210,
-            10,
-            11
-        ],
-        "lower": [
-            20,
-            25,
-            30
-        ],
-        "upper": [
-            40,
-            45,
-            50
-        ],
-        "count": 50,
-        "action": "Click",
-        "post_delay": 2000,
+        "recognition": "And",
+        "all_of": ["Global_SliderSwitch_StateOff"],
         "next": [
-            "Event_FreeAP_Verdict_Ispass",
-            "Event_NormalBattleIsOver",
-            "Event_Event_Main_Return",
+            "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ],
-        "focus": "EM.免费AP未选中"
+        "focus": "EM.免费AP未能被选中"
     },
     "Event_NoHaveAP": {
+        "desc": "点击后跳二级菜单,AP不足.(这是必要的)",
         "recognition": "OCR",
         "roi": [
             545,
@@ -359,7 +416,7 @@
         ],
         "next": [
             "Event_NormalBattleIsOver",
-            "Event_Event_Main_Return",
+            "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ],
         "focus": "EM.活动.AP不足"
@@ -407,15 +464,15 @@
             52,
             44
         ],
-        "method": 4,
+        "method": 40,
         "lower": [
-            254,
-            254,
-            254
+            0,
+            0,
+            180
         ],
         "upper": [
-            255,
-            255,
+            180,
+            225,
             255
         ],
         "count": 150,
@@ -489,7 +546,7 @@
         ],
         "post_delay": 1000,
         "next": [
-            "Event_Event_Main_Return",
+            "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ],
         "focus": "EM.活动.战斗结算(无对象)"
@@ -513,7 +570,7 @@
         ],
         "post_delay": 8000,
         "next": [
-            "Event_Event_Main_Return",
+            "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ],
         "focus": "EM.活动.打完活动关卡页面位置Dubck"
@@ -537,7 +594,7 @@
         ],
         "post_delay": 8000,
         "next": [
-            "Event_Event_Main_Return",
+            "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ],
         "focus": "EM.活动.打完活动关卡页面位置ck"
@@ -795,11 +852,12 @@
         "focus": "EM.MF.检查常规战斗"
     },
     "SeasonEvent_MamonoFollow_NormalBattle_Enable": {
-        "desc": "战斗亮色",
+        "desc": "战斗亮色.(待增强:转场失效!用的是赛季标题的黑色页面)",
         "recognition": "And",
         "all_of": ["Global_Ocr_Clr_Enable"],
         "action": "Click",
         "post_delay": 2000,
+        "timeout": 40000,
         "next": [
             "AutoBattle_Entry",
             "[JumpBack]AutoBattle_Egress_TurnBack_SkipTalk",
@@ -915,7 +973,7 @@
             "阶段最高"
         ],
         "next": [
-            "Event_Event_Main_Return",
+            "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ]
     },
@@ -1193,38 +1251,19 @@
         "focus": "E.自动战斗尝试模块开始"
     },
     "Event_Battle_TabAutoBattle_General": {
-        "desc": "判断当前战斗:为普通难度",
-        "recognition": "OCR",
-        "roi": [
-            175,
-            8,
-            296,
-            75
-        ],
-        "expected": [
-            "普通",
-            "修炼"
-        ],
+        "desc": "判断当前战斗:为普通难度.(已移除:已在上方适配Event_Battle_TabAutoBattle_ChangeDifficulty_Back)",
+        "recognition": "And",
+        "all_of": ["SeasonEvent_Tab_Challenge"],
         "next": [
-            "Event_Battle_TabAutoBattle_Battle",
-            "Event_Battle_TabAutoBattle_ChangeDifficulty_Back"
+            "Event_Battle_TabAutoBattle_Battle"
         ],
         "focus": "难度为:普通"
     },
     "Event_Battle_TabAutoBattle_Challenge": {
-        "desc": "判断当前战斗:为挑战难度,尝试切回普通一次",
-        "recognition": "OCR",
-        "roi": [
-            175,
-            8,
-            296,
-            75
-        ],
-        "expected": [
-            "挑战"
-        ],
+        "desc": "判断当前战斗:为挑战难度.(移除:尝试切回普通一次.因为在上方已做适配)",
+        "recognition": "And",
+        "all_of": ["SeasonEvent_Tab_Nomarl"],
         "next": [
-            "Event_Battle_TabAutoBattle_ChangeDifficulty",
             "Event_Battle_TabAutoBattle_Battle_ButChallenge"
         ],
         "focus": "难度为:挑战"
@@ -1232,7 +1271,7 @@
     "Event_Battle_TabAutoBattle_Battle": {
         "desc": "点击手动战斗",
         "recognition": "And",
-        "all_of": ["Event_FastBattle_NoHave"],
+        "all_of": ["SeasonEvent_NormlBattle"],
         "action": "Click",
         "post_delay": 2000,
         "next": [
@@ -1246,7 +1285,7 @@
     "Event_Battle_TabAutoBattle_Battle_ButChallenge": {
         "desc": "点击手动战斗。挑战难度增加一个自动战斗识别。免得用户选错起始难度",
         "recognition": "And",
-        "all_of": ["Event_FastBattle_NoHave"],
+        "all_of": ["SeasonEvent_NormlBattle"],
         "action": "Click",
         "post_delay": 2000,
         "next": [

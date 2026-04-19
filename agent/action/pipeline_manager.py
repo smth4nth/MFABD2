@@ -232,16 +232,23 @@ def _ensure_cache_loaded(force_refresh=False):
     target_path = _project_root / "assets" / "resource" / "base" / "pipeline"
 
     # fallback：路径结构调整时的保底
-    if not target_path.exists():
-        _fallback = _project_root / "resource" / "pipeline"
-        if _fallback.exists():
-            target_path = _fallback
-        else:
-            # 优先级列表：父目录名越靠前越优先；同时过滤掉不含 json 的空文件夹
+    if not target_path.exists() or not any(target_path.rglob("*.json")):
+        _fallback_candidates = [
+            _project_root / "resource" / "base" / "pipeline",  # 当前主流部署结构
+            _project_root / "resource" / "pipeline",           # 旧版结构（注意：更新器可能残留空目录）
+        ]
+        resolved = False
+        for _fallback in _fallback_candidates:
+            if _fallback.exists() and any(_fallback.rglob("*.json")):
+                target_path = _fallback
+                resolved = True
+                break
+        if not resolved:
+            # 最终兜底：全局搜索，优先 base/pc 父目录，且必须含 json
             _preferred_parents = ["base", "pc"]
             found = [p for p in _project_root.rglob("pipeline") if p.is_dir() and any(p.rglob("*.json"))]
             found.sort(key=lambda p: _preferred_parents.index(p.parent.name) if p.parent.name in _preferred_parents else len(_preferred_parents))
-            if found: 
+            if found:
                 target_path = found[0]
 
     if not target_path.exists():

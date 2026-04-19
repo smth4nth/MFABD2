@@ -180,3 +180,9 @@
 
 本项目继承 **[JZPPP/MaaBD2](https://github.com/JZPPP/MaaBD2)** 成果，感谢植树！
 
+## 赞助
+
+<!-- markdownlint-disable MD045 -->
+<a href="https://afdian.com/a/MFABD2">
+  <img width="200" src="https://pic1.afdiancdn.com/static/img/welcome/button-sponsorme.png">
+</a>

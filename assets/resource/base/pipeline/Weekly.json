@@ -230,9 +230,9 @@
         "desc": "点击More本子",
         "recognition": "OCR",
         "roi": [
-            811,
+            97,
             237,
-            159,
+            1122,
             408
         ],
         "expected": [

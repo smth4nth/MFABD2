@@ -195,10 +195,6 @@
             "确认"
         ],
         "action": "Click",
-        "target": [
-            1,
-            1
-        ],
         "post_delay": 1500,
         "focus": "PM.PVP.防守分结算"
     },

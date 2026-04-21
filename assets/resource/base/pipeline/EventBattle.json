@@ -376,10 +376,18 @@
             255,
             255
         ],
+        "anchor": "SliderSwitchColor",
         "next": [
             "[JumpBack]Global_SliderSwitch_To_On",
             "SeasonEvent_FreeAP_Verdict_Ispass",
             "SeasonEvent_FreeAP_Verdict_NOpass"
+        ],
+        "on_error": [
+            "SeasonEvent_Main_Return",
+            "[JumpBack]SeasonEvent_FreeAP_Err",
+            "[JumpBack]Global_BackPageHub_Once",
+            "Global_Null_Exception",
+            "Global_Null_Panic"
         ]
     },
     "SeasonEvent_FreeAP_Verdict_Ispass": {
@@ -392,14 +400,28 @@
         "focus": "EM.免费AP已选中"
     },
     "SeasonEvent_FreeAP_Verdict_NOpass": {
-        "max_hit": 3,
         "recognition": "And",
         "all_of": ["Global_SliderSwitch_StateOff"],
         "next": [
             "SeasonEvent_Main_Return",
+            "[JumpBack]SeasonEvent_FreeAP_Err",
             "[JumpBack]Global_BackPageHub_Once"
         ],
         "focus": "EM.免费AP未能被选中"
+    },
+    "SeasonEvent_FreeAP_Err": {
+        "desc": "快速战斗子页面,需要取消才能消除",
+        "max_hit": 3,
+        "recognition": "OCR",
+        "roi": [
+            485,
+            545,
+            60,
+            89
+        ],
+        "expected": ["取消"],
+        "action": "Click",
+        "post_delay": 2000
     },
     "Event_NoHaveAP": {
         "desc": "点击后跳二级菜单,AP不足.(这是必要的)",

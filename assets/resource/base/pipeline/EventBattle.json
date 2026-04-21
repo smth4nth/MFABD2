@@ -893,7 +893,7 @@
             100,
             274
         ],
-        "expected": "/?",
+        "expected": "[?？]",
         "next": ["SeasonEvent_MamonoFollow_Team_Edit"],
         "focus": "E.队伍漏配,尝试拿推荐部署"
     },
@@ -1022,7 +1022,9 @@
                 180,
                 130
             ]
-        ]
+        ],
+        "connected": true,
+        "count": 20
     },
     "SeasonEvent_Mamono_HP_Right_Red": {
         "desc": "魔兽血条检查,右侧为红",

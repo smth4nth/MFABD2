@@ -3,8 +3,7 @@
         {
             "name": "安卓端",
             "label": "模拟器",
-            "type": "Adb",
-            "permission_required": true
+            "type": "Adb"
         },
         {
             "name": "PC客户端",
@@ -108,17 +107,13 @@
             "entry": "Event_HomePage",
             "option": [
                 "活动图快速战斗难度",
-                "魔兽补刀",
-                "活动图小游戏扫荡"
+                "魔兽补刀"
             ],
-            "description": "**赛季活动：**主页面的右侧的版本剧情活动。<br>**快速战斗：**版本活动通过第15关后，解锁此等级快速战斗。用每日免费AP打Max。<br>若未打完所选难度15关，不会报错停止，但没有效果。<br>支持选择难度。<br>**魔兽补刀:**在打过魔兽后每日快速战斗一次,拿取参与奖。"
+            "description": "**赛季活动：**主页面的右侧的版本剧情活动。<br>**快速战斗：**版本活动通过第15关后，解锁此等级快速战斗。用每日免费AP打Max。<br>若未打完所选难度15关，不会报错停止，但没有效果。<br>支持选择难度。<br>**魔兽补刀:**在打过魔兽后每日快速战斗一次,拿取参与奖。<br>**小游戏:**[已默认开启]主页或赛季页中，偶有跑酷小游戏达标后，可每日重复‘快速战斗’领奖的活动。"
         },
         {
             "name": "[执行]肉鸽塔每日快速战斗",
             "entry": "Redemption_HomePage",
-            "option": [
-                "肉鸽塔快速战斗"
-            ],
             "description": "**肉鸽塔快速战斗：**肉鸽塔每期强化代币(黑晶石)刷取，方便点亮修改器打高难。会尽可能选取最高难度快速战斗，打完每日3次免费AP。<br>**每期需要先手动打一次解锁快速战斗**，量力而行~<br><span style=\"color: Crimson;\">强化代币、强化效果期内累计，跨期不继承。</span>"
         },
         {
@@ -778,43 +773,6 @@
                 }
             ]
         },
-        "活动图小游戏扫荡": {
-            "description": "小活动相关，日常关闭！",
-            "type": "switch",
-            "cases": [
-                {
-                    "name": "No",
-                    "pipeline_override": {
-                        "Event_MiniGame_Hub": {
-                            "max_hit": 0
-                        }
-                    }
-                },
-                {
-                    "name": "Yes",
-                    "pipeline_override": {}
-                }
-            ]
-        },
-        "肉鸽塔快速战斗": {
-            "type": "switch",
-            "cases": [
-                {
-                    "name": "No",
-                    "pipeline_override": {
-                        "Redemption_HomePage": {
-                            "next": [
-                                "Redemption_Evil_Redemption_End"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "Yes",
-                    "pipeline_override": {}
-                }
-            ]
-        },
         "末日之书": {
             "type": "switch",
             "cases": [
@@ -1272,21 +1230,21 @@
             "description": "卡带右滑动到底时，简单地认为此类型卡带已全部刷完；下次运行跳过此大类。<br>可以<b>节省时间</b>，每周重置。",
             "cases": [
                 {
-                    "name": "No"
-                },
-                {
-                    "name": "Yes",
+                    "name": "No",
                     "pipeline_override": {
                         "Collect_StoryPack_SetSimpleSkip": {
-                            "enabled": true
+                            "recognition": "DirectHit"
                         },
                         "Collect_CharacterPack_SetSimpleSkip": {
-                            "enabled": true
+                            "recognition": "DirectHit"
                         },
                         "Collect_EventPack_SetSimpleSkip": {
-                            "enabled": true
+                            "recognition": "DirectHit"
                         }
                     }
+                },
+                {
+                    "name": "Yes"
                 }
             ]
         },

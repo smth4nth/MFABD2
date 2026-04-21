@@ -478,3 +478,4 @@ package-lock.json
 package.json
 prettier.config.mjs
 
+.claude/*

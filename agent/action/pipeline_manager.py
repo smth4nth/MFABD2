@@ -803,4 +803,5 @@ class Log(CustomAction):
         level = params.get("level", "info").lower()
         msg = params.get("msg", "")
         getattr(utils.mfaalog, level, utils.mfaalog.info)(msg)
+        _process_reset_tags(params)
         return True

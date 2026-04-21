@@ -65,6 +65,7 @@
                 ]
             }
         ],
+        "timeout": 1000,
         "next": [
             "[JumpBack]Event_Battle_Hub",
             "[JumpBack]Event_Mamono_Hub",
@@ -91,6 +92,7 @@
         ]
     },
     "Event_MiniGame_Hub": {
+        "desc": "跑酷小游戏快速刷取.放在最后,会附带回到主页",
         "max_hit": 1,
         "next": [
             "SeasonEvent_MiniGame_Start",

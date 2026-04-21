@@ -535,7 +535,8 @@
             "[JumpBack]Collect_TeleporCircle_OnFoot_LoopFoot",
             "[JumpBack]Global_WaitingForLoading",
             "[JumpBack]Collect_NviMap_SpeciaEveMap1#_CallSkill1#",
-            "Collect_NviMap_SpeciaEveMap2#_Sandplay"
+            "Collect_NviMap_SpeciaEveMap2#_Sandplay",
+            "Collect_NviMap_SpeciaEveMap1#_MiniMap"
         ],
         "focus": "[情况1]从小地图开始"
     },

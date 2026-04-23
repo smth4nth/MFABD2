@@ -70,6 +70,7 @@
             "[JumpBack]Event_Battle_Hub",
             "[JumpBack]Event_Mamono_Hub",
             "[JumpBack]Event_MiniGame_Hub",
+            "[JumpBack]SeasonEvent_ReMamono_Hub",
             "Global_ToHomePage"
         ],
         "focus": "EM.赛季活动进入确认."
@@ -101,6 +102,16 @@
             "[JumpBack]Global_BackPageHub_Once"
         ]
     },
+    "SeasonEvent_ReMamono_Hub": {
+        "desc": "检测回归魔兽,在mini后运行,前者天然地回到了主页面",
+        "max_hit": 1,
+        "next": [
+            "SeasonEvent_ReMamono_Start",
+            "[JumpBack]Global_WaitingForLoading",
+            "[JumpBack]Global_ToHomePage"
+        ]
+    },
+
     "SeasonEvent_Main_Return": {
         "desc": "确认回到赛季卡带页面",
         "recognition": "Or",
@@ -696,12 +707,45 @@
         ],
         "only_rec": true,
         "next": [
+            "SeasonEvent_MamonoFollow_Practice",
             "SeasonEvent_MamonoFollow_QuickBattle_Enable",
             "Even_MamonoFollow_lv1_Ck",
             "Even_MamonoFollowUp_InMamono",
             "[JumpBack]Even_MamonoFollowUp_lvdown"
         ],
         "focus": "EM.魔兽界面确认打开"
+    },
+    "SeasonEvent_MamonoFollow_Practice": {
+        "desc": "演习魔兽,结束",
+        "recognition": "Or",
+        "any_of": [
+            {
+                "recognition": "OCR",
+                "roi": [
+                    933,
+                    27,
+                    141,
+                    30
+                ],
+                "expected": ["距离开始还"],
+                "only_rec": true
+            },
+            {
+                "recognition": "OCR",
+                "roi": [
+                    826,
+                    215,
+                    211,
+                    72
+                ],
+                "expected": ["狩猎期间开始解除"]
+            }
+        ],
+        "next": [
+            "SeasonEvent_Main_Return",
+            "[JumpBack]Global_BackPageHub_Once"
+        ],
+        "focus": "E.当前魔兽为演习,退出"
     },
     "Even_MamonoFollow_lv1_Ck": {
         "desc": "Lv1的复杂正则匹配",
@@ -868,9 +912,15 @@
             },
             "Global_Ocr_Clr_Unable_Sub"
         ],
+        "timeout": 10000,
         "next": [
             "SeasonEvent_BackedToSubMain",
             "[JumpBack]Global_BackPageHub_Once"
+        ],
+        "on_error": [
+            "Global_ToHomePage",
+            "[JumpBack]Global_Null_Exception",
+            "[JumpBack]Global_Null_Panic"
         ],
         "focus": "EM.MF.快速战斗-不可用"
     },
@@ -896,7 +946,7 @@
         "focus": "EM.MF.检查常规战斗"
     },
     "SeasonEvent_MamonoFollow_NormalBattle_Enable": {
-        "desc": "战斗亮色.(待增强:转场失效!用的是赛季标题的黑色页面)",
+        "desc": "战斗亮色.(待增强:转场等待失效!用的是赛季标题的黑色页面)",
         "recognition": "And",
         "all_of": ["Global_Ocr_Clr_Enable"],
         "action": "Click",
@@ -1106,14 +1156,14 @@
         ],
         "method": 40,
         "lower": [
-            80,
+            0,
             0,
             60
         ],
         "upper": [
             170,
             50,
-            80
+            95
         ],
         "connected": true,
         "count": 20
@@ -1129,14 +1179,14 @@
         ],
         "method": 40,
         "lower": [
-            80,
+            0,
             0,
             60
         ],
         "upper": [
             170,
             50,
-            80
+            95
         ],
         "connected": true,
         "count": 20
@@ -1445,5 +1495,33 @@
         "post_delay": 3000,
         "next": ["Event_Battle_TabAutoBattle_Challenge"],
         "focus": "点击挑战战斗"
+    },
+    "SeasonEvent_ReMamono_Start": {
+        "desc": "确认再主页",
+        "recognition": "And",
+        "all_of": ["Event_GoinEvent"],
+        "timeout": 2000,
+        "next": [
+            "SeasonEvent_ReMamono_Enter",
+            "[JumpBack]Global_WaitingForLoading"
+        ]
+    },
+    "SeasonEvent_ReMamono_Enter": {
+        "recognition": "OCR",
+        "roi": [
+            825,
+            101,
+            207,
+            141
+        ],
+        "expected": ["回归赛季"],
+        "action": "Click",
+        "timeout": 5000,
+        "next": [
+            "Even_MamonoFollowUp_MamonoEnter",
+            "[JumpBack]Global_WaitingForLoading",
+            "SeasonEvent_ReMamono_Enter"
+        ],
+        "on_error": ["Global_ToHomePage"]
     }
 }

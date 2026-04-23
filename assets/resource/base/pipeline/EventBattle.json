@@ -96,6 +96,7 @@
         "max_hit": 1,
         "next": [
             "SeasonEvent_MiniGame_Start",
+            "[JumpBack]Global_WaitingForLoading",
             "[JumpBack]Event_GoinEvent",
             "[JumpBack]Global_BackPageHub_Once"
         ]
@@ -1156,7 +1157,15 @@
         "recognition": "And",
         "all_of": ["Event_GoinEvent"],
         "timeout": 4000,
-        "next": ["Event_Goin_MiniGame"]
+        "next": [
+            "Event_Goin_MiniGame",
+            "[JumpBack]Global_WaitingForLoading"
+        ],
+        "on_error": [
+            "Global_ToHomePage",
+            "Global_Null_Exception",
+            "Global_Null_Panic"
+        ]
     },
     "Event_Goin_MiniGame": {
         "recognition": "OCR",

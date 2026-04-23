@@ -696,12 +696,45 @@
         ],
         "only_rec": true,
         "next": [
+            "SeasonEvent_MamonoFollow_Practice",
             "SeasonEvent_MamonoFollow_QuickBattle_Enable",
             "Even_MamonoFollow_lv1_Ck",
             "Even_MamonoFollowUp_InMamono",
             "[JumpBack]Even_MamonoFollowUp_lvdown"
         ],
         "focus": "EM.魔兽界面确认打开"
+    },
+    "SeasonEvent_MamonoFollow_Practice": {
+        "desc": "演习魔兽,结束",
+        "recognition": "Or",
+        "any_of": [
+            {
+                "recognition": "OCR",
+                "roi": [
+                    933,
+                    27,
+                    141,
+                    30
+                ],
+                "expected": ["距离开始还"],
+                "only_rec": true
+            },
+            {
+                "recognition": "OCR",
+                "roi": [
+                    826,
+                    215,
+                    211,
+                    72
+                ],
+                "expected": ["狩猎期间开始解除"]
+            }
+        ],
+        "next": [
+            "SeasonEvent_Main_Return",
+            "[JumpBack]Global_BackPageHub_Once"
+        ],
+        "focus": "E.当前魔兽为演习,退出"
     },
     "Even_MamonoFollow_lv1_Ck": {
         "desc": "Lv1的复杂正则匹配",

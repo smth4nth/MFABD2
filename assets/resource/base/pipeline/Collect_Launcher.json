@@ -254,7 +254,6 @@
             "剧情游戏卡"
         ],
         "action": "Click",
-        "anchor": "SetFirstTOBack",
         "post_delay": 500,
         "next": [
             "Collect_QuickCart_StoryPack_OcrCheck",

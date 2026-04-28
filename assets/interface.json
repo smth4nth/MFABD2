@@ -119,7 +119,7 @@
             "name": "[执行]肉鸽塔每日快速战斗",
             "entry": "Redemption_HomePage",
             "controller": ["Adb"],
-            "description": "刷取每期强化代币（黑晶石），用于点亮修改器辅助高难关卡。自动选取当前可用最高难度，打完每日3次免费AP。<br><b>注意：</b>强化代币与强化效果期内累计，跨期清零不继承。</span>"
+            "description": "刷取每期强化代币（黑晶石），用于点亮修改器辅助高难关卡。自动选取当前可用最高难度，打完每日3次免费AP。<br><b>注意：</b>强化代币与强化效果期内累计，跨期清零不继承。"
         },
         {
             "name": "[执行]周常任务",
@@ -953,42 +953,42 @@
                     "name": "目标池1",
                     "pipeline_type": "string",
                     "default": "xxx",
-                    "verify": ".*\\S.*",
+                    "verify": "^[\\w\\u4e00-\\u9fa5,，\\s]*$",
                     "pattern_msg": "请勿留空,想关一行就乱填让它匹配不上"
                 },
                 {
                     "name": "目标池2",
                     "pipeline_type": "string",
                     "default": "xxx",
-                    "verify": ".*\\S.*",
+                    "verify": "^[\\w\\u4e00-\\u9fa5,，\\s]*$",
                     "pattern_msg": "请勿留空,想关一行就乱填让它匹配不上"
                 },
                 {
                     "name": "目标池3",
                     "pipeline_type": "string",
                     "default": "xxx",
-                    "verify": ".*\\S.*",
+                    "verify": "^[\\w\\u4e00-\\u9fa5,，\\s]*$",
                     "pattern_msg": "请勿留空,想关一行就乱填让它匹配不上"
                 },
                 {
                     "name": "目标池4",
                     "pipeline_type": "string",
                     "default": "xxx",
-                    "verify": ".*\\S.*",
+                    "verify": "^[\\w\\u4e00-\\u9fa5,，\\s]*$",
                     "pattern_msg": "请勿留空,想关一行就乱填让它匹配不上"
                 },
                 {
                     "name": "目标池5",
                     "pipeline_type": "string",
                     "default": "xxx",
-                    "verify": ".*\\S.*",
+                    "verify": "^[\\w\\u4e00-\\u9fa5,，\\s]*$",
                     "pattern_msg": "请勿留空,想关一行就乱填让它匹配不上"
                 },
                 {
                     "name": "目标池6",
                     "pipeline_type": "string",
                     "default": "xxx",
-                    "verify": ".*\\S.*",
+                    "verify": "^[\\w\\u4e00-\\u9fa5,，\\s]*$",
                     "pattern_msg": "请勿留空,想关一行就乱填让它匹配不上"
                 }
             ],
@@ -1637,10 +1637,8 @@
             ],
             "pipeline_override": {
                 "Custom_Fishing_Task": {
-                    "action": {
-                        "custom_action_param": {
-                            "max_count": "{目标钓鱼条数}"
-                        }
+                    "custom_action_param": {
+                        "max_count": "{目标钓鱼条数}"
                     }
                 }
             }

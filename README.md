@@ -95,7 +95,7 @@ UI 内可直接获取更新推送、下载，由[![Mirror酱](https://img.shield
 
 **第一步 · 模拟器**
 
-推荐使用 **MuMu 模拟器 12** 运行游戏（自行配置 Google 环境。省事直接用国际版，亦可参考笔记 [Google-Play-Store](https://github.com/sunyink/Google-Play-Store)。
+推荐使用 **MuMu 模拟器 12** 运行游戏。（需自行配置 Google 环境。省事直接用国际版，亦可参考笔记 [Google-Play-Store](https://github.com/sunyink/Google-Play-Store)）。
 
 显示必须设置为 `平板版 1920×1080 (DPI ≈ 270 或 280)`。
 

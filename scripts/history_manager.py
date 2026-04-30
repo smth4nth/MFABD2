@@ -5,7 +5,6 @@
 
 import os
 import re
-import sys
 import requests
 from typing import List, Dict, Optional
 from version_rules import filter_valid_versions, sort_versions, is_valid_formal_version
@@ -34,11 +33,10 @@ class HistoryManager:
                 raise ValueError(f"版本格式异常: {tag}")
             return tuple(int(part) for part in parts)
         except Exception as e:
-            print(f"❌ 版本解析失败: {tag} - {e}")
-            sys.exit(1)
+            raise ValueError(f"版本解析失败: {tag} - {e}") from e
     
     def fetch_all_releases(self) -> List[Dict]:
-        """获取所有releases，失败则终止作业"""
+        """获取所有releases，失败则抛出 RuntimeError（由上层捕获）"""
         print("获取GitHub Releases...")
         url = f"{self.base_url}/releases"
         releases = []
@@ -65,8 +63,7 @@ class HistoryManager:
             return releases
             
         except Exception as e:
-            print(f"❌ 获取Releases失败: {e}")
-            sys.exit(1)
+            raise RuntimeError(f"获取Releases失败: {e}") from e
     
     def remove_duplicate_releases(self, releases: List[Dict]) -> List[Dict]:
         print(f"保留所有 {len(releases)} 个版本（去重逻辑已禁用）")
@@ -77,7 +74,7 @@ class HistoryManager:
         try:
             current_major, current_minor, _ = self.parse_version(current_tag)
             print(f"当前版本: v{current_major}.{current_minor}.x 系列")
-        except SystemExit:
+        except ValueError:
             # 如果版本解析失败（比如当前是公测版），使用最新正式版作为基准
             print(f"当前标签 {current_tag} 不是正式版，使用最新正式版作为历史基准")
             all_releases = self.fetch_all_releases()
@@ -110,7 +107,7 @@ class HistoryManager:
                         print(f"排除当前版本: {tag}")
                 else:
                     print(f"跳过不同次版本: {tag} (当前: v{current_major}.{current_minor}.x)")
-            except SystemExit:
+            except ValueError:
                 # 跳过解析失败的版本
                 print(f"跳过解析失败版本: {tag}")
                 continue

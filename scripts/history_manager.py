@@ -65,10 +65,6 @@ class HistoryManager:
         except Exception as e:
             raise RuntimeError(f"获取Releases失败: {e}") from e
     
-    def remove_duplicate_releases(self, releases: List[Dict]) -> List[Dict]:
-        print(f"保留所有 {len(releases)} 个版本（去重逻辑已禁用）")
-        return releases
-
     def get_minor_version_series(self, current_tag: str) -> List[Dict]:
         """获取同次版本的所有正式版Release"""
         try:
@@ -114,9 +110,6 @@ class HistoryManager:
         
         # 按版本号排序（从新到旧）
         relevant_releases.sort(key=lambda r: self.parse_version(r['tag_name']), reverse=True)
-        
-        # 移除重复内容
-        relevant_releases = self.remove_duplicate_releases(relevant_releases)
         
         print(f"找到 {len(relevant_releases)} 个相关历史版本")
         return relevant_releases

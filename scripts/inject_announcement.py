@@ -13,6 +13,9 @@ from version_rules import (
 )
 
 
+MAX_CONTENT_LENGTH = 5000
+
+
 def _get_tag_type(tag_name: str):
     """将 tag 名映射为内容目标类型（stable/beta/alpha/ci），无法识别返回 None。
     ⚠️ 若版本类型标识发生变更，需与 release/app_msg.md 头部注释同步修改。
@@ -101,9 +104,9 @@ def inject_announcement(tag_name):
 
     # 消毒：防止草稿内容破坏父级结构或下次匹配点位移
     content = content.replace(ANCHOR, ANCHOR.replace('-->', '- ->'))
-    if len(content) > 5000:
-        print(f"⚠️ 草稿过长（{len(content)} 字符），截断到 5000")
-        content = content[:5000] + "\n\n*(注：草稿过长已自动截断)*"
+    if len(content) > MAX_CONTENT_LENGTH:
+        print(f"⚠️ 草稿过长（{len(content)} 字符），截断到 {MAX_CONTENT_LENGTH}")
+        content = content[:MAX_CONTENT_LENGTH] + "\n\n*(注：草稿过长已自动截断)*"
 
     insert_block = f"{ANCHOR}\n\n{content}\n\n---\n"
     new_text = original_text.replace(ANCHOR, insert_block)

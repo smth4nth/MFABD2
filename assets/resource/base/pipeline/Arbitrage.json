@@ -400,6 +400,7 @@
         "timeout": 3000,
         "next": [
             "[JumpBack]Arbitrage_BuyItem",
+            "[JumpBack]Arbitrage_Favorit_Buy",
             "[JumpBack]Arbitrage_SellItem",
             "[JumpBack]Arbitrage_Merchant_Close_Ck",
             "[JumpBack]Global_BackPageHub_Once",
@@ -463,9 +464,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC1_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC2"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S1",
-            "Arbitrage_Buy_Select_QC2"
+            "Arbitrage_Buy_Select_QC2",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC2": {
@@ -501,9 +507,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC2_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC3"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S2",
-            "Arbitrage_Buy_Select_QC3"
+            "Arbitrage_Buy_Select_QC3",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC3": {
@@ -539,9 +550,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC3_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC4"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S3",
-            "Arbitrage_Buy_Select_QC4"
+            "Arbitrage_Buy_Select_QC4",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC4": {
@@ -577,9 +593,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC4_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC5"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S4",
-            "Arbitrage_Buy_Select_QC5"
+            "Arbitrage_Buy_Select_QC5",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC5": {
@@ -615,9 +636,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC5_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC6"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S5",
-            "Arbitrage_Buy_Select_QC6"
+            "Arbitrage_Buy_Select_QC6",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC6": {
@@ -653,9 +679,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC6_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC7"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S6",
-            "Arbitrage_Buy_Select_QC7"
+            "Arbitrage_Buy_Select_QC7",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC7": {
@@ -691,9 +722,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC7_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC8"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S7",
-            "Arbitrage_Buy_Select_QC8"
+            "Arbitrage_Buy_Select_QC8",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC8": {
@@ -772,8 +808,13 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC9_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC10"
+        },
         "next": [
-            "Arbitrage_Buy_Select_QC10"
+            "Arbitrage_Buy_Select_QC10",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC10": {
@@ -809,9 +850,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC10_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC11"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S10",
-            "Arbitrage_Buy_Select_QC11"
+            "Arbitrage_Buy_Select_QC11",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC11": {
@@ -847,9 +893,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC11_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC12"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S11",
-            "Arbitrage_Buy_Select_QC12"
+            "Arbitrage_Buy_Select_QC12",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC12": {
@@ -885,9 +936,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC12_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC13"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S12",
-            "Arbitrage_Buy_Select_QC13"
+            "Arbitrage_Buy_Select_QC13",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC13": {
@@ -923,9 +979,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC13_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC14"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S13",
-            "Arbitrage_Buy_Select_QC14"
+            "Arbitrage_Buy_Select_QC14",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC14": {
@@ -961,9 +1022,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC14_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC15"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S14",
-            "Arbitrage_Buy_Select_QC15"
+            "Arbitrage_Buy_Select_QC15",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC15": {
@@ -1085,9 +1151,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC17_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC18"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S17",
-            "Arbitrage_Buy_Select_QC18"
+            "Arbitrage_Buy_Select_QC18",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC18": {
@@ -1123,9 +1194,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC18_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QC19"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S18",
-            "Arbitrage_Buy_Select_QC19"
+            "Arbitrage_Buy_Select_QC19",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QC19": {
@@ -1161,9 +1237,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QC19_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR1"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_S19",
-            "Arbitrage_Buy_Select_QR1"
+            "Arbitrage_Buy_Select_QR1",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR1": {
@@ -1199,9 +1280,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR1_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR2"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R1",
-            "Arbitrage_Buy_Select_QR2"
+            "Arbitrage_Buy_Select_QR2",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR2": {
@@ -1323,9 +1409,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR4_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR5"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R4",
-            "Arbitrage_Buy_Select_QR5"
+            "Arbitrage_Buy_Select_QR5",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR5": {
@@ -1361,9 +1452,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR5_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR6"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R5",
-            "Arbitrage_Buy_Select_QR6"
+            "Arbitrage_Buy_Select_QR6",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR6": {
@@ -1399,9 +1495,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR6_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QR7"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R6",
-            "Arbitrage_Buy_Select_QR7"
+            "Arbitrage_Buy_Select_QR7",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QR7": {
@@ -1437,9 +1538,14 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QR7_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QE1"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_R7",
-            "Arbitrage_Buy_Select_QE1"
+            "Arbitrage_Buy_Select_QE1",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QE1": {
@@ -1562,8 +1668,8 @@
         ],
         "count": 100,
         "anchor": {
-            "PackSwip_Str": "Arbitrage_Buy_Select_QR3_Clr",
-            "PackSwip_End": "Arbitrage_Buy_Select_QR4"
+            "PackSwip_Str": "Arbitrage_Buy_Select_QE3_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QE4"
         },
         "timeout": 5000,
         "next": [
@@ -1605,10 +1711,15 @@
             255
         ],
         "count": 100,
+        "anchor": {
+            "PackSwip_Str": "Arbitrage_Buy_Select_QE4_Clr",
+            "PackSwip_End": "Arbitrage_Buy_Select_QE5"
+        },
         "next": [
             "[JumpBack]Arbitrage_ShopBuy_Pack_E4",
             "Arbitrage_Buy_Select_QE5",
-            "Arbitrage_Buy_Select_End"
+            "Arbitrage_Buy_Select_End",
+            "Arbitrage_Select_Swip"
         ]
     },
     "Arbitrage_Buy_Select_QE5": {
@@ -1661,6 +1772,7 @@
         "focus": "Arb.B.购买模块结束"
     },
     "Arbitrage_Favorit_Buy": {
+        "desc": "点击一键购买,maxhit配置,使得双入口也只会判定一次",
         "max_hit": 1,
         "recognition": "OCR",
         "roi": [
@@ -1825,7 +1937,8 @@
         "action": "Click",
         "post_delay": 1000,
         "next": [
-            "Arbitrage_Merchant_BuyMsg_Button_IsDone"
+            "Arbitrage_Merchant_BuyMsg_Button_IsDone",
+            "Arbitrage_Merchant_BuyMsg_Button"
         ]
     },
     "Arbitrage_Merchant_BuyMsg_Button_IsDone": {
@@ -1839,9 +1952,7 @@
         "expected": [
             "购买"
         ],
-        "inverse": true,
-        "pre_delay": 500,
-        "action": "Click"
+        "inverse": true
     },
     "#4出售侦察与调度": {},
     "Arbitrage_SellItem": {
@@ -1931,8 +2042,130 @@
         ],
         "next": [
             "[JumpBack]Arbitrage_Sell_PriceList_FirstCalibration",
+            "[JumpBack]Arbitrage_Sell_PackShopListSwich_OnlyHave_NeedDisable",
+            "[JumpBack]Arbitrage_Sell_PackShopListSwich_OCR_Entry",
             "Arbitrage_ShopSell_Active"
         ]
+    },
+    "Arbitrage_Sell_PackShopListSwich_OCR_Entry": {
+        "desc": "价目表本身的排序,若第一项存在非120%,触发",
+        "max_hit": 4,
+        "recognition": "OCR",
+        "roi": [
+            894,
+            210,
+            72,
+            93
+        ],
+        "expected": [
+            "^(?!120%$)\\d+(?:\\.\\d+)?%?$"
+        ],
+        "next": ["Arbitrage_Sell_PackShopListSwich_Butt"]
+    },
+    "Arbitrage_Sell_PackShopListSwich_Butt": {
+        "action": "Click",
+        "target": [
+            991,
+            138,
+            21,
+            25
+        ],
+        "post_delay": 1000,
+        "next": [
+            "Arbitrage_Sell_PackShopListSwich_Type_Enter",
+            "Arbitrage_Sell_PackShopListSwich_Type_Change"
+        ]
+    },
+    "Arbitrage_Sell_PackShopListSwich_Type_Enter": {
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "template",
+                "recognition": "OCR",
+                "roi": [
+                    745,
+                    189,
+                    250,
+                    45
+                ],
+                "expected": [
+                    "从高到低"
+                ]
+            },
+            {
+                "recognition": "ColorMatch",
+                "roi": "template",
+                "method": 40,
+                "lower": [
+                    18,
+                    98,
+                    110
+                ],
+                "upper": [
+                    23,
+                    230,
+                    255
+                ],
+                "connected": true,
+                "count": 10
+            }
+        ],
+        "next": ["Arbitrage_Sell_PackShopListSwich_Close"]
+    },
+    "Arbitrage_Sell_PackShopListSwich_Type_Change": {
+        "recognition": "OCR",
+        "roi": [
+            693,
+            169,
+            324,
+            299
+        ],
+        "expected": [
+            "溢价率"
+        ],
+        "action": "Click",
+        "post_delay": 800,
+        "next": [
+            "Arbitrage_Sell_PackShopListSwich_Type_Enter",
+            "Arbitrage_Sell_PackShopListSwich_Type_Change"
+        ]
+    },
+    "Arbitrage_Sell_PackShopListSwich_Close": {
+        "desc": "排序选项确认正确,消除排序三级窗口.需要点击二级窗口空白处",
+        "recognition": "And",
+        "all_of": ["Arbitrage_Sell_PackShopListSwich_Type_Change"],
+        "action": "Click",
+        "target": [
+            567,
+            129,
+            109,
+            43
+        ]
+    },
+    "Arbitrage_Sell_PackShopListSwich_OnlyHave_NeedDisable": {
+        "desc": "如果询价表中,'仅显示已有'为开启,则需要关闭",
+        "max_hit": 4,
+        "recognition": "ColorMatch",
+        "roi": [
+            1039,
+            572,
+            16,
+            15
+        ],
+        "method": 40,
+        "lower": [
+            17,
+            180,
+            152
+        ],
+        "upper": [
+            23,
+            200,
+            185
+        ],
+        "count": 20,
+        "action": "Click",
+        "post_delay": 1500
     },
     "Arbitrage_Sell_PriceList_FirstCalibration": {
         "desc": "初次打开价目表,将4行价格纵向对齐",
@@ -2270,15 +2503,15 @@
         "all_of": [
             {
                 "sub_name": "template",
-                "recognition": "TemplateMatch",
+                "recognition": "OCR",
                 "roi": [
-                    394,
-                    96,
-                    85,
-                    89
+                    895,
+                    90,
+                    249,
+                    44
                 ],
-                "template": [
-                    "UI_ShopItem_Up.png"
+                "expected": [
+                    "从高到低"
                 ]
             },
             {
@@ -3199,7 +3432,8 @@
         "post_delay": 1000,
         "next": [
             "Arbitrage_Cooking_Doing_Starus",
-            "Arbitrage_Cooking_NubMenu_Doing"
+            "Arbitrage_Cooking_NubMenu_Doing",
+            "Arbitrage_Cooking_Doing_OCR"
         ]
     },
     "Arbitrage_Cooking_Doing_Starus": {
@@ -3227,6 +3461,23 @@
             "Arbitrage_Cooking_Doing_Starus"
         ],
         "focus": "Arb.料理制作动画中..."
+    },
+    "Arbitrage_Cooking_Doing_OCR": {
+        "recognition": "OCR",
+        "roi": [
+            545,
+            357,
+            183,
+            85
+        ],
+        "expected": "制作中",
+        "post_delay": 5000,
+        "next": [
+            "Arbitrage_Cooking_Doing_OCR",
+            "Arbitrage_Cooking_Doing_ReBack",
+            "Arbitrage_Cooking_Menu_ReBack",
+            "[JumpBack]Global_BackPageHub_Once"
+        ]
     },
     "Arbitrage_Cooking_Doing_ReBack": {
         "desc": "按钮之前不存在,现在存在,动画结束",

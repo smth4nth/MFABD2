@@ -8,7 +8,7 @@
     "StartGame_Check_App_Alive": {
         "desc": "步骤(shell探针)：查进程。如果活着> next ,>查不到经常on_error尝试抢救",
         "action": "Shell",
-        "cmd": "pidof com.neowizgames.game.browndust2",
+        "cmd": "dumpsys window | grep mCurrentFocus | grep com.neowizgames.game.browndust2",
         "next": [
             "StartGame_TouchStart",
             "Global_ToHomePage_Enter",
@@ -206,7 +206,8 @@
         ],
         "expected": [
             "Play",
-            "启动"
+            "启动",
+            "開始玩"
         ],
         "action": "StopApp",
         "package": "com.android.vending",
@@ -352,6 +353,10 @@
         "expected": [
             "OUCH"
         ],
+        "replace": [[
+                " ",
+                ""
+            ]],
         "only_rec": true,
         "color_filter": "Dummy_StartGame_TouchStart_Clr",
         "pre_delay": 5000,
@@ -501,12 +506,14 @@
     },
     "StartGame_BackMapPage2": {
         "desc": "开始暴力解决广告，左侧点击10次",
-        "max_hit": 10,
+        "max_hit": 1,
         "action": "Click",
         "target": [
             60,
             460
         ],
+        "repeat": 10,
+        "repeat_delay": 200,
         "post_delay": 1000
     },
     "StartGame_BackMapPageOG": {

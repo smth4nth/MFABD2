@@ -95,6 +95,7 @@
             5
         ],
         "next": [
+            "[JumpBack]Setup_Entry5",
             "Collect_Skill3_2_Depleted",
             "Collect_BlackList_User",
             "Collect_QuickCart_Menu",
@@ -166,10 +167,11 @@
         "enabled": true,
         "max_hit": 1,
         "anchor": {
+            "SetSimpleSkip": "Collect_StoryPack_SetSimpleSkip",
             "SmartSwipOut": ""
         },
+        "timeout": 1,
         "next": [
-            "Collect_StoryPack_SetSimpleSkip",
             "Collect_QuickCart_SelectType_StoryPack"
         ]
     },
@@ -179,9 +181,10 @@
         "anchor": {
             "SmartSwipOut": ""
         },
+        "timeout": 1,
         "next": [
-            "Collect_CharacterPack_SetSimpleSkip",
-            "Collect_QuickCart_SelectType_CharacterPack"
+            "[JumpBack]Global_QuickCart_MenuReset",
+            "Collect_CharacterPack_SetSimpleSkip"
         ]
     },
     "Collect_FeatureSwitch_EvenPack": {
@@ -190,14 +193,14 @@
         "anchor": {
             "SmartSwipOut": ""
         },
+        "timeout": 1,
         "next": [
-            "Collect_EventPack_SetSimpleSkip",
-            "Collect_QuickCart_SelectType_EventPack"
+            "[JumpBack]Global_QuickCart_MenuReset",
+            "Collect_EventPack_SetSimpleSkip"
         ]
     },
     "Collect_StoryPack_SetSimpleSkip": {
-        "desc": "简单类跳过实现逻辑:发射锚点使得smart动作报err后进入特定存档节点,其他行为一致。此节点启用后读取存档，若通过，直接进入下一个节点链。",
-        "enabled": false,
+        "desc": "简单类跳过实现逻辑:发射锚点使得smart动作报err后进入特定存档节点,其他行为一致。此节点启用后读取存档，若通过，直接进入下一个节点链。通过锚点,初次必定为剧情卡,进入此;运行此节点后锚点到dit不用再此识别存档,直接下一步",
         "recognition": "Custom",
         "custom_recognition": "CheckCoolDown",
         "custom_recognition_param": {
@@ -205,11 +208,15 @@
             "cycle_type": "g_weekly"
         },
         "anchor": {
-            "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Story"
-        }
+            "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Story",
+            "SetSimpleSkip": "Collect_FirstBootPack_To1_Sandbox_Dit"
+        },
+        "next": [
+            "[JumpBack]Global_QuickCart_MenuReset",
+            "Collect_LocatePackFrame_Loc1"
+        ]
     },
     "Collect_CharacterPack_SetSimpleSkip": {
-        "enabled": false,
         "recognition": "Custom",
         "custom_recognition": "CheckCoolDown",
         "custom_recognition_param": {
@@ -217,11 +224,12 @@
             "cycle_type": "g_weekly"
         },
         "anchor": {
-            "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Character"
-        }
+            "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Character",
+            "SetSimpleSkip": "Collect_FirstBootPack_To1_Sandbox_Dit"
+        },
+        "next": ["Collect_QuickCart_SelectType_CharacterPack"]
     },
     "Collect_EventPack_SetSimpleSkip": {
-        "enabled": false,
         "recognition": "Custom",
         "custom_recognition": "CheckCoolDown",
         "custom_recognition_param": {
@@ -229,8 +237,10 @@
             "cycle_type": "g_weekly"
         },
         "anchor": {
-            "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Event"
-        }
+            "SmartSwipOut": "Collect_LocatePack_SimpleSkip_Event",
+            "SetSimpleSkip": "Collect_FirstBootPack_To1_Sandbox_Dit"
+        },
+        "next": ["Collect_QuickCart_SelectType_EventPack"]
     },
     "Collect_QuickCart_SelectType_StoryPack": {
         "recognition": "OCR",
@@ -373,7 +383,6 @@
     },
     "Collect_FirstBootPack": {
         "next": [
-            "Collect_FirstBootPack_ProbeIsPresent",
             "[JumpBack]Collect_LocatePackFrame_Loc1_ResetLoc",
             "Collect_FirstBootPack_To1"
         ]
@@ -389,37 +398,36 @@
         "post_delay": 5000,
         "next": [
             "[JumpBack]Global_WaitingForLoading",
-            "[JumpBack]Global_QuickCart_MenuReset",
-            "Collect_LocatePackFrame_Loc1"
+            "[JumpBack]Collect_FirstPack",
+            "[JumpBack]Collect_FirstPack_Talk",
+            "Collect_FirstBootPack_To1_Sandbox"
         ],
         "focus": "CM.L.卡带类型初次启动,进入1#位置"
     },
-    "Collect_FirstBootPack_ProbeIsPresent": {
-        "desc": "卡带1位置存在指针",
-        "recognition": "ColorMatch",
-        "roi": [
-            0,
-            659,
-            201,
-            19
-        ],
-        "method": 40,
-        "lower": [
-            22,
-            67,
-            177
-        ],
-        "upper": [
-            30,
-            241,
-            255
-        ],
-        "count": 2,
-        "timeout": 2000,
+    "Collect_FirstBootPack_To1_Sandbox": {
+        "desc": "确认已在箱庭中,执行技能检测.之后:对于剧情卡执行简单类判定,对于其他卡,直接下一步.",
+        "recognition": "And",
+        "all_of": ["Global_ToSandBox_Enter"],
+        "timeout": 5000,
         "next": [
-            "Collect_PackProbe_IsPresent"
-        ],
-        "focus": "CM.L.初次启动探针确认"
+            "[JumpBack]Setup_Entry5",
+            "Collect_FirstBootPack_To1_QuickCart_Menu",
+            "[JumpBack]Global_QuickCart_MenuReset"
+        ]
+    },
+    "Collect_FirstBootPack_To1_Sandbox_Dit": {
+        "desc": "其他类别卡带已检测过存档,直接进入选择器",
+        "next": [
+            "[JumpBack]Global_QuickCart_MenuReset",
+            "Collect_LocatePackFrame_Loc1"
+        ]
+    },
+    "Collect_FirstBootPack_To1_QuickCart_Menu": {
+        "desc": "确认调出卡带菜单后,1ms逻辑判定",
+        "recognition": "Or",
+        "any_of": ["Collect_QuickCart_Menu"],
+        "timeout": 1,
+        "next": ["[Anchor]SetSimpleSkip"]
     },
     "Collect_PackProbe_IsPresent": {
         "recognition": "OCR",
@@ -3216,5 +3224,53 @@
             "Collect_OperationsMain_Sandplay",
             "Collect_Pack_Event_4"
         ]
+    },
+    "Collect_FirstPack": {
+        "desc": "事件图可能会有新卡带",
+        "recognition": "OCR",
+        "roi": [
+            413,
+            481,
+            440,
+            132
+        ],
+        "expected": ["未插好游戏卡"],
+        "action": "Click",
+        "repeat": 10,
+        "repeat_delay": 200,
+        "post_delay": 5000,
+        "focus": "发现新卡带,快速点击'插入'"
+    },
+    "Collect_FirstPack_Talk": {
+        "desc": "初次卡带对话跳过",
+        "recognition": "TemplateMatch",
+        "roi": [
+            915,
+            9,
+            265,
+            68
+        ],
+        "template": ["UI_Skip.png"],
+        "action": "Click",
+        "post_delay": 2000,
+        "next": [
+            "Collect_FirstPack_Talk_Ck",
+            "Collect_FirstPack_Talk"
+        ],
+        "focus": "发现新卡带,快速点击'插入'"
+    },
+    "Collect_FirstPack_Talk_Ck": {
+        "desc": "初次卡带对话跳过,确认",
+        "recognition": "OCR",
+        "roi": [
+            626,
+            368,
+            186,
+            293
+        ],
+        "expected": ["确认"],
+        "action": "Click",
+        "post_delay": 2000,
+        "focus": "发现新卡带,快速点击'插入'"
     }
 }

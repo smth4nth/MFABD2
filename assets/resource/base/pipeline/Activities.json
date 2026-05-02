@@ -62,6 +62,7 @@
         ]
     },
     "Activities_InIndex": {
+        "max_hit": 3,
         "recognition": "TemplateMatch",
         "roi": [
             694,
@@ -70,7 +71,8 @@
             56
         ],
         "template": [
-            "ActiveGe.png"
+            "ActiveGe.png",
+            "UI_Dot_GE.png"
         ],
         "green_mask": true,
         "action": "Click",
@@ -109,17 +111,17 @@
         "desc": "寻找可关注活动|太容易卡后误识别了，加延迟",
         "recognition": "TemplateMatch",
         "roi": [
-            229,
-            131,
-            70,
-            472
+            269,
+            125,
+            30,
+            478
         ],
         "template": [
             "ActivePeerGe.png",
             "ActiveGe.png"
         ],
         "green_mask": true,
-        "threshold": 0.8,
+        "threshold": [0.75],
         "action": "Click",
         "target_offset": [
             -50,
@@ -367,51 +369,32 @@
         "focus": "GA.发现活动-轮盘(免费抽) V.02509"
     },
     "Activities_Roulette_Pay_CkIn": {
-        "recognition": "OCR",
-        "roi": [
-            966,
-            493,
-            170,
-            81
-        ],
-        "expected": [
-            "旋转"
-        ],
-        "next": [
-            "Activities_Roulette_Pay"
-        ]
-    },
-    "Activities_Roulette_Pay": {
-        "recognition": "ColorMatch",
-        "roi": [
-            1000,
-            524,
-            126,
-            39
-        ],
-        "lower": [
-            [
-                185,
-                185,
-                185
-            ]
-        ],
-        "upper": [
-            [
-                189,
-                189,
-                189
-            ]
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "Sub_Ocr",
+                "recognition": "OCR",
+                "roi": [
+                    966,
+                    493,
+                    170,
+                    81
+                ],
+                "expected": [
+                    "旋转"
+                ]
+            },
+            "Global_Ocr_Clr_Enable_Sub"
         ],
         "action": "Click",
         "post_delay": 4000,
         "next": [
-            "Activities_GetAllRe",
-            "Activities_Roulette_Pay"
+            "Activities_GetAllRe"
         ],
         "focus": "GA.发现活动-轮盘(代币抽) V.02509"
     },
     "Activities_FreeClothing": {
+        "desc": "免费+5",
         "recognition": "OCR",
         "roi": [
             320,
@@ -421,7 +404,8 @@
         ],
         "expected": [
             "强化免费赠送",
-            "强化服装的机会"
+            "强化服装的机会",
+            "\\+5强化"
         ],
         "action": "Click",
         "target": [

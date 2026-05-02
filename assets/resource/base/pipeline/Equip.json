@@ -328,14 +328,14 @@
         ],
         "method": 40,
         "lower": [
-            59,
-            76,
-            126
+            40,
+            60,
+            120
         ],
         "upper": [
-            68,
-            118,
-            240
+            90,
+            255,
+            255
         ],
         "count": 50,
         "next": [
@@ -351,15 +351,16 @@
             22,
             17
         ],
+        "method": 40,
         "lower": [
-            38,
-            113,
-            34
+            40,
+            50,
+            50
         ],
         "upper": [
-            58,
-            133,
-            54
+            90,
+            255,
+            210
         ],
         "count": 8,
         "action": "Click",
@@ -783,8 +784,10 @@
         "count": 12,
         "action": "Click",
         "target": [
-            966,
-            228
+            958,
+            186,
+            18,
+            9
         ],
         "post_delay": 1500,
         "next": [
@@ -796,10 +799,10 @@
     "Equip_+9ColorCk": {
         "recognition": "ColorMatch",
         "roi": [
-            942,
-            216,
-            55,
-            28
+            935,
+            173,
+            67,
+            38
         ],
         "lower": [
             102,
@@ -823,18 +826,20 @@
         "enabled": false,
         "recognition": "TemplateMatch",
         "roi": [
-            802,
-            285,
-            82,
-            75
+            804,
+            248,
+            83,
+            76
         ],
         "template": [
             "filterC17.png"
         ],
         "action": "Click",
         "target": [
-            840,
-            320
+            834,
+            277,
+            16,
+            9
         ],
         "post_delay": 1500,
         "next": [
@@ -846,10 +851,10 @@
     "Equip_filter<C17Ck": {
         "recognition": "ColorMatch",
         "roi": [
-            816,
-            308,
-            52,
-            26
+            821,
+            271,
+            53,
+            27
         ],
         "lower": [
             [
@@ -877,8 +882,10 @@
         "recognition": "DirectHit",
         "action": "Click",
         "target": [
-            720,
-            320
+            710,
+            275,
+            20,
+            12
         ],
         "post_delay": 1500,
         "next": [
@@ -890,24 +897,21 @@
     "Equip_filter<C10Ck": {
         "recognition": "ColorMatch",
         "roi": [
-            683,
-            304,
-            74,
-            33
+            700,
+            267,
+            49,
+            31
         ],
+        "method": 40,
         "lower": [
-            [
-                102,
-                102,
-                122
-            ]
+            0,
+            0,
+            80
         ],
         "upper": [
-            [
-                160,
-                160,
-                160
-            ]
+            180,
+            60,
+            255
         ],
         "count": 50,
         "next": [
@@ -919,10 +923,10 @@
         "desc": "应用筛选",
         "recognition": "OCR",
         "roi": [
-            842,
-            554,
-            175,
-            34
+            884,
+            558,
+            142,
+            35
         ],
         "expected": [
             "确认"

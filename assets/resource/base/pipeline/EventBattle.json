@@ -382,10 +382,10 @@
         "desc": "确保免费AP选中。现场为，如果无AP会无法点开二级确认菜单。似乎不用进一步适配滑块无法变黄情况？",
         "recognition": "ColorMatch",
         "roi": [
-            857,
-            211,
-            9,
-            10
+            854,
+            209,
+            31,
+            14
         ],
         "lower": [
             0,
@@ -803,16 +803,17 @@
     },
     "SeasonEvent_MamonoFollow_HP_Hunted": {
         "desc": "魔兽血条=ab,已讨伐完毕",
+        "max_hit": 50,
         "recognition": "And",
         "all_of": [
             "SeasonEvent_Mamono_HP_Lift_Gray"
         ],
         "next": ["Even_MamonoFollowUp_MmnHpUp"],
-
         "focus": "E. HP=ab.此Lv魔兽已讨伐完毕..."
     },
     "SeasonEvent_MamonoFollow_HP_NoMeetHunt": {
         "desc": "魔兽血条=AB,完全未讨伐过",
+        "max_hit": 10,
         "recognition": "And",
         "all_of": [
             "SeasonEvent_Mamono_HP_Right_Red"
@@ -965,18 +966,23 @@
         "recognition": "And",
         "all_of": ["Global_Ocr_Clr_Unable"],
         "next": ["SeasonEvent_MamonoFollow_Team_Troubleshoot"],
-        "focus": "EM.MF.常规战斗-可用"
+        "focus": "EM.MF.常规战斗-不可用"
     },
     "SeasonEvent_MamonoFollow_Team_Troubleshoot": {
         "desc": "有队伍漏配",
         "recognition": "OCR",
         "roi": [
             608,
-            206,
+            240,
             100,
-            274
+            43
         ],
-        "expected": "[?？]",
+        "expected": "[//?]",
+        "replace": [[
+                "？",
+                "?"
+            ]],
+        "only_rec": true,
         "next": ["SeasonEvent_MamonoFollow_Team_Edit"],
         "focus": "E.队伍漏配,尝试拿推荐部署"
     },

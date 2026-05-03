@@ -1,0 +1,75 @@
+{
+    "Global_ToHomePage_HomeButton": {
+        "any_of": [
+            {
+                "recognition": "TemplateMatch",
+                "roi": [
+                    1122,
+                    646,
+                    40,
+                    38
+                ],
+                "template": [
+                    "pin.png"
+                ]
+            },
+            {
+                "recognition": "TemplateMatch",
+                "roi": [
+                    1047,
+                    516,
+                    107,
+                    110
+                ],
+                "template": [
+                    "Run.png"
+                ],
+                "green_mask": true
+            }
+        ]
+    },
+    "Global_HomeButton_Once": {
+        "template": [
+            "MainHomeIceGE.png",
+            "MainHomeRIceGE.png"
+        ]
+    },
+    "Global_ToHomePage": {
+        "all_of": [
+            {
+                "sub_name": "Main_OCR",
+                "recognition": "OCR",
+                "roi": [
+                    98,
+                    656,
+                    66,
+                    32
+                ],
+                "expected": [
+                    "抽抽乐"
+                ]
+            },
+            {
+                "recognition": "ColorMatch",
+                "roi": [
+                    104,
+                    664,
+                    51,
+                    17
+                ],
+                "method": 40,
+                "lower": [
+                    0,
+                    0,
+                    200
+                ],
+                "upper": [
+                    149,
+                    5,
+                    255
+                ],
+                "count": 150
+            }
+        ]
+    }
+}

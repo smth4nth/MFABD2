@@ -37,4 +37,4 @@
 #       需同步修改 scripts/changelog_generator.py 中的 _get_tag_type()
 # ════════════════════════════════════════════════════════════════
 <!-- target: all -->
-159 Moons of Grace , And miles to go with you.
+> 159 Moons of Grace , And miles to go with you.

@@ -64,13 +64,30 @@ echo -e "\n${GREEN}>>> [3/4] 检查 Python 原生库依赖...${NC}"
 PY_BIN="$CURRENT_DIR/python/bin/python3"
 if [ -f "$PY_BIN" ]; then
     # 检测是否存在缺失的 @loader_path dylib
-    MISSING_COUNT=$("$PY_BIN" -c "
-import os, subprocess, re
+    MISSING_PACKAGES=$("$PY_BIN" -c "
+import os, subprocess, re, sysconfig, importlib.metadata
 from pathlib import Path
-site = Path('$CURRENT_DIR/python/lib/python3.10/site-packages')
+site = Path(sysconfig.get_path('purelib'))
 if not site.exists():
-    print(0)
     exit()
+
+DIS_NAME = {
+    'PIL': 'Pillow',
+    'cv2': 'opencv-python-headless',
+}
+try:
+    for dist, names in importlib.metadata.packages_distributions().items():
+        for n in names:
+            DIS_NAME.setdefault(n, dist)
+except Exception:
+    pass
+
+def resolve_dist(pkg):
+    for k, v in DIS_NAME.items():
+        if k.lower() == pkg.lower():
+            return v
+    return pkg
+
 broken = set()
 for so in site.rglob('*.so'):
     try:
@@ -83,25 +100,29 @@ for so in site.rglob('*.so'):
             continue
         ref = m.group(1)
         if not (so.parent / ref.replace('@loader_path/', '')).resolve().exists():
-            broken.add(so.relative_to(site).parts[0])
-for pkg in sorted(broken):
-    try:
-        import importlib.metadata
-        print(f'{pkg}=={importlib.metadata.version(pkg)}')
-    except Exception:
-        print(pkg)
+            pkg = so.relative_to(site).parts[0]
+            dist_name = resolve_dist(pkg)
+            try:
+                print(f'{dist_name}=={importlib.metadata.version(dist_name)}')
+            except Exception:
+                print(dist_name)
 " 2>/dev/null)
 
-    if [ -n "$MISSING_COUNT" ] && [ "$MISSING_COUNT" != "0" ]; then
+    if [ -n "$MISSING_PACKAGES" ]; then
         echo -e "${YELLOW}⚠️  检测到 Python 包原生库缺失，尝试联网修复...${NC}"
         echo "缺失的包:"
-        echo "$MISSING_COUNT" | while read pkg_ver; do
+        echo "$MISSING_PACKAGES" | while read pkg_ver; do
             echo "  - $pkg_ver"
         done
         echo "正在修复中..."
-        echo "$MISSING_COUNT" | while read pkg_ver; do
+        FAILED=0
+        echo "$MISSING_PACKAGES" | while read pkg_ver; do
             if [ -n "$pkg_ver" ]; then
-                "$PY_BIN" -m pip install --force-reinstall --no-cache-dir "$pkg_ver" 2>&1 | tail -1
+                if "$PY_BIN" -m pip install --force-reinstall --no-cache-dir "$pkg_ver" 2>/dev/null; then
+                    echo "  ✅ $pkg_ver"
+                else
+                    echo "  ❌ $pkg_ver 修复失败"
+                fi
             fi
         done
         echo -e "${GREEN}✅ Python 库修复完成${NC}"

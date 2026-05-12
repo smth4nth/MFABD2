@@ -440,31 +440,8 @@
     "Weekly_VisitCabin_GoIn": {
         "recognition": "Or",
         "any_of": [
-            {
-                "recognition": "TemplateMatch",
-                "roi": [
-                    16,
-                    84,
-                    455,
-                    275
-                ],
-                "template": [
-                    "MainHomeRIceGE.png"
-                ],
-                "green_mask": true
-            },
-            {
-                "recognition": "OCR",
-                "roi": [
-                    16,
-                    84,
-                    455,
-                    275
-                ],
-                "expected": [
-                    "我的小屋"
-                ]
-            }
+            "Rec_「Weekly_VisitCabin_GoIn」_Tpl",
+            "Rec_「Weekly_VisitCabin_GoIn」_Ocr"
         ],
         "action": "Click",
         "target_offset": [
@@ -480,6 +457,33 @@
             "[JumpBack]Global_WaitingForLoading"
         ],
         "focus": "WVM.点击我的小屋"
+    },
+    "Rec_「Weekly_VisitCabin_GoIn」_Tpl": {
+        "desc": "[识别]主页,我的小屋",
+        "recognition": "TemplateMatch",
+        "roi": [
+            16,
+            84,
+            455,
+            275
+        ],
+        "template": [
+            "MainHomeRIceGE.png"
+        ],
+        "green_mask": true
+    },
+    "Rec_「Weekly_VisitCabin_GoIn」_Ocr": {
+        "desc": "[识别]主页,我的小屋",
+        "recognition": "OCR",
+        "roi": [
+            16,
+            84,
+            455,
+            275
+        ],
+        "expected": [
+            "我的小屋"
+        ]
     },
     "Weekly_VisitCabin_TabChg": {
         "recognition": "OCR",

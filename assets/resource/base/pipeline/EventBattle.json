@@ -27,31 +27,8 @@
         "desc": "在赛季活动页面.兼做任务选择器",
         "recognition": "Or",
         "any_of": [
-            {
-                "recognition": "OCR",
-                "roi": [
-                    802,
-                    16,
-                    109,
-                    47
-                ],
-                "expected": [
-                    "活动服装"
-                ]
-            },
-            {
-                "recognition": "OCR",
-                "roi": [
-                    175,
-                    574,
-                    729,
-                    134
-                ],
-                "expected": [
-                    "普通战斗",
-                    "魔兽追踪者"
-                ]
-            }
+            "Rec_「Event_Event_Main」_Ocr_01",
+            "Rec_「Event_Event_Main」_Ocr_02"
         ],
         "timeout": 1000,
         "next": [
@@ -62,6 +39,33 @@
             "Global_ToHomePage"
         ],
         "focus": "EM.赛季活动进入确认."
+    },
+    "Rec_「Event_Event_Main」_Ocr_01": {
+        "desc": "赛季主页判定,右上代币加成服装",
+        "recognition": "OCR",
+        "roi": [
+            802,
+            16,
+            109,
+            47
+        ],
+        "expected": [
+            "活动服装"
+        ]
+    },
+    "Rec_「Event_Event_Main」_Ocr_02": {
+        "desc": "赛季主页判定,特殊按钮",
+        "recognition": "OCR",
+        "roi": [
+            175,
+            574,
+            729,
+            134
+        ],
+        "expected": [
+            "普通战斗",
+            "魔兽追踪者"
+        ]
     },
     "Event_Battle_Hub": {
         "max_hit": 1,
@@ -707,33 +711,37 @@
         "desc": "演习魔兽,结束",
         "recognition": "Or",
         "any_of": [
-            {
-                "recognition": "OCR",
-                "roi": [
-                    933,
-                    27,
-                    141,
-                    30
-                ],
-                "expected": ["距离开始还"],
-                "only_rec": true
-            },
-            {
-                "recognition": "OCR",
-                "roi": [
-                    826,
-                    215,
-                    211,
-                    72
-                ],
-                "expected": ["狩猎期间开始解除"]
-            }
+            "Rec_「SeasonEvent_MamonoFollow_Practice」_Ocr_01",
+            "Rec_「SeasonEvent_MamonoFollow_Practice」_Ocr_02"
         ],
         "next": [
             "SeasonEvent_Main_Return",
             "[JumpBack]Global_BackPageHub_Once"
         ],
         "focus": "E.当前魔兽为演习,退出"
+    },
+    "Rec_「SeasonEvent_MamonoFollow_Practice」_Ocr_01": {
+        "desc": "魔兽尚未开放判定,位置1",
+        "recognition": "OCR",
+        "roi": [
+            933,
+            27,
+            141,
+            30
+        ],
+        "expected": ["距离开始还"],
+        "only_rec": true
+    },
+    "Rec_「SeasonEvent_MamonoFollow_Practice」_Ocr_02": {
+        "desc": "魔兽尚未开放判定,位置2",
+        "recognition": "OCR",
+        "roi": [
+            826,
+            215,
+            211,
+            72
+        ],
+        "expected": ["狩猎期间开始解除"]
     },
     "Even_MamonoFollow_lv1_Ck": {
         "desc": "Lv1的复杂正则匹配",

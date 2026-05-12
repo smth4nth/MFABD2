@@ -2588,34 +2588,36 @@
         "desc": "确认出售子菜单已弹出",
         "recognition": "Or",
         "any_of": [
-            {
-                "recognition": "OCR",
-                "roi": [
-                    810,
-                    450,
-                    222,
-                    102
-                ],
-                "expected": [
-                    "出售"
-                ]
-            },
-            {
-                "recognition": "OCR",
-                "roi": [
-                    264,
-                    445,
-                    398,
-                    111
-                ],
-                "expected": [
-                    "MIX",
-                    "MAX"
-                ]
-            }
+            "Rec_「Arbitrage_Sell_Item_SellMenu」_Ocr_01",
+            "Rec_「Arbitrage_Sell_Item_SellMenu」_Ocr_02"
         ],
         "next": [
             "Arbitrage_Sell_Item_Number"
+        ]
+    },
+    "Rec_「Arbitrage_Sell_Item_SellMenu」_Ocr_01": {
+        "recognition": "OCR",
+        "roi": [
+            810,
+            450,
+            222,
+            102
+        ],
+        "expected": [
+            "出售"
+        ]
+    },
+    "Rec_「Arbitrage_Sell_Item_SellMenu」_Ocr_02": {
+        "recognition": "OCR",
+        "roi": [
+            264,
+            445,
+            398,
+            111
+        ],
+        "expected": [
+            "MIX",
+            "MAX"
         ]
     },
     "Arbitrage_Sell_Item_Number": {

@@ -191,20 +191,15 @@
     },
     "Rec_Pack_FantasiaSquare": {
         "desc": "在广场,识别静止UI",
-        "recognition": "TemplateMatch",
         "roi": [
             623,
             632,
             134,
             67
-        ],
-        "template": [
-            "Mirror_FantasiaSquare_Ico.png"
         ]
     },
     "Rec_Pack_GoldenColosseum": {
         "desc": "在黄金角斗场",
-        "recognition": "OCR",
         "roi": [
             79,
             613,
@@ -218,7 +213,6 @@
     },
     "Rec_Pack_GlupyDiner": {
         "desc": "在格鲁菲餐厅",
-        "recognition": "OCR",
         "roi": [
             72,
             11,

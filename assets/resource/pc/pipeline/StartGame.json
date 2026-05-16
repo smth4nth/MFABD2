@@ -16,7 +16,7 @@
     },
     "StartGame_Update_PGM": {
         "enabled": false,
-        "desc": "游戏程序更新.'商店'特征词是防错预判加入的"
+        "desc": "[PC程式更新外置,此逻辑关闭]游戏程序更新.'商店'特征词是防错预判加入的"
     },
     "StartGame_Update_Data": {
         "expected": [
@@ -50,6 +50,86 @@
         ],
         "desc": "下载数据中"
     },
+    "StartGame_Loading": {
+        "expected": [
+            "游戏启动中",
+            "啟動遊戲中"
+        ],
+        "roi": [
+            808,
+            433,
+            332,
+            73
+        ],
+        "desc": "游戏启动中"
+    },
+    "StartGame_TouchStart": {
+        "roi": [
+            787,
+            442,
+            121,
+            57
+        ],
+        "desc": "点击进入"
+    },
+    "StartGame_NewChar": {
+        "desc": "[未适配!]推出全新新角色识别"
+    },
+    "StartGame_SeasonSet": {
+        "desc": "赛季结算[与StartGame_Special相似?]"
+    },
+    "StartGame_Special": {
+        "expected": [
+            "赛季奖励",
+            "奖励已发放至",
+            "奖励已通过",
+            "邮件发放",
+            "獎勵已透過郵件發放"
+        ],
+        "desc": "另类赛季奖励接收[已适配,黄金竞技场]"
+    },
+    "StartGame_AtPack_FantasiaSquare": {
+        "green_mask": true,
+        "roi": [
+            623,
+            632,
+            134,
+            67
+        ],
+        "desc": "在广场启动游戏"
+    },
+    "StartGame_AtPack_GoldenColosseum": {
+        "expected": [
+            "阵形",
+            "陣形"
+        ],
+        "roi": [
+            79,
+            613,
+            96,
+            56
+        ],
+        "desc": "在黄金角斗场启动游戏"
+    },
+    "StartGame_LinkDown_TouchCk": {
+        "expected": [
+            "确认",
+            "確認"
+        ]
+    },
+    "StartGame_AtPack_GlupyDiner": {
+        "expected": [
+            "格鲁菲餐厅",
+            "格魯菲餐廳"
+        ],
+        "roi": [
+            72,
+            11,
+            145,
+            67
+        ],
+        "desc": "意料外卡带-格鲁菲餐厅"
+    },
     "StartGame_Setup_SoundTurnOff_Start": {
         "roi": [
             168,
@@ -57,7 +137,7 @@
             56,
             53
         ],
-        "desc": "在下载前关闭游戏声音,节省资源和流量"
+        "desc": "[PC端改设置影响游玩]在下载前关闭游戏声音,节省资源和流量"
     },
     "StartGame_Check_Win32_SetSize": {
         "focus": {

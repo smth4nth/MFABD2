@@ -417,16 +417,22 @@
         "custom_recognition": "HSVShapeMatching",
         "custom_recognition_param": {
             "target_node": "Daily_Busin_DecorCoin_IsFull",
-            "lower_hsv": [
-                15,
-                42,
-                102
+            "hsv_ranges": [
+                {
+                    "lower": [
+                        15,
+                        42,
+                        102
+                    ],
+                    "upper": [
+                        26,
+                        101,
+                        248
+                    ]
+                }
             ],
-            "upper_hsv": [
-                26,
-                101,
-                248
-            ]
+            "edge_assist": true,
+            "edge_threshold": 15
         },
         "next": [
             "[JumpBack]Daily_Busin_GiftGet",
@@ -456,7 +462,6 @@
             "Rec_<Daily_Busin_DecorCoin_PickUp>_Tpl_03"
         ],
         "action": "Click",
-        "post_delay": 1500,
         "timeout": 25000,
         "next": [
             "Daily_Busin_DecorCoin_IsFull_Binary",

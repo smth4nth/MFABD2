@@ -220,19 +220,15 @@
         "desc": "B-1.狩猎场次数选择，点击MAX",
         "recognition": "OCR",
         "roi": [
-            754,
+            408,
             301,
-            116,
+            462,
             64
         ],
         "expected": [
             "MAX"
         ],
         "action": "Click",
-        "target": [
-            465,
-            330
-        ],
         "next": [
             "QuickHunt_FastBattleStart"
         ],
@@ -351,15 +347,13 @@
         "custom_action_param": {
             "node": "QuickHunt_FastBattleMAXTouchHuntingGrounds",
             "patch": {
-                "target": [
-                    810,
-                    330
+                "expected": [
+                    "MAX"
                 ]
             },
             "origin": {
-                "target": [
-                    465,
-                    330
+                "expected": [
+                    "MIN"
                 ]
             }
         },
@@ -766,13 +760,105 @@
         "expected": [
             "火之洞穴"
         ],
-        "action": "Click",
-        "target": [
-            230,
-            120
+        "only_rec": true,
+        "next": [
+            "QuickHunt_StoneSelect_CkDone",
+            "[JumpBack]QuickHunt_StoneSelect_Fire",
+            "[JumpBack]QuickHunt_StoneSelect_Water",
+            "[JumpBack]QuickHunt_StoneSelect_Wind",
+            "[JumpBack]QuickHunt_StoneSelect_Light",
+            "[JumpBack]QuickHunt_StoneSelect_Duck"
+        ]
+    },
+    "QuickHunt_StoneSelect_Fire": {
+        "desc": "圣石选属性.Loc分离",
+        "max_hit": 5,
+        "recognition": "OCR",
+        "roi": [
+            178,
+            94,
+            126,
+            283
         ],
-        "post_delay": 1000,
-        "timeout": 3000,
+        "expected": [
+            "火之洞穴"
+        ],
+        "action": "Click",
+
+        "anchor": "Ocr_clr",
+        "post_delay": 1500
+    },
+    "QuickHunt_StoneSelect_Water": {
+        "desc": "圣石选属性.Loc分离",
+        "enabled": false,
+        "max_hit": 5,
+        "roi": [
+            178,
+            94,
+            126,
+            283
+        ],
+        "expected": [
+            "水之洞穴"
+        ],
+        "action": "Click",
+        "anchor": "Ocr_clr",
+        "post_delay": 1500
+    },
+    "QuickHunt_StoneSelect_Wind": {
+        "desc": "圣石选属性.Loc分离",
+        "enabled": false,
+        "max_hit": 5,
+        "roi": [
+            178,
+            94,
+            126,
+            283
+        ],
+        "expected": [
+            "风之洞穴"
+        ],
+        "anchor": "Ocr_clr",
+        "post_delay": 1500
+    },
+    "QuickHunt_StoneSelect_Light": {
+        "desc": "圣石选属性.Loc分离",
+        "enabled": false,
+        "max_hit": 5,
+        "roi": [
+            178,
+            94,
+            126,
+            283
+        ],
+        "expected": [
+            "光之洞穴"
+        ],
+        "action": "Click",
+        "anchor": "Ocr_clr",
+        "post_delay": 1500
+    },
+
+    "QuickHunt_StoneSelect_Duck": {
+        "desc": "圣石选属性.Loc分离",
+        "enabled": false,
+        "max_hit": 5,
+        "roi": [
+            178,
+            94,
+            126,
+            283
+        ],
+        "expected": [
+            "暗之洞穴"
+        ],
+        "action": "Click",
+        "anchor": "Ocr_clr",
+        "post_delay": 1500
+    },
+    "QuickHunt_StoneSelect_CkDone": {
+        "recognition": "And",
+        "all_of": ["Anc_Ocr_Enable_Clr"],
         "next": [
             "QuickHunt_NoAP_Torch",
             "QuickHunt_TurnCharact_Start",
@@ -784,19 +870,15 @@
         "desc": "3.圣石洞穴次数选择，点击MAX",
         "recognition": "OCR",
         "roi": [
-            754,
+            408,
             301,
-            116,
+            462,
             64
         ],
         "expected": [
             "MAX"
         ],
         "action": "Click",
-        "target": [
-            810,
-            330
-        ],
         "next": [
             "QuickHunt_CrystalCave_End",
             "[JumpBack]QuickHunt_FastBattleStart"

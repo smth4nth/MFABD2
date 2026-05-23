@@ -424,11 +424,11 @@
                     "pipeline_override": {
                         "QuickHunt_FastBattleTouch_StoneSelect": {
                             "QuickHunt_StoneSelect_Fire": {
-                            "enabled": false
-                        },
-                        "QuickHunt_StoneSelect_Wind": {
-                            "enabled": true
-                        }
+                                "enabled": false
+                            },
+                            "QuickHunt_StoneSelect_Wind": {
+                                "enabled": true
+                            }
                         }
                     }
                 },
@@ -437,11 +437,11 @@
                     "pipeline_override": {
                         "QuickHunt_FastBattleTouch_StoneSelect": {
                             "QuickHunt_StoneSelect_Fire": {
-                            "enabled": false
-                        },
-                        "QuickHunt_StoneSelect_Light": {
-                            "enabled": true
-                        }
+                                "enabled": false
+                            },
+                            "QuickHunt_StoneSelect_Light": {
+                                "enabled": true
+                            }
                         }
                     }
                 },
@@ -453,7 +453,6 @@
                         },
                         "QuickHunt_StoneSelect_Duck": {
                             "enabled": true
-                        }
                         }
                     }
                 }
@@ -504,24 +503,22 @@
                 {
                     "name": "优先金币",
                     "pipeline_override": {
-                        "QuickHunt_CollectMapAdventureRoute1": {
-                            "target": [
-                                138,
-                                200
-                            ],
-                            "focus": "BM.航线-首选-金币"
+                        "QuickHunt_CollectMapAdventureRoute_Select_Glod": {
+                            "enabled": true
+                        },
+                        "QuickHunt_CollectMapAdventureRoute_Select_Exp": {
+                            "enabled": false
                         }
                     }
                 },
                 {
                     "name": "优先经验",
                     "pipeline_override": {
-                        "QuickHunt_CollectMapAdventureRoute1": {
-                            "target": [
-                                138,
-                                280
-                            ],
-                            "focus": "BM.航线-首选-经验"
+                        "QuickHunt_CollectMapAdventureRoute_Select_Glod": {
+                            "enabled": false
+                        },
+                        "QuickHunt_CollectMapAdventureRoute_Select_Exp": {
+                            "enabled": true
                         }
                     }
                 }

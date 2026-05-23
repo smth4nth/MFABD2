@@ -18,6 +18,9 @@
         "enabled": false,
         "desc": "[PC程式更新外置,此逻辑关闭]游戏程序更新.'商店'特征词是防错预判加入的"
     },
+    "StartGame_UpdateCloseGame": {
+        "enabled": false
+    },
     "StartGame_Update_Data": {
         "expected": [
             "所需资料",
@@ -49,6 +52,15 @@
             ]
         ],
         "desc": "下载数据中"
+    },
+    "StartGame_GameIsMaint": {
+        "expected": [
+            "维护和更新",
+            "无法连接和使用游戏",
+            "維護和更新",
+            "無法連線和使用遊戲"
+        ],
+        "desc": "游戏服务器维护"
     },
     "StartGame_Loading": {
         "expected": [

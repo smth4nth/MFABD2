@@ -26,17 +26,11 @@
     },
     "QuickHunt_TouchCollect": {
         "desc": "找到run-点击左上扫荡",
-        "recognition": "TemplateMatch",
-        "roi": [
-            1047,
-            516,
-            107,
-            110
+        "recognition": "Or",
+        "any_of": [
+            "Rec_SandBox_Pin3_Tpl",
+            "Rec_SandBox_Run_Tpl"
         ],
-        "template": [
-            "Run.png"
-        ],
-        "green_mask": true,
         "action": "Click",
         "target": [
             120,
@@ -67,7 +61,7 @@
         "focus": "CB.[WRN]小地图盘位置非Mini-调整"
     },
     "QuickHunt_UIEnter": {
-        "desc": "确认菜单在狩猎场,并初始化位置",
+        "desc": "确认菜单存在狩猎场,并初始化位置",
         "recognition": "OCR",
         "roi": [
             108,
@@ -137,16 +131,8 @@
     "QuickHunt_CollectMap_ErrReset": {
         "desc": "ERR触发,复位到默认狩猎场,再重新位移,有最大限制",
         "max_hit": 5,
-        "recognition": "OCR",
-        "roi": [
-            93,
-            126,
-            96,
-            54
-        ],
-        "expected": [
-            "狩猎场"
-        ],
+        "recognition": "And",
+        "all_of": ["QuickHunt_UIEnter"],
         "action": "Click",
         "target_offset": [
             0,
@@ -464,25 +450,8 @@
     },
     "QuickHunt_CollectMapAdventureRoute2_DouCk": {
         "enabled": true,
-        "recognition": "ColorMatch",
-        "roi": [
-            180,
-            14,
-            149,
-            66
-        ],
-        "method": 4,
-        "lower": [
-            130,
-            130,
-            122
-        ],
-        "upper": [
-            221,
-            218,
-            209
-        ],
-        "count": 100,
+        "recognition": "And",
+        "all_of": ["QuickHunt_CollectMapAdventureRoute1"],
         "action": "Click",
         "target": [
             138,
@@ -609,26 +578,8 @@
         ]
     },
     "QuickHunt_CollectMapCrystalCave": {
-        "desc": "在1级界面,点圣石洞穴",
-        "recognition": "ColorMatch",
-        "roi": [
-            180,
-            14,
-            149,
-            66
-        ],
-        "method": 4,
-        "lower": [
-            130,
-            130,
-            122
-        ],
-        "upper": [
-            221,
-            218,
-            209
-        ],
-        "count": 200,
+        "recognition": "And",
+        "all_of": ["QuickHunt_CollectMapAdventureRoute1"],
         "action": "Click",
         "target": [
             138,
@@ -759,10 +710,10 @@
         "desc": "【圣石模式分流,后侧】|区分：正常、均衡 | 行为:寻找火之洞穴，点击属性图_火.| smart(补短)在前一个节点分流,先点击火再依次均衡是正确的,不要前移均衡的判定! | 注意,通过HUB开关控制是否切入均衡模式。模式正常走MAXTouch，故hub要在max前，且max不能false，因为hub出口是maxtouch。",
         "recognition": "OCR",
         "roi": [
-            181,
-            98,
-            100,
-            41
+            192,
+            106,
+            79,
+            27
         ],
         "expected": [
             "火之洞穴"
@@ -1138,17 +1089,8 @@
     },
     "QuickHunt_CrystalCave_End": {
         "desc": "返回本子地图",
-        "recognition": "OCR",
-        "roi": [
-            538,
-            372,
-            107,
-            30
-        ],
-        "expected": [
-            "哥布林遗迹"
-        ],
-        "only_rec": true,
+        "recognition": "And",
+        "all_of": ["QuickHunt_CollectMap_Initialize_Out_Ty2"],
         "next": [
             "Global_ToSandBox"
         ],
@@ -1305,9 +1247,9 @@
             285
         ],
         "lower": [
-            254,
-            254,
-            254
+            245,
+            245,
+            245
         ],
         "upper": [
             255,

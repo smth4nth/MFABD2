@@ -194,10 +194,10 @@
         "desc": "正则无米饭跳过",
         "recognition": "OCR",
         "roi": [
-            1036,
+            1040,
             32,
-            67,
-            25
+            69,
+            27
         ],
         "expected": "^0/\\d+",
         "only_rec": true,
@@ -613,10 +613,10 @@
     "QuickHunt_NoTorchesAP_Skip": {
         "recognition": "OCR",
         "roi": [
-            1078,
-            34,
-            68,
-            26
+            1040,
+            32,
+            69,
+            27
         ],
         "expected": "^0/\\d+",
         "only_rec": true,
@@ -750,6 +750,7 @@
         "desc": "圣石选属性.Loc分离",
         "enabled": false,
         "max_hit": 5,
+        "recognition": "OCR",
         "roi": [
             178,
             94,
@@ -767,6 +768,7 @@
         "desc": "圣石选属性.Loc分离",
         "enabled": false,
         "max_hit": 5,
+        "recognition": "OCR",
         "roi": [
             178,
             94,
@@ -783,6 +785,7 @@
         "desc": "圣石选属性.Loc分离",
         "enabled": false,
         "max_hit": 5,
+        "recognition": "OCR",
         "roi": [
             178,
             94,
@@ -801,6 +804,7 @@
         "desc": "圣石选属性.Loc分离",
         "enabled": false,
         "max_hit": 5,
+        "recognition": "OCR",
         "roi": [
             178,
             94,

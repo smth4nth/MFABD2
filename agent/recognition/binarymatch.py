@@ -616,7 +616,7 @@ class RedDotDetector(CustomRecognition):
         if detail and detail.hit:
             bx, by, bw, bh = detail.box
             adjusted = (bx + rx, by + ry, bw, bh)
-            mfaalog.debug(f"[RedDotDetector] [preset:{preset_node}] 命中 → {adjusted}")
+            print(f"[RedDotDetector] [preset:{preset_node}] 命中 → {adjusted}")
             return CustomRecognition.AnalyzeResult(box=adjusted, detail={"preset": preset_node})
         return None
 
@@ -697,7 +697,7 @@ class RedDotDetector(CustomRecognition):
                 continue
 
             result_box = (bx0 + rx, by0 + ry, bw, bh)
-            mfaalog.debug(f"[RedDotDetector] 命中: box={result_box}, red_area={area}")
+            print(f"[RedDotDetector] 命中: box={result_box}, red_area={area}")
             return CustomRecognition.AnalyzeResult(
                 box=result_box,
                 detail={"red_area": area, "box": list(result_box)},

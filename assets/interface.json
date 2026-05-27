@@ -941,11 +941,8 @@
                         "90付费抽目标卡池"
                     ],
                     "pipeline_override": {
-                        "Gacha_PvAnimeIsOver": {
-                            "next": [
-                                "Gacha_PaidDiamond_CustomField",
-                                "Gacha_TouchFreeGacha"
-                            ]
+                        "Gacha_PaidDiamond_CustomField": {
+                            "enabled": true
                         }
                     }
                 }

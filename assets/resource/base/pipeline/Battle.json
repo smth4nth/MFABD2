@@ -945,12 +945,13 @@
         "recognition": "And",
         "all_of": [
             {
+                "sub_name": "OCR",
                 "recognition": "OCR",
                 "roi": [
-                    1033,
-                    635,
-                    80,
-                    26
+                    1029,
+                    632,
+                    89,
+                    33
                 ],
                 "expected": [
                     "快速狩猎"

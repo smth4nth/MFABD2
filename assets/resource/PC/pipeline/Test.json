@@ -1,0 +1,19 @@
+{
+    "RedDot_Preset": {
+        "custom_recognition_param": {
+            "inner_s_max": 95,
+            "red_area": [
+                35,
+                1200
+            ]
+        }
+    },
+    "CheckPanel_A": {
+        "roi": [
+            1194,
+            14,
+            32,
+            24
+        ]
+    }
+}

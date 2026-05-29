@@ -239,6 +239,9 @@
             142
         ],
         "custom_action_param": {
+            "filter_regex": "(\\d+)",
+            "number_mode": "int",
+            "pick_index": 1,
             "replacement_list": [
                 [
                     190,
@@ -260,7 +263,10 @@
                     190,
                     285
                 ]
-            ]
+            ],
+            "sort_mode": "asc",
+            "target_node": "QuickHunt_FastBattleTouch_StoneSelect_SmartClick",
+            "target_param": "target"
         }
     },
     "QuickHunt_FastBattleTouch_StoneSelect": {

@@ -1,0 +1,233 @@
+{
+    "Global_QuickCart_MenuReset": {
+        "template": [
+            "QuickCartGeadai.png"
+        ],
+        "desc": "调出快速卡带1/2,操作"
+    },
+    "Global_BackToPve2#_CardMenu": {
+        "expected": [
+            "游戏卡珍藏集",
+            "遊戲卡帶收藏"
+        ],
+        "roi": [
+            150,
+            4,
+            178,
+            64
+        ]
+    },
+    "Global_BackToPve2#_PVEBookSwipe": {
+        "expected": [
+            "活动游戏卡",
+            "活動游戲卡"
+        ],
+        "roi": [
+            88,
+            536,
+            110,
+            44
+        ],
+        "desc": "识别活动游戏卡-上划"
+    },
+    "Global_BackToPve2#_PVEBookSwipe_Lift": {
+        "expected": [
+            "剧情游戏卡",
+            "故事游戲卡"
+        ],
+        "roi": [
+            95,
+            79,
+            106,
+            38
+        ],
+        "desc": "识别活动游戏卡-上划"
+    },
+    "Global_BackToPve2#_TouchPVEBook": {
+        "roi": [
+            278,
+            112,
+            187,
+            108
+        ],
+        "desc": "点击PVE本子2"
+    },
+    "Global_BackToQC1_Menu": {
+        "expected": [
+            "剧情游戏卡",
+            "故事游戲卡"
+        ],
+        "roi": [
+            155,
+            555,
+            174,
+            52
+        ]
+    },
+    "Global_BackToQC1_Menu_Cor": {
+        "roi": [
+            166,
+            566,
+            112,
+            34
+        ]
+    },
+    "Anc_SliderSwitch_YewOn_Clr": {
+        "lower": [
+            [
+                16,
+                175,
+                148
+            ]
+        ],
+        "upper": [
+            [
+                24,
+                205,
+                185
+            ]
+        ],
+        "desc": "滑块识别,黄色,已enable"
+    },
+    "Anc_SliderSwitch_GryOff_Clr": {
+        "lower": [
+            [
+                98,
+                56,
+                33
+            ]
+        ],
+        "upper": [
+            [
+                115,
+                80,
+                45
+            ]
+        ],
+        "desc": "滑块识别,灰色,已disable"
+    },
+    "Global_ERR_AtFish": {
+        "roi": [
+            1161,
+            12,
+            70,
+            47
+        ],
+        "template": [
+            "UI_BoatToDock.png"
+        ]
+    },
+    "Global_ERR_AtFish_SubMenu": {
+        "expected": [
+            "确认",
+            "確認"
+        ],
+        "only_rec": false,
+        "roi": [
+            665,
+            376,
+            96,
+            91
+        ]
+    },
+    "Rec_HomePage_GA_Ocr": {
+        "expected": [
+            "抽抽乐",
+            "抽抽樂"
+        ],
+        "roi": [
+            75,
+            662,
+            67,
+            33
+        ],
+        "desc": "[识别]主页,抽卡文字"
+    },
+    "Rec_HomePage_GA_Clr": {
+        "roi": [
+            75,
+            662,
+            67,
+            33
+        ],
+        "desc": "[识别]主页,抽卡文字背后颜色.roi硬编码"
+    },
+    "Rec_SandBox_Pin_Tpl": {
+        "roi": [
+            1090,
+            646,
+            148,
+            55
+        ],
+        "desc": "[识别]箱庭,pin按钮的UI"
+    },
+    "Rec_SandBox_Run_Tpl": {
+        "roi": [
+            1067,
+            539,
+            108,
+            111
+        ],
+        "desc": "[识别]箱庭,'冲刺'按钮的UI"
+    },
+    "Rec_SandBox_Pin3_Tpl": {
+        "roi": [
+            1195,
+            655,
+            41,
+            39
+        ],
+        "desc": "[识别]箱庭,'pin 第3组'按钮的UI"
+    },
+    "Rec_Reward_Ocr": {
+        "expected": [
+            "^(?=.*[点击画面])(?=.*[即可])(?=.*[返回]).{4,12}$",
+            "^(?=.*[點擊畫面])(?=.*[將回到])(?=.*[個畫面]).{4,15}$"
+        ],
+        "roi": [
+            536,
+            633,
+            212,
+            51
+        ],
+        "desc": "[识别]获得奖励,下方文字"
+    },
+    "Rec_Pack_FantasiaSquare": {
+        "roi": [
+            623,
+            632,
+            134,
+            67
+        ],
+        "desc": "在广场,识别静止UI"
+    },
+    "Rec_Pack_GoldenColosseum": {
+        "expected": [
+            "阵形",
+            "陣形"
+        ],
+        "roi": [
+            79,
+            613,
+            96,
+            56
+        ],
+        "desc": "在黄金角斗场"
+    },
+    "Rec_Pack_GlupyDiner": {
+        "expected": [
+            "格鲁菲餐厅",
+            "格魯菲餐廳"
+        ],
+        "roi": [
+            72,
+            11,
+            145,
+            67
+        ],
+        "desc": "在格鲁菲餐厅"
+    },
+    "Rec_「Global_WaitingForLoading」_05": {
+        "desc": "[识别]转场等待03,大色块-黑"
+    }
+}

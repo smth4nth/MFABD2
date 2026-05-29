@@ -820,6 +820,7 @@
         "expected": [
             "火之洞穴"
         ],
+        "only_rec": true,
         "action": "Click",
 
         "anchor": "Ocr_clr",

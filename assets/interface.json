@@ -62,7 +62,10 @@
         {
             "name": "[执行]快速狩猎扫荡",
             "entry": "QuickHunt_Start",
-            "controller": ["Adb"],
+            "controller": [
+                "Adb",
+                "PC客户端"
+            ],
             "default_check": true,
             "option": [
                 "冒险航线",

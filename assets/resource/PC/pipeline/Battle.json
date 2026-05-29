@@ -1,10 +1,10 @@
 {
     "QuickHunt_TouchCollect": {
-        "target": [
-            94,
-            147,
-            14,
-            10
+        "roi": [
+            77,
+            131,
+            46,
+            45
         ],
         "desc": "找到run-点击左上扫荡"
     },
@@ -30,14 +30,40 @@
         ],
         "desc": "确认菜单存在狩猎场,并初始化位置"
     },
-    "QuickHunt_CollectMapHuntingGrounds": {
+    "QuickHunt_CollectMapHuntingGrounds_1": {
         "roi": [
-            705,
-            192,
-            68,
-            20
+            700,
+            191,
+            81,
+            24
         ],
         "desc": "A-1.选择狩猎场。"
+    },
+    "QuickHunt_CollectMapHuntingGrounds_7": {
+        "expected": [
+            "(?=.*[蜥])(?=.*[蜴])(?=.*[祭坛]).{5,}$",
+            "(?=.*[蜥蜴人])(?=.*[祭壇]).{5,}$"
+        ],
+        "roi": [
+            245,
+            444,
+            135,
+            89
+        ],
+        "desc": "A-7.选择狩猎场。"
+    },
+    "QuickHunt_CollectMapHuntingGrounds_9": {
+        "expected": [
+            "守山人休息处",
+            "(?=.*[守山人])(?=.*[的休息處]).{6,}$"
+        ],
+        "roi": [
+            576,
+            468,
+            168,
+            75
+        ],
+        "desc": "A-9.选择狩猎场。"
     },
     "QuickHunt_NoRiceAP_Skip": {
         "roi": [
@@ -483,5 +509,15 @@
             96,
             89
         ]
+    },
+    "QuickHunt_CollectMapHuntingGrounds": {
+        "recognition": "DirectHit",
+        "roi": [
+            705,
+            192,
+            68,
+            20
+        ],
+        "desc": "A-1.选择狩猎场。"
     }
 }

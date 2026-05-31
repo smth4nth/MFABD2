@@ -198,10 +198,21 @@ jobs:
           python_files = [x for x in changed_set if x.startswith("agent/") and x.endswith(".py")]
           interface_changed = "assets/interface.json" in changed_set
           affected_packs = sorted({p for p in (pack_of(x) for x in pipeline_jsons) if p})
-          ref_packs = sorted(set(affected_packs) | {"base"})  # base 始终纳入参考集
+          # 参考包：实测扫描 assets/resource 下所有含 pipeline/ 的包（base、pc...），
+          # 比从 diff 猜更稳；跨包引用解析更完整。磁盘扫描失败时回退到 affected+base。
+          def discover_packs():
+              root = workspace / RES_ROOT
+              packs = []
+              if root.is_dir():
+                  for d in sorted(root.iterdir()):
+                      if d.is_dir() and (d / "pipeline").is_dir():
+                          packs.append(d.name)
+              return packs
+          disk_packs = discover_packs()
+          ref_packs = disk_packs if disk_packs else sorted(set(affected_packs) | {"base"})
           print(f"🗂️  改动分类：pipeline={len(pipeline_jsons)} 其他JSON={len(other_resource_jsons)} "
                 f"py={len(python_files)} interface={'是' if interface_changed else '否'} "
-                f"受影响包={affected_packs or '无'} 参考包={ref_packs}")
+                f"受影响包={affected_packs or '无'} 参考包(实测)={ref_packs}")
           
           # --------------------- 3. 官方文档（不截断；PER_DOC_CHARS 默认极大） --------------------- #
           DOC_SPECS = {
@@ -471,21 +482,21 @@ jobs:
           # --------------------- 5. 审查重点 --------------------- #
           focus = []
           if pipeline_jsons:
-              focus.append("- **流水线 JSON**：用资料 B 节点索引核对 next/on_error/interrupt 跳转是否成环/失联；"
-                  "recognition 类型与参数（OCR 的 expected/replace、TemplateMatch 的 template/threshold 等）是否齐备；"
-                  "regex 字段需 JSON 双重转义；`doc` 注释须与实际 action/next 行为一致，否则按陈旧注释标记。")
+              focus.append("- **流水线逻辑**（重点）：用资料 B/C 核对 next/on_error/interrupt 的【控制流】——死循环、不可达节点、悬空跳转、"
+                  "分支条件写反、循环缺退出；尤其注意 on_error 语义是否被误用（它针对 action 执行出错，不是 recognition 未命中）。"
+                  "schema/字段合法性已由 CI 覆盖，非重点；`doc` 注释须与实际行为一致，否则按陈旧注释标记。")
           if other_resource_jsons:
-              focus.append("- **资源 JSON（非流水线）**：核对结构、字段类型、命名规范。")
+              focus.append("- **资源 JSON（非流水线）**：结构/字段合法性由 CI 覆盖；仅关注会影响逻辑的内容（取值自相矛盾、引用错位等）。")
           if python_files:
-              focus.append("- **Agent Python**：用资料 D/E 核对 `@AgentServer.custom_action/recognition` 注册名与 Pipeline 的 "
-                  "`custom_action/custom_recognition` 双向对齐（含孤儿）；`custom_action_param` 抵达时是 JSON 字符串需 `json.loads()`；"
-                  "不应硬编码 ROI/过滤词/阈值（数据-逻辑分离）；MaaResource/Controller/Tasker 生命周期与异常兜底；"
-                  "`RecognitionDetail` 用 `filtered_results` 而非 `all_results`。")
+              focus.append("- **Custom 代码**（重点，CI 看不懂 Python）：用资料 D/E 核对注册名与 Pipeline 双向对齐（含孤儿）；"
+                  "param 抵达时是 JSON 字符串需 `json.loads()`——核对 Python 实际读取的键/类型与 Pipeline 传入是否一致；"
+                  "`analyze` 须返回 `AnalyzeResult(box, detail)` 或 None、`run` 返回值是否符合绑定契约，detail/box 的结构与语义是否正确；"
+                  "不应硬编码 ROI/过滤词/阈值（数据-逻辑分离）；资源/异常兜底；`RecognitionDetail` 用 `filtered_results`。")
           if interface_changed:
-              focus.append("- **interface.json**：对照《工程接口 V2》核对 task/option/resource/controller 字段、类型、必填；"
-                  "新增任务是否在 pipeline 提供入口节点；override 覆盖顺序是否合理。")
+              focus.append("- **interface.json**：字段合法性由 CI 覆盖；重点是逻辑——新增 task 是否有 pipeline 入口、"
+                  "option/override 覆盖顺序是否产生预期外行为。")
           if not focus:
-              focus.append("- 通用审查：代码风格、潜在 Bug、逻辑错误、异常兜底、命名一致性。")
+              focus.append("- 聚焦逻辑/语义错误（schema 与完整性已由 CI 覆盖）。")
           
           # --------------------- 5b. 组装 Prompt --------------------- #
           system_prompt = (
@@ -495,12 +506,20 @@ jobs:
               "- 审核对象仅限「六、审核范围」中 unified diff 的改动。\n"
               "- 「五、参考资料」（完整文件、节点索引、Agent 注册表等）只用于理解上下文与校验跨文件引用，"
               "本身不在评审范围，不要对其中未改动的内容提意见。\n\n"
-              "【官方文档使用规则（关键）】\n"
+              "【评审重点：聚焦 CI 查不到的问题】\n"
+              "本仓库另有 CI 调用 MaaFW 实测来校验 JSON schema、字段合法性、资源完整性——这些会被 CI 捕获，"
+              "【不是你的重点】，除非问题在 Custom（自定义识别/动作）代码内部（CI 看不懂 Python）。\n"
+              "你的价值在于 CI 查不到的：① 控制流/逻辑错误（死循环、不可达节点、分支条件写反、计数/状态逻辑、"
+              "next/on_error 语义误用）；② Custom 代码与 Pipeline 的契约（param 键/类型对齐、analyze/run 返回值与结构是否合规、"
+              "box/detail 语义、副作用与回调）；③ 数据-逻辑分离、文案/标识符一致性等语义问题。\n\n"
+              "【彻底性（重要）】发现一个问题后，必须在 diff 范围内排查【同类问题的全部出现位置】，禁止只举一例；"
+              "每条问题都要给出「影响范围」（会导致什么、波及哪些节点/任务）与「修复」（具体怎么改）。\n\n"
+              "【官方文档使用规则】\n"
               "1. 文档对某字段/行为有【明确规定】、而 diff 与之【明确冲突】时，以文档为准并指出冲突。\n"
               "2. 某字段若在文档中【未出现】，不得据此断言「该字段不存在/无效」——MaaFW 字段众多，"
-              "缺席≠不存在；此时最多标注「不确定：需查完整协议」，严禁断言「框架不存在此字段」。\n\n"
-              "【准确性】引用文件名/代码必须基于 diff 或参考资料中真实存在的内容，禁止臆造行号或代码；"
-              "无法从给定材料判断的结论必须显式标注「不确定」。用中文回复，专业、具体。"
+              "缺席≠不存在；此时最多标注「不确定」，严禁断言「框架不存在此字段」。\n\n"
+              "【避免误报】对看不懂但疑似有意为之的写法/优化，不要直接判为错误；无把握时归入「疑问/需作者确认」而非「问题」。\n"
+              "引用文件名/代码必须基于 diff 或参考资料中真实存在的内容，禁止臆造行号或代码。用中文回复，专业、具体。"
           )
           
           user_prompt = f"""# 一、官方文档（完整，请优先依据）
@@ -522,15 +541,17 @@ jobs:
           
           {chr(10).join(focus)}
           
-          # 四、MFABD2 项目通用规范（必须检查）
+          # 四、MFABD2 项目通用规范（逻辑优先；schema 类已由 CI 覆盖）
           
-          1. **doc 字段一致性**：流水线 `doc` 是开发者业务注释，须与 `action`/`next`/`recognition` 语义一致，否则按陈旧注释标记。
-          2. **Custom 双向对齐**：Pipeline 的 `custom_action/custom_recognition` 必须能在资料 D 注册表中找到；反之 agent 注册名也应被某节点引用，否则为孤儿。资料 E 已给初步对齐结果。
-          3. **正则限制**：MaaFW 用 C++ `std::regex`，对 lookbehind/lookahead 支持不稳定；遇到 `(?=)` `(?!)` `(?<=)` `(?<!)` 建议改锚点写法。
-          4. **数据-逻辑分离**：CustomAction 的 Python 不应硬编码 ROI/过滤词/阈值，应由 `custom_action_param` 传入。
+          1. **doc 字段一致性**（逻辑）：流水线 `doc` 业务注释须与 `action`/`next`/`recognition` 实际语义一致，否则按陈旧注释标记。
+          2. **Custom 双向对齐**（CI 查不到）：Pipeline 的 `custom_action/custom_recognition` 须能在资料 D 找到；反之 agent 注册名也应被某节点引用，否则为孤儿。资料 E 已给初步对齐结果。
+          3. **正则限制**（行为）：MaaFW 用 C++ `std::regex`，对 lookbehind/lookahead 支持不稳定；遇到 `(?=)` `(?!)` `(?<=)` `(?<!)` 建议改锚点写法。
+          4. **数据-逻辑分离**：Custom 的 Python 不应硬编码 ROI/过滤词/阈值，应由 `param` 传入。
           5. **OCR 噪声过滤**：优先用 Pipeline OCR 的 `replace` 在引擎层过滤，而非 Python 后处理。
-          6. **JSON 正则转义**：所有 `regex` 字段按 JSON 字符串规则转义（反斜杠双写）。
+          6. **JSON 正则转义**：纯转义错误 CI 会查；但若转义错误【改变了匹配语义】，属逻辑问题，仍要指出。
           7. **filtered vs all**：取识别结果用 `filtered_results`，不要用 `all_results`。
+          
+          > ⚠ 分工：JSON schema、字段是否存在/合法、资源文件是否齐全，已由 CI 调 MaaFW 实测覆盖，**非本次评审重点**（Custom 内部逻辑除外）。请把火力放在 CI 查不到的逻辑/语义/契约错误上。
           
           # 五、参考资料（仅供核对，非审核对象）
           
@@ -541,18 +562,19 @@ jobs:
           ## 概览
           （1–3 句话：这次 PR 在做什么、整体质量如何）
           
-          ## 阻塞性问题（必须修改）
+          ## 阻塞性问题（必须修改；聚焦逻辑 / Custom）
           若无写"无"。每条包含：
           - **文件**：`path:相关 hunk`
-          - **问题**：客观描述
-          - **原因**：引用上面文档第 X 节 / 项目规范第 X 条 / 资料 B-E
-          - **建议**：具体怎么改
+          - **问题**：客观描述。**若同类问题在多处出现，必须在此列出全部位置，禁止只举一例。**
+          - **影响范围**：会导致什么后果、波及哪些节点/任务
+          - **原因**：引用文档第 X 节 / 项目规范第 X 条 / 资料 B-E
+          - **修复**：具体怎么改
           
           ## 建议改进（非阻塞）
-          同上格式。
+          同上格式（含影响范围与修复）。
           
           ## 疑问 / 需要作者确认
-          列出仅凭材料无法判断、需作者补充的点。
+          列出仅凭材料无法判断、需作者补充的点；以及看不懂但疑似有意为之的写法（归此处而非问题）。
           
           ---
           

@@ -801,7 +801,7 @@
         "recognition": "And",
         "all_of": ["Collect_IM_OnFoot_NviMap_E03_A1"],
         "next": ["Collect_IM_OnFoot_NviMap_E03_A2_Move"],
-        "focus": "CTB.特殊地图-夏日骑士-02"
+        "focus": "CTB.特殊地图-海滨天使-02"
     },
     "Collect_IM_OnFoot_NviMap_E03_A2_Move": {
         "max_hit": 5,
@@ -853,7 +853,7 @@
         "recognition": "And",
         "all_of": ["Collect_IM_OnFoot_NviMap_E03_B1"],
         "next": ["Collect_IM_OnFoot_NviMap_E03_B2_Move"],
-        "focus": "CTB.特殊地图-夏日骑士-02"
+        "focus": "CTB.特殊地图-海滨天使-02"
     },
     "Collect_IM_OnFoot_NviMap_E03_B2_Move": {
         "max_hit": 5,

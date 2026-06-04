@@ -327,20 +327,30 @@ class HSVShapeMatching(CustomRecognition):
 #   预设模式：节点只写 {"preset": "节点名"}，复用预设节点参数；命中坐标自动加回 roi 偏移。
 #             调用者节点名 + ROI 会透传给预设节点，用于失败截图命名（见可观测性）。
 #
+# [识别原理 —— 置信度加权模型]
+#   红块过面积后，取"被红包围的非红区"(enclosed，拓扑封闭，不卡绝对亮度，抗压暗)，
+#   对其打一个 0~1 的置信分，≥ min_confidence 即命中。各分项均为归一化、抗模糊量：
+#     f_gap   连续断层(带两侧门)：清晰帧(PC)主力特征，命中可单独拉满；模糊时自动归零。
+#     f_vert  纵横比 h/w：模糊地板主力，扛得住"等高实心柱"(如投影 [2,2,2,2])，排圆形高光。
+#     f_white 偏白对比：内部 (V/255)(1-S/255) 中位数 − 红环中位数；S 为主、V 为辅，抗压暗。
+#     f_cent  居中：内部水平中心 vs 红块中心，小补充。
+#   权重见模块常量 _W_*；conf 与各分项写入 detail.stat，调参有数据支撑。
+#
 # [参数说明]（HSV 坐标系：OpenCV 标准 H 0-180 / S,V 0-255，内部自动映射 Pillow）
-#   hsv_ranges  (list)  红色 HSV 范围 [{lower:[H,S,V], upper:[H,S,V]}, ...]，H 跨 0 需拆两组 OR。
-#   red_area    (list)  红色 blob 面积范围 [min, max]，默认 [30, 1200]。
-#   inner_v_min (int)   内部亮像素亮度下限 V，默认 50。小红点圆点常被压到 V=60-80，勿设过高。
-#   inner_s_max (int)   内部像素饱和度上限 S，默认 90。感叹号近白(低 S)。
-#   gap_ratio   (float) "竖线-断层-圆点"断层深度阈值(0-1)，默认 0.35，越小越严格。
-#   preset      (str)   预设节点名（预设模式）。
+#   hsv_ranges     (list)  红色 HSV 范围 [{lower:[H,S,V], upper:[H,S,V]}, ...]，H 跨 0 拆两组 OR。
+#   red_area       (list)  红色 blob 面积范围 [min, max]，默认 [30, 1200]。
+#   min_confidence (float) 命中阈值(0-1)，默认 0.25(精准 ROI 调好值)，作者显式指定；
+#                          大 ROI 泛找务必调高(如 0.5+)，避免杂红误判。
+#   gap_ratio      (float) 仅用于 detail 里 gap 的"是否成双段"标注，不再作命中门槛。
+#   preset         (str)   预设节点名（预设模式）。
+#   注：旧的 inner_v_min / inner_s_max 已弃用(绝对亮度阈值在模糊下会掉崖)，若残留会被忽略。
 #
 # [可观测性 —— 常驻，无需任何开关]
 #   命中失败时：
-#     · detail 写入 {stage, hint, stat}；stat 含 proj(垂直投影) 与 gap(断层数值)，
+#     · detail 写入 {stage, hint, stat}；stat 含 conf / parts(各分项) / proj(投影) / gap，
 #       随 MAA 识别记录进入日志分析工具(MaaLogAnalyzer / MaaLogs)，图没了也能复盘。
 #     · mfaalog.warning 输出一行精简摘要(上 UI)；print 输出明细与截图路径(仅进 txt 日志)。
-#     · 落盘 roi_crop / red_mask / inner 三张小图(各约几百字节)。
+#     · 落盘 roi_crop / red_mask / inner(封闭区) 三张小图(各约几百字节)。
 #   截图位置：自动写入 UI 日志目录(maa.log 同级)下的 RedDotDetector/ 子目录——
 #     · interface 本级(Agent CWD)有 debug 或 config → 用户侧(interface 在根)，用本级 debug；
 #     · 否则 → 开发侧(interface 在 assets)，取上一级 debug。
@@ -349,10 +359,10 @@ class HSVShapeMatching(CustomRecognition):
 #     另加同检测点时间节流(默认 2s，环境变量 RDD_DUMP_INTERVAL 可调)。
 #
 # [一句话调参口诀]（对照 detail.stage）
-#   red_mask     → HSV 没框到红色：降低 S/V 下限 / 校正 roi
-#   area         → 面积不在 red_area：多半 min 太大
-#   inner_bright → 红内无亮像素：inner_v_min 偏高 / inner_s_max 偏低
-#   gap          → 投影未成双段：看 stat.gap，调 gap_ratio / 确认感叹号未被裁断
+#   red_mask    → HSV 没框到红色：降低 S/V 下限 / 校正 roi
+#   area        → 面积不在 red_area：多半 min 太大
+#   interior    → 红块内无封闭非红区(无感叹号轮廓)：roi 偏移 / 红圈破损 / 被模糊填满
+#   confidence  → 有候选但分不够：看 stat.conf 与 parts，降 min_confidence 提召回
 #
 # ================================================================
 #
@@ -366,7 +376,7 @@ class HSVShapeMatching(CustomRecognition):
 #                 {"lower": [0,   140, 120], "upper": [12,  255, 255]},
 #                 {"lower": [165, 140, 120], "upper": [180, 255, 255]}
 #             ],
-#             "red_area": [30, 1200], "inner_v_min": 50, "inner_s_max": 90, "gap_ratio": 0.35
+#             "red_area": [30, 1200], "min_confidence": 0.25
 #         },
 #         "roi": [950, 100, 40, 600], "action": "Click", "next": ["NextTask"]
 #     }
@@ -382,7 +392,7 @@ class HSVShapeMatching(CustomRecognition):
 #                 {"lower": [0,   140, 120], "upper": [12,  255, 255]},
 #                 {"lower": [165, 140, 120], "upper": [180, 255, 255]}
 #             ],
-#             "red_area": [30, 1200], "inner_v_min": 50, "inner_s_max": 90, "gap_ratio": 0.35
+#             "red_area": [30, 1200], "min_confidence": 0.25
 #         }
 #     },
 #     "CheckPanel_A": {
@@ -394,135 +404,20 @@ class HSVShapeMatching(CustomRecognition):
 # }
 #
 # ================================================================
-# [调参指南] 5 阶段识别原理与逐步排查
-# ================================================================
-#
-# 失败时自动落盘以下文件（无需任何开关，覆盖写入，防自循环刷屏）：
-#   rdd_*_roi_crop.png  → 代码实际处理的裁剪区域（阶段 1 输出）
-#   rdd_*_red_mask.png  → 红色掩膜（阶段 2 输出，黑=红色，白=非红）
-#   rdd_*_inner.png     → 最佳候选 blob 的内部亮色掩膜（阶段 4 输出）
-# 文件位置：debug/RedDotDetector/ 目录（maa.log 同级，可用 RDD_DEBUG_DIR 强制指定）。
-# 文件名以"节点名+ROI"为 key，同检测点重复失败直接覆盖，不会刷满磁盘。
-#
-# 失败原因结构化写入 detail.stat，通过 MaaLogs / MaaLogAnalyzer 可复盘：
-#   detail.stage      → 卡在哪个阶段（red_mask / area / inner_bright / gap）
-#   detail.hint       → 具体提示与修正方向
-#   detail.stat.proj  → 垂直投影数组（阶段 5 用）
-#   detail.stat.gap   → 断层详细数值（row / val / peak / ratio / above_nz / has_below）
-#
-# ────────────────────────────────────────────────────────────────
-# 阶段 1  ROI 裁剪
-# ────────────────────────────────────────────────────────────────
-# 参数：任务 JSON 的顶层 roi 字段（不在 custom_recognition_param 里）
-# 输出：rdd_*_roi_crop.png  ← 代码实际处理的像素区域
-#
-# 排查：打开 roi_crop.png，红点必须完整在图内。
-#       若图里没有红点 → 坐标填错了，对着游戏原图重新量取。
-#       建议 roi 比红点略大 2-4px，给菱形边缘留余量。
-#
-# ────────────────────────────────────────────────────────────────
-# 阶段 2  HSV 过滤，生成红色掩膜（detail.stage = "red_mask"）
-# ────────────────────────────────────────────────────────────────
-# 参数：hsv_ranges（H 0-180 / S 0-255 / V 0-255，OpenCV 坐标系）
-# 输出：rdd_*_red_mask.png  ← 黑=检测为红，白=非红
-#
-# 调参方法：
-#   在游戏截图上用取色工具拾取红点几个像素（建议取菱形边缘 3-4 点），
-#   记录 RGB → 转 HSV。H/S/V 各取最小值作下限，最大值作上限，
-#   再各自留 10-20 的余量。
-#
-#   注意：游戏红色常常跨越 H=0（如 H 在 170-180 和 0-10 各有一段），
-#   必须拆成两组 hsv_ranges OR 合并，单组 lower > upper 无效。
-#
-#   红色通常：H 0-12 或 165-180，S > 130，V > 100。
-#   偏橙红（H 偏大）：适当调高上限。
-#   暗红（V 低）：适当调低 V 下限。
-#
-#   红色连片（红点与其他红色 UI 连成一块）不影响后续识别：
-#   感叹号被红色从四面包围的拓扑关系不变。
-#
-# 判断（看 red_mask.png）：
-#   全白               → hsv_ranges 没覆盖到实际红色，收窄 S/V 下限
-#   大片黑色（背景也黑）→ hsv_ranges 太宽，提高 S 或 V 下限
-#   菱形轮廓完整黑色   → 正常，进入下一阶段
-#
-# ────────────────────────────────────────────────────────────────
-# 阶段 3  连通域面积筛选（detail.stage = "area"）
-# ────────────────────────────────────────────────────────────────
-# 参数：red_area [min, max]
-# 数据：detail.stat.n_blobs（总连通域数）、detail.stat.area_pass（通过面积筛选的 blob 数）
-#
-# 调参方法：
-#   面积估算：菱形面积 ≈ 对角线² / 2。16px 菱形 ≈ 128px，10px 菱形 ≈ 50px。
-#   建议 min 设 30；max 设 1200 通常够用，若场景有大面积红色 UI 元素可适当调小。
-#   detail.stat.area_pass = 0 → 所有 blob 都被过滤，多半是 min 太大。
-#
-# ────────────────────────────────────────────────────────────────
-# 阶段 4  内部亮色像素提取（detail.stage = "inner_bright"）
-# ────────────────────────────────────────────────────────────────
-# 参数：inner_v_min、inner_s_max
-# 输出：rdd_*_inner.png  ← 最佳候选 blob 的内部亮色掩膜（黑=通过，白=排除）
-#
-# 原理：
-#   分两步提取真正被红圈包围的亮色像素：
-#   ① BFS 拓扑封闭检测：排除能从矩形边框触达的背景像素，只保留被红色
-#     真正包围的内部区域（enclosed）。此步骤消除四角背景漏入问题。
-#   ② 亮色过滤：V >= inner_v_min（排除暗像素）& S <= inner_s_max（排除彩色像素）。
-#
-#   游戏渲染会压缩小尺寸元素的亮度，感叹号底部圆点可能只有 V=60-80，
-#   inner_v_min 不应设得过高（30-80 即可，极小红点可低至 20）。
-#
-# 调参方法：
-#   在游戏截图上拾取感叹号内部像素的 RGB（竖线中段 + 底部圆点各几点），
-#   转 HSV，inner_v_min 设为 min(感叹号各点V) - 10，inner_s_max 设为 max(感叹号各点S) + 10。
-#
-# 判断（看 inner.png）：
-#   几乎全白（无黑点）       → inner_v_min 偏高或 inner_s_max 偏低
-#   只有 1-3 个黑点          → inner_v_min 偏高，感叹号暗区被截断
-#   竖线+圆点两段黑色清晰    → 最佳，进入阶段 5
-#   只有竖线顶端（1行最亮）  → inner_v_min 偏高但尚可，若阶段 5 仍通过则无需调整
-#
-# ────────────────────────────────────────────────────────────────
-# 阶段 5  垂直投影双段检测（detail.stage = "gap"）
-# ────────────────────────────────────────────────────────────────
-# 参数：gap_ratio（默认 0.35）
-# 数据：detail.stat.proj（垂直投影数组）、detail.stat.gap（断层详细数值）
-#
-# 原理：
-#   对内部亮色像素逐行求和（垂直投影），裁去头尾空白行后在有效区段内
-#   找最小值行（= 竖线与圆点之间那 1px 红色间隔），验证三条：
-#     断层行像素数 / 最高行像素数 < gap_ratio（断层足够深）
-#     断层上方 ≥2 行有像素（竖线段）
-#     断层下方 ≥1 行有像素（圆点段）
-#   三条全通过 → 命中。
-#
-#   实际案例（16px 红点，感叹号竖线 3 行，圆点 1 行）：
-#     proj = [0,0,0, 1,1,1, 0, 1, 0,0,0,0]
-#                    ↑↑↑  gap  ↑
-#                    竖线       圆点
-#   每行只有 1 个像素仍能正确命中。
-#
-# 调参方法：
-#   看 detail.stat.proj，确认数组里有"非零-零-非零"的模式。
-#   若有此模式但仍失败 → 看 detail.stat.gap.ratio，将其值 + 0.05 作为新 gap_ratio。
-#   若投影是单峰（无零行）→ 感叹号像素太少，inner_v_min 还需再降。
-#
-# ────────────────────────────────────────────────────────────────
-# 一句话调参口诀
-# ────────────────────────────────────────────────────────────────
-# roi_crop 没红点          → 改 roi 坐标
-# red_mask 全白            → 降 hsv_ranges 的 S/V 下限
-# detail.stat.area_pass=0  → 降 red_area min（或升 max）
-# inner.png 只有 1-2 点    → 降 inner_v_min（可低至 20-30）
-# 投影数组无零行           → 继续降 inner_v_min；或检查红圈是否有缺口导致 BFS 漏入
-# 投影有零行仍失败         → 升 gap_ratio（0.4~0.5）
-#
-# ================================================================
 
 _RED_RANGES_DEFAULT = [
     {"lower": [0,   130, 100], "upper": [12,  255, 255]},
     {"lower": [165, 130, 100], "upper": [180, 255, 255]},
 ]
+
+# 置信度加权（可按需微调）。无 gap 时上限 = _W_VERT+_W_WHITE+_W_CENT = 0.55；
+# 清晰帧 f_gap 可额外贡献至 _W_GAP，单独足以越过默认阈值。
+# vert(纵横比)是模糊态区分"竖条 vs 圆形高光"的主轴，故权重最高；white 仅作辅证。
+_W_GAP = 0.45      # 连续断层：清晰帧(PC)主力，带两侧门，模糊归零
+_W_VERT = 0.35     # 纵横比：模糊地板主力，扛等高实心柱、排圆形高光
+_W_WHITE = 0.15    # 偏白对比(S 为主、V 为辅，相对红环)：抗压暗的辅证
+_W_CENT = 0.05     # 居中：小补充
+_DEFAULT_MIN_CONF = 0.25   # 精准 ROI 感叹号默认阈值；大 ROI 泛找请显式调高
 
 # 同一检测点(节点名+ROI)两次落盘的最小间隔(秒)，防 next 自循环刷屏；RDD_DUMP_INTERVAL 可调
 _DUMP_MIN_INTERVAL = float(os.environ.get("RDD_DUMP_INTERVAL", "2.0"))
@@ -628,12 +523,11 @@ class RedDotDetector(CustomRecognition):
     # ------------------------------------------------------------------
 
     def _run_standalone(self, argv: CustomRecognition.AnalyzeArg, params: dict):
-        """独立模式：HSV 过滤 → blob 面积筛选 → 拓扑封闭取内部亮像素 → 感叹号双段检测。"""
+        """独立模式：HSV 过滤 → blob 面积筛选 → 拓扑封闭取内部 → 置信度加权打分。"""
         hsv_ranges = params.get("hsv_ranges", _RED_RANGES_DEFAULT)
         area_min, area_max = params.get("red_area", [30, 1200])
-        inner_v_min = params.get("inner_v_min", 50)
-        inner_s_max = params.get("inner_s_max", 90)
-        gap_ratio = params.get("gap_ratio", 0.35)
+        gap_ratio = params.get("gap_ratio", 0.35)      # 仅用于 detail 的 gap 标注
+        min_conf = params.get("min_confidence", _DEFAULT_MIN_CONF)
 
         # 1. 按 roi 裁剪
         roi = argv.roi
@@ -662,7 +556,7 @@ class RedDotDetector(CustomRecognition):
         # 3. 连通域
         labeled, n_blobs = _label_blobs(red_mask)
         stat = {"red_px": int(red_mask.sum()), "n_blobs": int(n_blobs),
-                "area_pass": 0, "max_inner_px": 0, "gap_checked": 0}
+                "area_pass": 0, "max_inner_px": 0, "scored": 0}
         best, best_mask = None, None
 
         # 4. 逐 blob 检测
@@ -683,6 +577,7 @@ class RedDotDetector(CustomRecognition):
             box_hsv = hsv_np[by0:by1 + 1, bx0:bx1 + 1]
 
             # 拓扑封闭过滤：排除矩形四角能触达边框的背景，只留被红色真正包围的内部
+            # 不卡绝对亮度——白被模糊压暗也照取，由偏白"对比"在打分时衡量
             non_red_crop = ~box_red
             labeled_crop, _ = _label_blobs(non_red_crop)
             border_labels = (set(labeled_crop[0, :].tolist()) | set(labeled_crop[-1, :].tolist())
@@ -690,35 +585,36 @@ class RedDotDetector(CustomRecognition):
             border_labels.discard(0)
             enclosed = non_red_crop & ~np.isin(labeled_crop, list(border_labels))
 
-            inner_bright = (enclosed
-                            & (box_hsv[:, :, 2] >= inner_v_min)
-                            & (box_hsv[:, :, 1] <= inner_s_max))
-            inner_px = int(inner_bright.sum())
-            stat["max_inner_px"] = max(stat["max_inner_px"], inner_px)
-            if inner_px == 0:
+            enc_px = int(enclosed.sum())
+            stat["max_inner_px"] = max(stat["max_inner_px"], enc_px)
+            if enc_px == 0:
                 continue
 
-            chk = self._exclamation_info(inner_bright, gap_ratio)
-            if best is None or inner_px > best["inner_px"]:
-                best = {"inner_px": inner_px, **chk}
-                best_mask = inner_bright
+            chk = self._exclamation_info(enclosed, gap_ratio)       # 投影/断层(供 f_gap 与诊断)
+            conf, parts = self._confidence(box_hsv, box_red, enclosed, chk)
+            if best is None or conf > best["conf"]:
+                best = {"conf": conf, "parts": parts, **chk}
+                best_mask = enclosed
 
-            stat["gap_checked"] += 1
-            if chk["pass"]:
+            stat["scored"] += 1
+            if conf >= min_conf:
                 result_box = (bx0 + rx, by0 + ry, bw, bh)
-                mfaalog.info(f"[RedDotDetector] hit | box={result_box} red_area={area}")
+                mfaalog.info(f"[RedDotDetector] hit | box={result_box} conf={conf} {parts}")
                 return CustomRecognition.AnalyzeResult(
                     box=result_box,
-                    detail={"result": "hit", "red_area": area, "box": list(result_box)})
+                    detail={"result": "hit", "conf": conf, "parts": parts,
+                            "red_area": area, "box": list(result_box)})
 
-        # 5. 未命中：投影/断层进 stat → detail；落盘失败图；统一出口
+        # 5. 未命中：置信/投影/断层进 stat → detail；落盘失败图；统一出口
         if best is not None:
+            stat["conf"] = best["conf"]
+            stat["parts"] = best["parts"]
             stat["proj"] = best["proj"]
             stat["gap"] = {"row": best["gap_row"], "val": best["gap_val"], "peak": best["peak"],
                            "ratio": best["ratio"], "above_nz": best["above_nz"],
                            "has_below": best["has_below"]}
 
-        stage, hint = self._diagnose(stat, area_min, area_max, inner_v_min, inner_s_max, gap_ratio)
+        stage, hint = self._diagnose(stat, area_min, area_max, min_conf)
         self._dump_failure(node, key_roi, work_bgr, red_mask, best_mask)
         return self._miss("standalone", stage, hint, stat, params)
 
@@ -726,13 +622,13 @@ class RedDotDetector(CustomRecognition):
     # 感叹号结构检测：返回投影 + 断层诊断信息
     # ------------------------------------------------------------------
 
-    def _exclamation_info(self, inner_bright: np.ndarray, gap_ratio: float) -> dict:
+    def _exclamation_info(self, region: np.ndarray, gap_ratio: float) -> dict:
         """
-        判断内部亮色是否呈"竖线-断层-圆点"的垂直双段结构。
-        返回 {pass, proj, gap_row, gap_val, peak, ratio, above_nz, has_below}，
-        供命中失败时写入 detail.stat，便于复盘。
+        从内部封闭区的垂直投影提取断层信息（供 f_gap 与诊断使用）。
+        返回 {pass, proj, gap_row, gap_val, peak, ratio, above_nz, has_below}。
+        pass 仅作"是否成清晰双段"的标注，命中与否由 _confidence 决定。
         """
-        proj_arr = np.sum(inner_bright, axis=1).astype(np.float32)
+        proj_arr = np.sum(region, axis=1).astype(np.float32)
         info = {"pass": False, "proj": proj_arr.astype(int).tolist(),
                 "gap_row": None, "gap_val": None,
                 "peak": int(proj_arr.max()) if proj_arr.size else 0,
@@ -747,7 +643,7 @@ class RedDotDetector(CustomRecognition):
         first_nz, last_nz = int(nz[0]), int(nz[-1])
         trimmed = proj_arr[first_nz:last_nz + 1]  # 去掉包围框上下空白行
         if len(trimmed) < 3:                      # 区段太短：长宽比兜底
-            ph, pw = inner_bright.shape
+            ph, pw = region.shape
             info["pass"] = ph > pw * 1.3
             return info
 
@@ -766,10 +662,54 @@ class RedDotDetector(CustomRecognition):
         return info
 
     # ------------------------------------------------------------------
+    # 置信度加权：gap(连续) + 纵横比 + 偏白对比 + 居中
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _whiteness(V: np.ndarray, S: np.ndarray) -> np.ndarray:
+        """偏白程度 ∈[0,1]：亮(V↑)且低饱和(S↓)。"""
+        return (V.astype(np.float32) / 255.0) * (1.0 - S.astype(np.float32) / 255.0)
+
+    def _confidence(self, box_hsv: np.ndarray, box_red: np.ndarray,
+                    enclosed: np.ndarray, chk: dict):
+        """对一个候选打 0~1 置信分，返回 (conf, parts)。各分项均为归一化抗模糊量。"""
+        ys, xs = np.where(enclosed)
+        if len(ys) < 2:
+            return 0.0, {"by": "no_inner"}
+
+        # f_gap：连续断层。带两侧门(谷上下都得有料)，渐细收尾不算断层；模糊实心柱→0
+        peak = chk.get("peak") or 0
+        if peak and chk.get("has_below") and chk.get("above_nz", 0) >= 2:
+            f_gap = float(np.clip(1.0 - chk["gap_val"] / peak, 0.0, 1.0))
+        else:
+            f_gap = 0.0
+
+        # f_vert：纵横比 h/w。扛得住等高实心柱([2,2,2,2]→h/w=2)，排圆形高光(≈1→0)
+        h = int(ys.max() - ys.min() + 1)
+        w = int(xs.max() - xs.min() + 1)
+        f_vert = float(np.clip(h / max(w, 1) - 1.0, 0.0, 1.0))
+
+        # f_white：偏白"对比"。内部中位数 − 红环中位数；模糊压暗时差值平滑衰减，不掉崖
+        V, S = box_hsv[..., 2], box_hsv[..., 1]
+        w_in = float(np.median(self._whiteness(V[enclosed], S[enclosed])))
+        w_rng = float(np.median(self._whiteness(V[box_red], S[box_red]))) if box_red.any() else 0.0
+        f_white = float(np.clip(w_in - w_rng, 0.0, 1.0))
+
+        # f_cent：内部水平中心 vs 包围框中心
+        cx_e = (int(xs.min()) + int(xs.max())) / 2.0
+        cx_c = (enclosed.shape[1] - 1) / 2.0
+        f_cent = float(np.clip(1.0 - 2.0 * abs(cx_e - cx_c) / max(enclosed.shape[1], 1), 0.0, 1.0))
+
+        conf = _W_GAP * f_gap + _W_VERT * f_vert + _W_WHITE * f_white + _W_CENT * f_cent
+        parts = {"gap": round(f_gap, 2), "vert": round(f_vert, 2),
+                 "white": round(f_white, 2), "cent": round(f_cent, 2)}
+        return round(float(conf), 3), parts
+
+    # ------------------------------------------------------------------
     # 失败诊断 / 统一出口
     # ------------------------------------------------------------------
 
-    def _diagnose(self, stat: dict, area_min, area_max, inner_v_min, inner_s_max, gap_ratio):
+    def _diagnose(self, stat: dict, area_min, area_max, min_conf):
         """根据累加器判定卡在哪个阶段，给出修正方向。"""
         if stat["red_px"] == 0:
             return "red_mask", "HSV 未覆盖到任何红色，降低 S/V 下限，或确认 roi 框住了红点"
@@ -778,20 +718,17 @@ class RedDotDetector(CustomRecognition):
         if stat["area_pass"] == 0:
             return "area", f"红色面积都不在 [{area_min},{area_max}]，调 red_area（多半是 min 太大）"
         if stat["max_inner_px"] == 0:
-            return "inner_bright", (f"红色内无亮像素，inner_v_min({inner_v_min}) 偏高 "
-                                    f"或 inner_s_max({inner_s_max}) 偏低，感叹号被裁掉了")
-        g = stat.get("gap") or {}
-        return "gap", (f"内部亮像素未形成双段：投影 row{g.get('row')} 处 "
-                       f"{g.get('val')}/{g.get('peak')}px ratio={g.get('ratio')}(阈值≤{gap_ratio})，"
-                       f"竖线段{g.get('above_nz')}行/圆点段{'有' if g.get('has_below') else '无'}；"
-                       f"调 gap_ratio 或确认感叹号未被裁断")
+            return "interior", "红块内无封闭非红区(无感叹号轮廓)：roi 偏移 / 红圈破损 / 被模糊填满"
+        return "confidence", (f"最高置信 {stat.get('conf')} < min_confidence({min_conf})；"
+                              f"分项 {stat.get('parts')}；降低 min_confidence 提召回，"
+                              f"或检查偏白/竖向是否被模糊吃掉")
 
     def _miss(self, mode: str, stage: str, hint: str, stat: dict, params: dict):
         """统一失败出口：精简摘要进 mfaalog(上 UI)，明细 print(仅 txt)，结构化原因进 detail。"""
         detail = {
             "result": "miss", "mode": mode, "stage": stage, "hint": hint, "stat": stat,
             "params": {k: params.get(k) for k in
-                       ("hsv_ranges", "red_area", "inner_v_min", "inner_s_max", "gap_ratio")},
+                       ("hsv_ranges", "red_area", "gap_ratio", "min_confidence")},
         }
         mfaalog.warning(f"[RedDotDetector] miss@{stage} | {hint}")
         print(f"[RedDotDetector] miss stat={stat}")

@@ -32,6 +32,7 @@
             "Rec_SandBox_Run_Tpl"
         ],
         "timeout": 3000,
+        "rate_limit": 2000,
         "next": [
             "QuickHunt_TouchCollect"
         ],

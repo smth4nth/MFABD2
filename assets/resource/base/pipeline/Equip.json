@@ -9,21 +9,9 @@
     },
     "Equip_Skill_Tap3": {
         "desc": "第3页技能点击",
-        "recognition": "TemplateMatch",
-        "roi": [
-            1049,
-            632,
-            58,
-            59
-        ],
-        "template": [
-            "pin.png"
-        ],
+        "recognition": "And",
+        "all_of": ["Rec_SandBox_Pin3_Tpl"],
         "action": "Click",
-        "target": [
-            1200,
-            664
-        ],
         "post_delay": 800,
         "next": [
             "Equip_Skill_Tap3_clr",
@@ -496,7 +484,6 @@
         "template": [
             "filter.png"
         ],
-        "threshold": 0.9,
         "action": "Click",
         "post_delay": 2000,
         "next": [
@@ -751,7 +738,7 @@
         "focus": "EM.色核通过.<C10"
     },
     "Equip_filterON": {
-        "desc": "应用筛选",
+        "desc": "应用筛选,点击确认",
         "recognition": "OCR",
         "roi": [
             884,
@@ -866,15 +853,8 @@
     "Equip_FindRefining": {
         "desc": "点击第一个装备",
         "max_hit": 10,
-        "recognition": "OCR",
-        "roi": [
-            226,
-            21,
-            55,
-            39
-        ],
-        "expected": ["装备"],
-        "only_rec": true,
+        "recognition": "And",
+        "all_of": ["Equip_Backpack_Equip_Enter"],
         "action": "Click",
         "target": [
             622,
@@ -908,16 +888,8 @@
     },
     "Equip_Overdrive_RefLvMax_filter": {
         "desc": "点击左上筛选",
-        "recognition": "TemplateMatch",
-        "roi": [
-            1096,
-            62,
-            32,
-            31
-        ],
-        "template": [
-            "filter.png"
-        ],
+        "recognition": "And",
+        "all_of": ["Equip_Refine_filter"],
         "action": "Click",
         "post_delay": 2000,
         "next": [
@@ -928,16 +900,8 @@
     },
     "Equip_Overdrive_RefLvMax_filter_SubMenu": {
         "desc": "筛选,二级菜单,已确认",
-        "recognition": "OCR",
-        "roi": [
-            511,
-            73,
-            248,
-            154
-        ],
-        "expected": [
-            "装备筛选"
-        ],
+        "recognition": "And",
+        "all_of": ["Equip_filter_SubMenu"],
         "next": [
             "[JumpBack]Equip_filter_SubMenu_Mamono",
             "Equip_Overdrive_RefLvMax_Second_Clr",
@@ -1142,16 +1106,8 @@
     },
     "Equip_TouchRefiningBack": {
         "desc": "精炼界面，返回",
-        "recognition": "OCR",
-        "roi": [
-            962,
-            634,
-            136,
-            53
-        ],
-        "expected": [
-            "精炼"
-        ],
+        "recognition": "And",
+        "all_of": ["Equip_TouchRefining"],
         "post_delay": 3000,
         "next": [
             "Global_ToHomePage"
@@ -1225,12 +1181,13 @@
     "Equip_Backpack_Equip_Enter": {
         "recognition": "OCR",
         "roi": [
-            213,
+            226,
             21,
-            177,
-            42
+            55,
+            39
         ],
         "expected": "装备",
+        "only_rec": true,
         "next": [
             "Equip_Backpack_Equip_Up&Dec_Entry"
         ]

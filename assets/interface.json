@@ -1655,6 +1655,15 @@
                             ]
                         }
                     }
+                },
+                {
+                    "name": "连续精炼",
+                    "description": "点击待强化装备,看到'连续精炼'后,开始运行",
+                    "pipeline_override": {
+                        "SemiAuto_HomePage": {
+                            "next": ["SemiAuto_SequentialRefined_Str"]
+                        }
+                    }
                 }
             ]
         }

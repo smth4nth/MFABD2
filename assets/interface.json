@@ -1663,9 +1663,31 @@
                         "SemiAuto_HomePage": {
                             "next": ["SemiAuto_SequentialRefined_Str"]
                         }
-                    }
+                    },
+                    "option": ["连续精炼次数"]
                 }
             ]
+        },
+        "连续精炼次数": {
+            "type": "input",
+            "inputs": [
+                {
+                    "name": "连续精炼次数",
+                    "pipeline_type": "int",
+                    "default": "300",
+                    "verify": "^(\\d+)$",
+                    "pattern_msg": "应为非负整数",
+                    "description": "达到目标数后结束循环。"
+                }
+            ],
+            "pipeline_override": {
+                "SemiAuto_SRef_Count_R": {
+                    "custom_recognition_param": {
+                        "tag": "SRef",
+                        "max": "{连续精炼次数}"
+                    }
+                }
+            }
         }
     },
     "preset": [

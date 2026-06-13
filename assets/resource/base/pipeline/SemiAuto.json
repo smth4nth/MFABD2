@@ -616,10 +616,11 @@
             "tag": "SRef",
             "value": 1
         },
+        "timeout": 1,
         "next": [
-            "SemiAuto_SRef_Count_R",
-            "Global_Null"
-        ]
+            "SemiAuto_SRef_Count_R"
+        ],
+        "on_error": ["SemiAuto_SequentialRefined_End"]
     },
     "SemiAuto_SRef_Count_R": {
         "recognition": "Custom",
@@ -628,9 +629,7 @@
             "tag": "SRef",
             "max": 300
         },
-        "timeout": 1,
-        "next": ["SemiAuto_SRef_SequentialRefined"],
-        "on_error": ["SemiAuto_SequentialRefined_End"]
+        "next": ["SemiAuto_SRef_SequentialRefined"]
     },
     "SemiAuto_SequentialRefined_End": {
         "focus": "半自动-连续精炼结束"

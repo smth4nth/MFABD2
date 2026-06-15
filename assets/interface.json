@@ -12,8 +12,8 @@
             "win32": {
                 "class_regex": "UnityWndClass",
                 "screencap": "FramePool",
-                "mouse": "PostMessageWithWindowPos",
-                "keyboard": "PostMessageWithWindowPos"
+                "mouse": "PostMessageWithCursorPos",
+                "keyboard": "PostMessageWithCursorPos"
             },
             "permission_required": true,
             "display_short_side": 720

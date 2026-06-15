@@ -6,12 +6,15 @@
         "desc": "[PC覆盖] PC端不支持StopApp，禁用。管路失控时仅记录日志，不尝试重启游戏。"
     },
     "Agt_RedDot_Preset": {
+        "desc": "[PC覆盖] 红点检测PC参数。注意：detector(agent/recognition/binarymatch.py)已弃用 inner_s_max/inner_v_min(绝对亮度阈值,模糊下掉崖),残留会被忽略——原 inner_s_max:95 属无效死参,已移除。当前唯一PC差异为 red_area 下限 50→35(PC红点像素更小)；hsv_ranges/min_confidence/gap_ratio 与 base 保持一致且写全,避免跨包覆盖若按整体替换时丢失 base 调好的值(detector 虽有代码默认值,但默认 hsv_ranges 比 base 更宽)。PC实测若 red_mask 阶段漏红,降 hsv_ranges 的 S/V 下限。",
         "custom_recognition_param": {
-            "inner_s_max": 95,
-            "red_area": [
-                35,
-                1200
-            ]
+            "hsv_ranges": [
+                {"lower": [0, 140, 120], "upper": [12, 255, 255]},
+                {"lower": [165, 140, 120], "upper": [180, 255, 255]}
+            ],
+            "red_area": [35, 1200],
+            "gap_ratio": 0.35,
+            "min_confidence": 0.25
         }
     }
 }

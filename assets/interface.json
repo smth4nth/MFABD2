@@ -12,7 +12,7 @@
             "win32": {
                 "class_regex": "UnityWndClass",
                 "screencap": "FramePool",
-                "mouse": "PostMessageWithCursorPos",
+                "mouse": "PostMessageWithWindowPos",
                 "keyboard": "PostMessageWithWindowPos"
             },
             "permission_required": true,

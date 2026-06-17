@@ -470,7 +470,7 @@ def add_historical_versions(current_changelog: str, current_tag: str) -> str:
             # 智能标记分析（在截断后的正文上分析，排除历史区块干扰）
             markers = ""
             if HISTORY_CONFIG['enable_version_highlights']:
-                markers = analyze_version_highlights({'body': truncated_body})
+                markers = analyze_version_highlights(truncated_body)
                 marker_display = f" {markers}" if markers else ""
                 print(f"版本标记: '{markers}'")
             else:

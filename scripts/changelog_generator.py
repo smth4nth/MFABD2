@@ -452,17 +452,7 @@ def add_historical_versions(current_changelog: str, current_tag: str) -> str:
             print(f"处理历史版本: {tag} (发布时间: {published_at})")
             print(f"内容长度: {len(body)} 字符")
 
-            # 智能标记分析（根据配置决定是否启用）
-            markers = ""
-            if HISTORY_CONFIG['enable_version_highlights']:
-                markers = analyze_version_highlights(release)
-                marker_display = f" {markers}" if markers else ""
-                print(f"版本标记: '{markers}'")
-            else:
-                marker_display = ""
-                print("版本标记: 已禁用")
-
-            # 截断处理
+            # 截断处理（必须先于标记分析，防止历史区块中的 ⚠️/💡 污染检测结果）
             truncated_body = manager.truncate_release_body(body)
             print(f"截断后长度: {len(truncated_body)} 字符")
 
@@ -476,7 +466,17 @@ def add_historical_versions(current_changelog: str, current_tag: str) -> str:
                 print(f"⚠️ 跳过版本 {tag}: Release Notes 与已收录版本内容完全相同（hash={body_hash[:8]}），属异常重复发布")
                 continue
             seen_body_hashes.add(body_hash)
-            
+
+            # 智能标记分析（在截断后的正文上分析，排除历史区块干扰）
+            markers = ""
+            if HISTORY_CONFIG['enable_version_highlights']:
+                markers = analyze_version_highlights(truncated_body)
+                marker_display = f" {markers}" if markers else ""
+                print(f"版本标记: '{markers}'")
+            else:
+                marker_display = ""
+                print("版本标记: 已禁用")
+
             historical_section += f"""<details>
 <summary>{tag} ({published_at}){marker_display}</summary>
 

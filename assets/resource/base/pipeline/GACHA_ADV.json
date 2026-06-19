@@ -171,7 +171,8 @@
             "[JumpBack]GachaADV_Location3",
             "[JumpBack]GachaADV_Location4",
             "[JumpBack]GachaADV_Location5",
-            "[JumpBack]GachaADV_Slip"
+            "[JumpBack]GachaADV_Slip",
+            "[JumpBack]Gacha_Quick_All"
         ]
     },
     "GachaADV_AREA1#_Post": {
@@ -273,7 +274,8 @@
             "[JumpBack]GachaADV_Location3",
             "[JumpBack]GachaADV_Location4",
             "[JumpBack]GachaADV_Location5",
-            "[JumpBack]GachaADV_Slip"
+            "[JumpBack]GachaADV_Slip",
+            "[JumpBack]Gacha_Quick_All"
         ]
     },
     "GachaADV_AREA2#_Post": {
@@ -378,6 +380,7 @@
         ]
     },
     "GachaADV_Location1_90LotPost": {
+        "enabled": false,
         "recognition": "OCR",
         "roi": [
             358,
@@ -509,6 +512,7 @@
         ]
     },
     "GachaADV_Location2_90LotPost": {
+        "enabled": false,
         "recognition": "OCR",
         "roi": [
             358,
@@ -635,6 +639,7 @@
         ]
     },
     "GachaADV_Location3_90LotPost": {
+        "enabled": false,
         "recognition": "OCR",
         "roi": [
             358,
@@ -732,6 +737,7 @@
         ]
     },
     "GachaADV_Location4_90LotPost": {
+        "enabled": false,
         "recognition": "OCR",
         "roi": [
             358,
@@ -846,6 +852,7 @@
         ]
     },
     "GachaADV_Location5_90LotPost": {
+        "enabled": false,
         "recognition": "OCR",
         "roi": [
             358,
@@ -1566,5 +1573,112 @@
         "expected": [
             "抽抽乐"
         ]
+    },
+
+    "Gacha_Quick_All": {
+        "desc": "点击页面一键抽抽乐",
+        "recognition": "OCR",
+        "roi": [
+            183,
+            596,
+            183,
+            76
+        ],
+        "expected": "所有免费抽抽乐",
+        "action": "Click",
+        "post_delay": 2000,
+        "next": [
+            "Gacha_Quick_All_SubMsg",
+            "Gacha_Quick_All"
+        ],
+        "focus": "GA.F.一键抽卡启动"
+    },
+    "Gacha_Quick_All_SubMsg": {
+        "recognition": "Or",
+        "any_of": ["GachaADV_TouchFreeGachaConfirmMenu"],
+        "next": ["Gacha_Quick_All_SubMsg_Ck"]
+    },
+    "Gacha_Quick_All_SubMsg_Ck": {
+        "recognition": "OCR",
+        "roi": [
+            660,
+            398,
+            105,
+            99
+        ],
+        "expected": "确认",
+        "action": "Click",
+        "post_delay": 3000,
+        "next": [
+            "Gacha_Quick_Briefing",
+            "[JumpBack]Gacha_Quick_Skip",
+            "[JumpBack]Gacha_Quick_5X",
+            "Gacha_Quick_All_SubMsg_Ck"
+        ]
+    },
+    "Gacha_Quick_Skip": {
+        "desc": "等于连抽,去点跳过按钮",
+        "recognition": "And",
+        "all_of": ["AutoBattle_Egress_TurnBack_SkipTalk"],
+        "action": "Click",
+        "post_delay": 1500
+    },
+    "Gacha_Quick_5X": {
+        "desc": "假设抽中会跳立绘",
+        "recognition": "Or",
+        "any_of": [
+            "GachaADV_5X",
+            "GachaADV_5X2"
+        ],
+        "action": "Click",
+        "target": [
+            1157,
+            50
+        ],
+        "post_delay": 1500
+    },
+    "Gacha_Quick_Briefing": {
+        "desc": "抽卡结果页,大概",
+        "recognition": "Or",
+        "any_of": [
+            "Rec_<Gacha_Quick_Briefing>_Tmp",
+            "Rec_<Gacha_Quick_Briefing>_Ocr"
+        ],
+        "next": [
+            "Gacha_Quick_End",
+            "[JumpBack]Global_BackPageHub_Once"
+        ]
+    },
+    "Rec_<Gacha_Quick_Briefing>_Tmp": {
+        "desc": "[识别]抽卡结果页,位置01-图案",
+        "recognition": "TemplateMatch",
+        "roi": [
+            119,
+            587,
+            159,
+            68
+        ],
+        "template": ["Gacha_Briefing.png"]
+    },
+    "Rec_<Gacha_Quick_Briefing>_Ocr": {
+        "desc": "[识别]抽卡结果页,位置02-正则",
+        "recognition": "OCR",
+        "roi": [
+            163,
+            603,
+            80,
+            36
+        ],
+        "expected": "^\\d+/\\d+$",
+        "only_rec": true
+    },
+    "Gacha_Quick_End": {
+        "desc": "一键抽卡结束后瞻",
+        "recognition": "And",
+        "all_of": ["GachaADV_PageEnter_1#"],
+        "next": [
+            "Global_ToHomePage"
+        ],
+        "focus": "GA.F.一键抽卡结束"
     }
 }

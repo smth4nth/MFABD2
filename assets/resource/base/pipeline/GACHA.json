@@ -505,16 +505,8 @@
     },
     "Gacha_FinGacha": {
         "desc": "返回首页",
-        "recognition": "OCR",
-        "roi": [
-            957,
-            133,
-            268,
-            110
-        ],
-        "expected": [
-            "概率"
-        ],
+        "recognition": "And",
+        "all_of": ["GachaADV_PageEnter_1#"],
         "target": [
             120,
             35

@@ -1349,7 +1349,10 @@
             "GachaADV_EndToHomePage",
             "GachaADV_FinGacha"
         ],
-        "on_error": [],
+        "on_error": [
+            "[JumpBack]QuickHunt_Try_Click",
+            "Global_Null"
+        ],
         "focus": "GA.退出抽卡"
     },
     "GachaADV_EndToHomePage": {

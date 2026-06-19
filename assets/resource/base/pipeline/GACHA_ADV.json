@@ -1004,7 +1004,6 @@
         "expected": [
             "抽抽乐"
         ],
-        "threshold": 0.8,
         "next": [
             "GachaADV_Slip_Action"
         ],
@@ -1054,30 +1053,6 @@
         ],
         "focus": "GA.滑动寻找卡池"
     },
-    "GachaADV_NoFindFreeAndInEnd": {
-        "desc": "拖动后无免费红点且识别到底部普池\\判定未完成",
-        "recognition": "TemplateMatch",
-        "roi": [
-            183,
-            160,
-            176,
-            347
-        ],
-        "template": [
-            "Gachalistend.png"
-        ],
-        "threshold": 0.9,
-        "target_offset": [
-            -50,
-            50,
-            0,
-            0
-        ],
-        "next": [
-            "GachaADV_FinGacha"
-        ],
-        "focus": "GA.卡池列表见底"
-    },
     "GachaADV_SkipPV": {
         "desc": "正常抽卡页面,2个'兑换'覆盖",
         "max_hit": 20,
@@ -1108,16 +1083,8 @@
     },
     "GachaADV_PvAnimeIsOver": {
         "desc": "卡池动画结束后,卡片呈现按钮,识别",
-        "recognition": "OCR",
-        "roi": [
-            953,
-            381,
-            239,
-            147
-        ],
-        "expected": [
-            "兑换"
-        ],
+        "recognition": "And",
+        "all_of": ["GachaADV_SkipPV"],
         "focus": "GA.卡池动画结束(调试用)"
     },
     "GachaADV_PaidDiamond_90LotFind_Tp1": {
@@ -1331,16 +1298,8 @@
         ]
     },
     "GachaADV_5XBug_LightningBall": {
-        "recognition": "TemplateMatch",
-        "roi": [
-            1103,
-            21,
-            123,
-            55
-        ],
-        "template": [
-            "Chaga_ProductNext.png"
-        ],
+        "recognition": "And",
+        "all_of": ["GachaADV_TouchFreeGachaSkip"],
         "action": "Click",
         "post_delay": 1000,
         "next": [
@@ -1378,16 +1337,8 @@
     },
     "GachaADV_FinGacha": {
         "desc": "返回首页",
-        "recognition": "OCR",
-        "roi": [
-            957,
-            133,
-            268,
-            110
-        ],
-        "expected": [
-            "概率"
-        ],
+        "recognition": "And",
+        "all_of": ["GachaADV_PageEnter_1#"],
         "action": "Click",
         "target": [
             120,
@@ -1398,22 +1349,17 @@
             "GachaADV_EndToHomePage",
             "GachaADV_FinGacha"
         ],
+        "on_error": [],
         "focus": "GA.退出抽卡"
     },
     "GachaADV_EndToHomePage": {
         "desc": "识别左下抽抽乐-返回地图页",
-        "recognition": "OCR",
-        "roi": [
-            98,
-            656,
-            66,
-            32
-        ],
-        "expected": [
-            "抽抽乐"
+        "recognition": "And",
+        "all_of": [
+            "Rec_HomePage_GA_Ocr",
+            "Sub_HomePage_GA_Bright_Clr"
         ]
     },
-
     "Gacha_Quick_All": {
         "desc": "点击页面一键抽抽乐",
         "recognition": "OCR",

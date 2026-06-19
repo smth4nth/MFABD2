@@ -6,15 +6,40 @@
         "desc": "[PC覆盖] PC端不支持StopApp，禁用。管路失控时仅记录日志，不尝试重启游戏。"
     },
     "Agt_RedDot_Preset": {
-        "desc": "[PC覆盖] 红点预设(覆盖base同名节点的custom_recognition_param)。①移除已弃用的 inner_s_max/inner_v_min(binarymatch.py已忽略)。②hsv_ranges S下限 140→100:PC红点饱和度偏低。【720空间实测,复刻RedDotDetector算法】邮件红点(720中心1085,23)在 base S140 下只框到 32px<red_area下限50→面积阶段直接漏检;改 S100 后框到 58px。③red_area下限 50→35:作为更小红点(如页内二级红点)的安全余量;min_confidence 维持 0.25 把关,不增大ROI误检。④min_confidence 未改(仍0.25):邮件红点在 S100 下 conf=0.43(3帧一致,vert满分),0.25稳过,无需降阈值——故不再拆分 Soft 预设。",
         "custom_recognition_param": {
-            "hsv_ranges": [
-                {"lower": [0, 100, 120], "upper": [12, 255, 255]},
-                {"lower": [165, 100, 120], "upper": [180, 255, 255]}
-            ],
-            "red_area": [35, 1200],
             "gap_ratio": 0.35,
-            "min_confidence": 0.25
-        }
+            "hsv_ranges": [
+                {
+                    "lower": [
+                        0,
+                        100,
+                        120
+                    ],
+                    "upper": [
+                        12,
+                        255,
+                        255
+                    ]
+                },
+                {
+                    "lower": [
+                        165,
+                        100,
+                        120
+                    ],
+                    "upper": [
+                        180,
+                        255,
+                        255
+                    ]
+                }
+            ],
+            "min_confidence": 0.25,
+            "red_area": [
+                35,
+                1200
+            ]
+        },
+        "desc": "[PC覆盖] 红点预设(覆盖base同名节点的custom_recognition_param)。①移除已弃用的 inner_s_max/inner_v_min(binarymatch.py已忽略)。②hsv_ranges S下限 140→100:PC红点饱和度偏低。【720空间实测,复刻RedDotDetector算法】邮件红点(720中心1085,23)在 base S140 下只框到 32px<red_area下限50→面积阶段直接漏检;改 S100 后框到 58px。③red_area下限 50→35:作为更小红点(如页内二级红点)的安全余量;min_confidence 维持 0.25 把关,不增大ROI误检。④min_confidence 未改(仍0.25):邮件红点在 S100 下 conf=0.43(3帧一致,vert满分),0.25稳过,无需降阈值——故不再拆分 Soft 预设。"
     }
 }

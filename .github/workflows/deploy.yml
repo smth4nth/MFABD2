@@ -1,0 +1,32 @@
+name: Deploy to Tencent Cloud
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.TENCENT_SSH_KEY }}" > ~/.ssh/deploy.pem
+          chmod 600 ~/.ssh/deploy.pem
+          ssh-keyscan -H 43.160.196.56 >> ~/.ssh/known_hosts
+
+      - name: Sync deploy/ to server
+        run: |
+          # 同步配置文件（排除 apk/ 子目录）
+          rsync -avz --exclude='apk/' \
+            -e "ssh -i ~/.ssh/deploy.pem" \
+            deploy/ ubuntu@43.160.196.56:~/bd2-deploy/
+
+          # 同步 APK（adk/ 展平到 ~/bd2-deploy/ 根目录）
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy.pem" \
+            deploy/apk/ ubuntu@43.160.196.56:~/bd2-deploy/

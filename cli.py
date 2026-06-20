@@ -201,8 +201,96 @@ def main() -> int:
     return _run_maa(args.adb, task_runs, merged_override)
 
 
+def _find_resource_path() -> Path:
+    dev_path = PROJECT_ROOT / "assets" / "resource" / "base"
+    if dev_path.exists():
+        return dev_path
+    release_path = PROJECT_ROOT / "resource" / "base"
+    if release_path.exists():
+        return release_path
+    raise FileNotFoundError(
+        "找不到资源目录，检查 assets/resource/base（dev）或 resource/base（release）"
+    )
+
+
 def _run_maa(adb_address: str, task_runs: list, merged_override: dict) -> int:
-    raise NotImplementedError("Task 3: maa SDK 集成尚未实现")
+    from maa.toolkit import Toolkit
+    from maa.controller import AdbController
+    from maa.resource import Resource
+    from maa.tasker import Tasker
+    from maa.agent_client import AgentClient
+
+    project_root_str = str(PROJECT_ROOT)
+    if project_root_str.isascii():
+        try:
+            Toolkit.init_option(project_root_str)
+        except Exception as e:
+            log(f"⚠️ Toolkit.init_option 失败，已跳过: {e}")
+
+    # 1. 创建 TCP agent 服务，获取端口号
+    agent_client = AgentClient.create_tcp()
+    identifier = agent_client.identifier  # e.g. "12345"
+    agent_path = PROJECT_ROOT / "agent" / "main.py"
+    log(f"启动 Agent 子进程 (TCP:{identifier})...")
+    agent_proc = subprocess.Popen(
+        [sys.executable, str(agent_path), identifier],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    try:
+        # 2. ADB 连接
+        log(f"ADB 连接: {adb_address}")
+        ctrl = AdbController(adb_path="adb", address=adb_address)
+        ctrl.post_connection().wait()
+        log("ADB 已连接")
+
+        # 3. 加载资源 + 应用 pipeline_override
+        resource_path = _find_resource_path()
+        resource = Resource()
+        resource.post_pipeline(str(resource_path)).wait()
+        if merged_override:
+            resource.override_pipeline(merged_override)
+        log("资源加载完成")
+
+        # 4. 绑定 agent 到 resource，等待连接
+        agent_client.bind(resource)
+        agent_client.connect()
+        log("Agent 已连接")
+
+        # 5. 初始化 Tasker
+        tasker = Tasker()
+        tasker.bind(resource, ctrl)
+
+        # 6. 按顺序运行任务
+        any_failed = False
+        total_start = datetime.now()
+        for run in task_runs:
+            t_start = datetime.now()
+            log(f"运行中: {run['name']}")
+            try:
+                job = tasker.post_task(run["entry"])
+                job.wait()
+                if job.succeeded:
+                    elapsed = int((datetime.now() - t_start).total_seconds())
+                    log(f"✓ 完成 ({elapsed}s): {run['name']}")
+                else:
+                    log(f"✗ 失败: {run['name']}")
+                    any_failed = True
+            except Exception as e:
+                log(f"✗ 异常: {run['name']} — {e}")
+                any_failed = True
+
+        mins, secs = divmod(int((datetime.now() - total_start).total_seconds()), 60)
+        log(f"全部完成，耗时 {mins}m{secs:02d}s")
+        return 2 if any_failed else 0
+
+    finally:
+        agent_proc.terminate()
+        try:
+            agent_proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            agent_proc.kill()
 
 
 if __name__ == "__main__":

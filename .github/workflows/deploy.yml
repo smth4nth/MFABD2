@@ -32,7 +32,11 @@ jobs:
             -e "ssh $SSH_OPTS" \
             deploy/ ubuntu@43.160.196.56:~/bd2-deploy/
 
-          # 同步 APK（展平到 ~/bd2-deploy/ 根目录）
-          rsync -avz \
-            -e "ssh $SSH_OPTS" \
-            deploy/apk/ ubuntu@43.160.196.56:~/bd2-deploy/
+          # 同步 APK（仅当 apk/ 下有文件时才同步，APK 通常已在服务器）
+          if [ -n "$(ls deploy/apk/ 2>/dev/null)" ]; then
+            rsync -avz \
+              -e "ssh $SSH_OPTS" \
+              deploy/apk/ ubuntu@43.160.196.56:~/bd2-deploy/
+          else
+            echo "deploy/apk/ 为空，跳过 APK 同步"
+          fi

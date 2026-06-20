@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'deploy/**'
+      - 'cli.py'
   workflow_dispatch:
 
 jobs:
@@ -40,3 +41,10 @@ jobs:
           else
             echo "deploy/apk/ 为空，跳过 APK 同步"
           fi
+
+      - name: Sync cli.py to server
+        run: |
+          SSH_OPTS="-i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no"
+          rsync -avz \
+            -e "ssh $SSH_OPTS" \
+            cli.py ubuntu@43.160.196.56:~/bd2-deploy/

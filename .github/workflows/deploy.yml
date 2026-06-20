@@ -17,16 +17,21 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.TENCENT_SSH_KEY }}" > ~/.ssh/deploy.pem
           chmod 600 ~/.ssh/deploy.pem
-          ssh-keyscan -H 43.160.196.56 >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no ubuntu@43.160.196.56 "echo 'SSH OK'"
 
       - name: Sync deploy/ to server
         run: |
+          SSH_OPTS="-i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no"
+
           # 同步配置文件（排除 apk/ 子目录）
           rsync -avz --exclude='apk/' \
-            -e "ssh -i ~/.ssh/deploy.pem" \
+            -e "ssh $SSH_OPTS" \
             deploy/ ubuntu@43.160.196.56:~/bd2-deploy/
 
-          # 同步 APK（adk/ 展平到 ~/bd2-deploy/ 根目录）
+          # 同步 APK（展平到 ~/bd2-deploy/ 根目录）
           rsync -avz \
-            -e "ssh -i ~/.ssh/deploy.pem" \
+            -e "ssh $SSH_OPTS" \
             deploy/apk/ ubuntu@43.160.196.56:~/bd2-deploy/

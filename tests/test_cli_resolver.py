@@ -119,3 +119,40 @@ def test_merge_all_overrides_conflict_last_wins():
     ]
     merged = merge_all_overrides(runs)
     assert merged["Node"]["enabled"] is False
+
+
+def test_parse_options_valid():
+    from cli import parse_options
+    result = parse_options(["圣石洞穴属性=补短", "竞技场战斗倍数=40倍"])
+    assert result == {"圣石洞穴属性": "补短", "竞技场战斗倍数": "40倍"}
+
+
+def test_parse_options_invalid_format():
+    from cli import parse_options
+    with pytest.raises(ValueError, match="格式错误"):
+        parse_options(["圣石洞穴属性"])  # 缺少 =
+
+
+def test_build_parser_preset():
+    from cli import build_parser
+    parser = build_parser()
+    args = parser.parse_args(["--preset", "日常-尽快完成"])
+    assert args.preset == "日常-尽快完成"
+    assert args.tasks is None
+
+
+def test_build_parser_tasks():
+    from cli import build_parser
+    parser = build_parser()
+    args = parser.parse_args(["--task", "[领取]领取邮件", "--task", "[领取]通行证奖励"])
+    assert args.tasks == ["[领取]领取邮件", "[领取]通行证奖励"]
+    assert args.preset is None
+
+
+def test_build_parser_defaults():
+    from cli import build_parser
+    parser = build_parser()
+    args = parser.parse_args(["--preset", "日常-尽快完成"])
+    assert args.adb == "127.0.0.1:5555"
+    assert args.options == []
+    assert args.list_all is False

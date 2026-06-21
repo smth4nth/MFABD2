@@ -9,6 +9,7 @@ on:
       - 'assets/**'
       - 'agent/**'
       - 'requirements.txt'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 jobs:

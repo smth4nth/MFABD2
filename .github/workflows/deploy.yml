@@ -1,0 +1,57 @@
+name: Deploy to Tencent Cloud
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/**'
+      - 'cli.py'
+      - 'assets/**'
+      - 'agent/**'
+      - 'requirements.txt'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.TENCENT_SSH_KEY }}" > ~/.ssh/deploy.pem
+          chmod 600 ~/.ssh/deploy.pem
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no ubuntu@43.160.196.56 "echo 'SSH OK'"
+
+      - name: Sync files to server
+        run: |
+          SSH_OPTS="-i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no -o ControlMaster=auto -o ControlPath=/tmp/ssh_mux_%h -o ControlPersist=60"
+
+          # 建立连接复用通道
+          ssh $SSH_OPTS ubuntu@43.160.196.56 true
+
+          # 同步所有文件（共用同一个 SSH 连接）
+          rsync -avz --exclude='apk/' -e "ssh $SSH_OPTS" deploy/ ubuntu@43.160.196.56:~/bd2-deploy/
+          rsync -avz -e "ssh $SSH_OPTS" cli.py ubuntu@43.160.196.56:~/bd2-deploy/
+          rsync -avz -e "ssh $SSH_OPTS" assets/ ubuntu@43.160.196.56:~/bd2-deploy/assets/
+          rsync -avz -e "ssh $SSH_OPTS" agent/ ubuntu@43.160.196.56:~/bd2-deploy/agent/
+          rsync -avz -e "ssh $SSH_OPTS" requirements.txt ubuntu@43.160.196.56:~/bd2-deploy/
+
+          # 同步 APK（仅当 apk/ 下有文件时）
+          if [ -n "$(ls deploy/apk/ 2>/dev/null)" ]; then
+            rsync -avz -e "ssh $SSH_OPTS" deploy/apk/ ubuntu@43.160.196.56:~/bd2-deploy/
+          else
+            echo "deploy/apk/ 为空，跳过 APK 同步"
+          fi
+
+      - name: Install Python dependencies on server
+        run: |
+          ssh -i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no ubuntu@43.160.196.56 "
+            cd ~/bd2-deploy
+            python3 -m pip install --quiet --break-system-packages -r requirements.txt
+            python3 -m pip install --quiet --break-system-packages MaaFw
+          "

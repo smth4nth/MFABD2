@@ -51,6 +51,7 @@ jobs:
       - name: Install Python dependencies on server
         run: |
           ssh -i ~/.ssh/deploy.pem -o StrictHostKeyChecking=no ubuntu@43.160.196.56 "
+            command -v pip3 || sudo apt-get install -y python3-pip
             cd ~/bd2-deploy
             python3 -m pip install --quiet --break-system-packages -r requirements.txt
             python3 -m pip install --quiet --break-system-packages MaaFw

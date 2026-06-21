@@ -242,6 +242,7 @@ def _run_maa(adb_address: str, task_runs: list, merged_override: dict) -> int:
         # 2. ADB 连接
         log(f"ADB 连接: {adb_address}")
         ctrl = AdbController(adb_path="adb", address=adb_address)
+        ctrl.set_screenshot_target_short_side(1080)
         ctrl.post_connection().wait()
         log("ADB 已连接")
 
